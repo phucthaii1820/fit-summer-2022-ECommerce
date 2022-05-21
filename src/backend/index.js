@@ -8,7 +8,7 @@ import activate_route_middleware from "./middlewares/routes.mdw.js";
 dotenv.config();
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
 mongoose
   .connect(process.env.DB_HOST, {
