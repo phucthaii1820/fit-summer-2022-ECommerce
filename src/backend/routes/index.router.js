@@ -1,13 +1,9 @@
 import express from "express";
 
+import authRoute from '../routes/auth/auth.js'
+
 const router = express.Router();
 
-router.get('/', (req, res) => {
-    res.send("Home");
-})
-
-router.get('/login', (req, res) => {
-    res.send("login")
-})
+router.use('/auth', authRoute);
 
 export default router;
