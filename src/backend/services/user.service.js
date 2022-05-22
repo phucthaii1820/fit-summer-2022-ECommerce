@@ -25,5 +25,13 @@ export default{
         if(await argon2.verify(user.password, password))
             return user;
         return null;
-    }
+    },
+
+    //Tìm user
+    async findUserByID(_id) {
+        const user_data = await User.findById(_id, "_id name username avatar role banned").lean().exec()
+        if(user_data) 
+            return user_data;
+        return null;
+    },
 }

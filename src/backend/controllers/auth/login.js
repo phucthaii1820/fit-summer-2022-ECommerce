@@ -5,7 +5,6 @@ import dotenv from 'dotenv'
 export default {
     async login (req, res) {
         const account = await userService.authenticate(req.body.username, req.body.password);
-        console.log(process.env.ACCESS_TOKEN_SECRET)
         res.send(
             {
                 user_data: {
