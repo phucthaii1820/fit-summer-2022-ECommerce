@@ -1,6 +1,5 @@
-import logo from './logo.svg';
 import './App.css';
-import { Button, Image, Input } from 'antd';
+import { Button } from 'antd';
 
 function App() {
   return (
