@@ -1,10 +1,10 @@
 import './App.css';
-import { Button } from 'antd';
+import Footer from './components/Footer/Footer';
 
 function App() {
   return (
     <div className="App">
-      <Button className="bg-red-100">hello</Button>
+      <Footer />
     </div>
   );
 }
