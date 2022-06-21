@@ -1,30 +1,29 @@
 import React from "react";
-import { Row, Col, Input, Image, Typography } from "antd";
+import { Row, Col, Input, Image, Badge } from "antd";
 
 import { UserOutlined, ShoppingCartOutlined } from "@ant-design/icons";
 
-import "antd/dist/antd.css";
+import "./Header.css";
 
 import Logo from "../img/Logo/dark-logo.svg";
 
 const { Search } = Input;
-const { Title, Paragraph, Text, Link } = Typography;
 
 export default function Header() {
     return (
         <div>
-            <Row justify="space-around" align="middle">
+            <Row justify="space-around" align="middle" className="header">
                 <Col span={4}>
                     <Image src={Logo} alt="logo" />
                 </Col>
                 <Col span={2}>
-                    <Text strong>MUA SẮM</Text>
+                    <a>MUA SẮM</a>
                 </Col>
                 <Col span={2}>
-                    <Text strong>BỘ SƯU TẬP</Text>
+                    <a>BỘ SƯU TẬP</a>
                 </Col>
                 <Col span={2}>
-                    <Text strong>GIẢM GIÁ</Text>
+                    <a>GIẢM GIÁ</a>
                 </Col>
                 <Col span={8}>
                     <Search
@@ -33,7 +32,9 @@ export default function Header() {
                     />
                 </Col>
                 <Col span={2}>
-                    <ShoppingCartOutlined style={{ fontSize: "2em" }} />
+                    <Badge size="default" count={0}>
+                        <ShoppingCartOutlined style={{ fontSize: "2em" }} />
+                    </Badge>
                 </Col>
                 <Col span={2}>
                     <UserOutlined style={{ fontSize: "2em" }} />
