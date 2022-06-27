@@ -1,7 +1,7 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faGreaterThan } from '@fortawesome/free-solid-svg-icons'
 import { Input } from 'antd';
-import AuthLayout from '@/Layout/AuthLayout';
+import AuthLayout from '@/components/Layouts/AuthLayout';
 import { Link } from "react-router-dom"
 
 export default function Register_1() {

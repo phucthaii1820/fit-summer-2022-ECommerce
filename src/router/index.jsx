@@ -1,8 +1,8 @@
 import { auth } from "@/utils/auth";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import RegularRoute from "./regular";
-import Login from "@/Pages/Login";
-import Register_1 from "@/Pages/Register/Register_1";
+import Login from "@/page/Login";
+import Register_1 from "@/page/Register/Register_1";
 
 export default function WebRoute() {
     // const user = auth();

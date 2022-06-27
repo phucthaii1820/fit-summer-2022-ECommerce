@@ -4,6 +4,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCommentDots, faList } from '@fortawesome/free-solid-svg-icons'
 import { Link } from "react-router-dom";
 
+import Logo from "src/image/Logo.svg";
+
 export default function Footer() {
     return (
         <div className="absolute mt-auto bottom-0 w-screen">
@@ -13,12 +15,12 @@ export default function Footer() {
                         <div className="flex-shrink-0 flex items-center">
                             <img
                                 className="block md:hidden h-12 w-auto"
-                                src="../../image/Logo.svg"
+                                src={Logo}
                                 alt="Workflow"
                             />
                             <img
                                 className="hidden md:block h-20 w-auto"
-                                src="../../image/Logo.svg"
+                                src={Logo}
                                 alt="Workflow"
                             />
                         </div>

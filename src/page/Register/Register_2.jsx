@@ -1,6 +1,6 @@
 import { Input } from 'antd';
 import React from 'react';
-import AuthLayout from '@/Layout/AuthLayout';
+import AuthLayout from '@/components/Layouts/AuthLayout';
 
 export default function Register_2() {
     return (

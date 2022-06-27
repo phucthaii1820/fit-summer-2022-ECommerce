@@ -5,7 +5,7 @@ import useQuery from '@/utils/query';
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
-import AuthLayout from '@/Layout/AuthLayout';
+import AuthLayout from '@/components/Layouts/AuthLayout'
 
 import { EyeInvisibleOutlined, EyeTwoTone } from '@ant-design/icons';
 import { Input, Space } from 'antd';
@@ -86,6 +86,6 @@ export default function Login() {
                     </Link>
                 </div>
             </div>
-        </AuthLayout >
+        </AuthLayout>
     );
 }
