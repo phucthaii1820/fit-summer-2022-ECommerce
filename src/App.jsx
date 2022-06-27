@@ -1,15 +1,11 @@
-import "./App.css";
-import { Layout } from "antd";
-import UserProfile from "./page/UserProfile/UserProfile";
-import Header from "./components/Layouts/Header/Header";
+import WebRoute from './router';
 
 function App() {
-    return (
-        <Layout className="App">
-            <Header></Header>
-            <UserProfile></UserProfile>
-        </Layout>
-    );
+  return (
+    <div className="App">
+      <WebRoute />
+    </div>
+  );
 }
 
 export default App;
