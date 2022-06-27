@@ -3,9 +3,7 @@ import { Row, Col, Input, Image, Badge } from "antd";
 
 import { UserOutlined, ShoppingCartOutlined } from "@ant-design/icons";
 
-import "./Header.css";
-
-import Logo from "../img/Logo/dark-logo.svg";
+import Logo from "src/image/dark-logo.svg";
 
 const { Search } = Input;
 

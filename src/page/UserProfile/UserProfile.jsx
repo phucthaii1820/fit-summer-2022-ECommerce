@@ -4,7 +4,6 @@ import { UserOutlined } from "@ant-design/icons";
 import { Avatar } from "antd";
 import { Row, Col, Typography } from "antd";
 
-import "./UserProfile.css";
 import ChangeInformation from "./ChangeInformation";
 
 const { Text } = Typography;
