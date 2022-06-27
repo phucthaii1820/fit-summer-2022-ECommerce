@@ -4,6 +4,7 @@ module.exports = {
     theme: {
         extend: {
             colors: {
+<<<<<<< HEAD
                 yellow: {
                     light: "#F5B301",
                     dark: "#CF9033",
@@ -18,6 +19,16 @@ module.exports = {
                     DEFAULT: "#000000",
                 },
             },
+=======
+                'yellow': {
+                  light: '#F5B301',
+                  dark: '#CF9033',
+                },
+                'gray': {
+                    DEFAULT: '#F1F1F1'
+                }
+              },
+>>>>>>> main
         },
     },
     variants: {
