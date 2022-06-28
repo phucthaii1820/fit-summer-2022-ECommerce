@@ -8,7 +8,7 @@ import Logo from "src/image/Logo.svg";
 
 export default function Footer() {
     return (
-        <div className="absolute mt-auto bottom-0 w-screen">
+        <div className="absolute mt-auto bottom-0 w-screen" style={{paddingTop: '100px'}}>
             <footer className="bg-white">
                 <div className="grid grid-cols-3 gap-10 p-16 max-w-screen-2xl mx-auto px-4 p-8 text-base">
                     <div className="text-left rounded px-5">

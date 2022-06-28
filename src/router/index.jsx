@@ -1,8 +1,9 @@
 import { auth } from "@/utils/auth";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes, Switch } from "react-router-dom";
 import RegularRoute from "./regular";
 import Login from "@/page/Login";
 import Register_1 from "@/page/Register/Register_1";
+import ChangeInformation from "@/page/UserProfile/ChangeInformation";
 
 export default function WebRoute() {
     // const user = auth();
@@ -11,9 +12,9 @@ export default function WebRoute() {
     return (
         <BrowserRouter>
             <Routes>
-                <Route exact path="/login" element={<Login />} />
-                <Route exact path="/register" element={<Register_1 />} />
-                {/* <Route exact path="/" element={<RegularRoute />} /> */}
+                <Route path="login" element={<Login />} />
+                <Route path="register" element={<Register_1 />} />
+                <Route path="/*" element={<RegularRoute />} />
             </Routes>
         </BrowserRouter>
     )
