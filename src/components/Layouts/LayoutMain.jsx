@@ -6,8 +6,12 @@ const LayoutMain = ({ children }) => {
   return (
     <>
       <Header />
-      <div style={{ heightMin: "100vh" }}>{children}</div>
-      {/* <Footer /> */}
+      <div className="bg-gray-default py-6">
+        <div className="container mx-auto">
+          <div>{children}</div>
+        </div>
+      </div>
+      <Footer />
     </>
   );
 };
