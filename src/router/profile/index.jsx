@@ -8,11 +8,19 @@ import { Route, Routes } from "react-router-dom";
 
 const Profile = () => {
   return (
-    <LayoutProfile>
+    <>
       <Routes>
-        <Route exact path="changeinfo" element={<ChangeInformation />} />
+        <Route
+          exact
+          path="changeinfo"
+          element={
+            <LayoutProfile title="Thông tin tài khoản">
+              <ChangeInformation />
+            </LayoutProfile>
+          }
+        />
       </Routes>
-    </LayoutProfile>
+    </>
   );
 };
 
