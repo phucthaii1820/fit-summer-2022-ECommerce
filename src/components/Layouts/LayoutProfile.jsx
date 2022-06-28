@@ -88,7 +88,7 @@ const LayoutProfile = ({ children, title }) => {
           </div>
         </div>
         <div className="col-span-2">
-          <div className="pl-6 border-l border-dashed">
+          <div className="px-16 border-l border-dashed">
             <div className="font-semibold mb-12 text-xl text-yellow-light border-black">
               {title}
             </div>
