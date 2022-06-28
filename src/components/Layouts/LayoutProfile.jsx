@@ -66,16 +66,6 @@ const LayoutProfile = ({ children, title }) => {
               }
             />
             <ButtonProfile
-              title="Quản lý thông báo"
-              icon={
-                <BellOutlined
-                  style={{
-                    verticalAlign: "middle",
-                  }}
-                />
-              }
-            />
-            <ButtonProfile
               title="Danh sách yêu thích"
               icon={
                 <HeartOutlined
