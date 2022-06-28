@@ -12,7 +12,7 @@ const Profile = () => {
       <Routes>
         <Route
           exact
-          path="changeinfo"
+          path="change-info"
           element={
             <LayoutProfile title="Thông tin tài khoản">
               <ChangeInformation />
