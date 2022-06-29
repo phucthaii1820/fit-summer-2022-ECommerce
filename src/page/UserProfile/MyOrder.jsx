@@ -1,3 +1,4 @@
+import CardOder from "@/components/card/CardOder";
 import { Tabs } from "antd";
 import React from "react";
 
@@ -9,7 +10,7 @@ const MyOrder = () => {
   };
 
   return (
-    <>
+    <div className="p-4 rounded-lg w-full">
       <Tabs defaultActiveKey="1" onChange={onChange}>
         <TabPane
           tab={
@@ -24,7 +25,9 @@ const MyOrder = () => {
           }
           key="1"
         >
-          Content of Tab Pane 1
+          <CardOder></CardOder>
+          <CardOder></CardOder>
+          <CardOder></CardOder>
         </TabPane>
         <TabPane
           tab={
@@ -39,7 +42,7 @@ const MyOrder = () => {
           }
           key="2"
         >
-          Content of Tab Pane 2
+          <CardOder></CardOder>
         </TabPane>
         <TabPane
           tab={
@@ -54,7 +57,7 @@ const MyOrder = () => {
           }
           key="3"
         >
-          Content of Tab Pane 3
+          <CardOder></CardOder>
         </TabPane>
         <TabPane
           tab={
@@ -69,7 +72,8 @@ const MyOrder = () => {
           }
           key="4"
         >
-          Content of Tab Pane 3
+          <CardOder></CardOder>
+          <CardOder></CardOder>
         </TabPane>
         <TabPane
           tab={
@@ -102,7 +106,7 @@ const MyOrder = () => {
           Content of Tab Pane 3
         </TabPane>
       </Tabs>
-    </>
+    </div>
   );
 };
 
