@@ -44,6 +44,7 @@ const LayoutProfile = ({ children, title }) => {
                   }}
                 />
               }
+              link="/profile/change-info"
             />
             <ButtonProfile
               title="Thay đổi mật khẩu"
@@ -54,6 +55,7 @@ const LayoutProfile = ({ children, title }) => {
                   }}
                 />
               }
+              link="/profile/change-password"
             />
             <ButtonProfile
               title="Đơn hàng của tôi"
@@ -64,6 +66,7 @@ const LayoutProfile = ({ children, title }) => {
                   }}
                 />
               }
+              link="/profile/my-order"
             />
             <ButtonProfile
               title="Danh sách yêu thích"
@@ -74,6 +77,7 @@ const LayoutProfile = ({ children, title }) => {
                   }}
                 />
               }
+              link="/profile/wish-list"
             />
           </div>
         </div>
