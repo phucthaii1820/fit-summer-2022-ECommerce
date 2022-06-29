@@ -1,11 +1,9 @@
 import {
-  BellOutlined,
   HeartOutlined,
   LockOutlined,
   MenuFoldOutlined,
   UserOutlined,
 } from "@ant-design/icons";
-import Icon from "@ant-design/icons/lib/components/AntdIcon";
 import { Avatar } from "antd";
 import React from "react";
 import ButtonProfile from "../button/ButtonProfile";
@@ -13,22 +11,24 @@ import ButtonProfile from "../button/ButtonProfile";
 const LayoutProfile = ({ children, title }) => {
   return (
     <>
-      <div style={{ color: "#797979" }}>Tài khoản / Thông tin tài khoản</div>
+      <div style={{ color: "#797979" }}>Tài khoản / {title}</div>
       <div className="grid grid-cols-3 gap-4 pt-12">
         <div className="col-span-1 mr-2">
           <div className="flex items-center -mt-4 space-x-4">
-            <Avatar
-              size={78}
-              icon={
-                <UserOutlined
-                  style={{
-                    verticalAlign: "middle",
-                  }}
-                />
-              }
-            />
             <div className="">
-              <div className="font-semibold text-xl text-yellow-light">
+              <Avatar
+                size={78}
+                icon={
+                  <UserOutlined
+                    style={{
+                      verticalAlign: "middle",
+                    }}
+                  />
+                }
+              />
+            </div>
+            <div className="w-9/12">
+              <div className="font-semibold text-xl text-yellow-light truncate w-full">
                 Nguyễn Hoài thương
               </div>
               <div style={{ color: "#797979" }}>Menber</div>

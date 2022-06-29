@@ -4,12 +4,13 @@ import ChangePassword from "@/page/UserProfile/ChangePassword";
 import MyOrder from "@/page/UserProfile/MyOrder";
 import WishList from "@/page/UserProfile/WishList";
 import React from "react";
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 
 const Profile = () => {
   return (
     <>
       <Routes>
+        <Route path="" element={<Navigate to="change-info" />} />
         <Route
           path="change-info"
           element={
