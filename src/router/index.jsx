@@ -17,5 +17,5 @@ export default function WebRoute() {
                 <Route path="/*" element={<RegularRoute />} />
             </Routes>
         </BrowserRouter>
-    )
+    );
 }
