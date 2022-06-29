@@ -16,7 +16,7 @@ const LayoutProfile = ({ children, title }) => {
       <div style={{ color: "#797979" }}>Tài khoản / Thông tin tài khoản</div>
       <div className="grid grid-cols-3 gap-4 pt-12">
         <div className="col-span-1 mr-2">
-          <div className="flex items-center -mt-4">
+          <div className="flex items-center -mt-4 space-x-4">
             <Avatar
               size={78}
               icon={
@@ -27,7 +27,7 @@ const LayoutProfile = ({ children, title }) => {
                 />
               }
             />
-            <div className="ml-4">
+            <div className="">
               <div className="font-semibold text-xl text-yellow-light">
                 Nguyễn Hoài thương
               </div>
