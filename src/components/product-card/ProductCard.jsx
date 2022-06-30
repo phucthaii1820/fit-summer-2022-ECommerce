@@ -17,7 +17,7 @@ export default function ProductCard(props) {
                     <div>
                         <div className="relative w-72 h-72">
                             <div>
-                                {/* Discount button here */}
+                                {/* Discount */}
                                 <div className="absolute top-2 right-3 ml-4 inline-flex items-center leading-sm uppercase px-2 py-1 bg-yellow-light rounded-lg">
                                     <div className="text-sm text-white">
                                         -{item.discount_percent}
@@ -30,6 +30,7 @@ export default function ProductCard(props) {
                                     src={item.image}
                                 />
 
+                                {/* Heart count  */}
                                 <div className="absolute bottom-2 right-3 ml-4 inline-flex items-center leading-sm uppercase px-2 py-1 rounded-lg bg-white bg-opacity-50 border-none border-gray-extra_dark">
                                     <HeartOutlined
                                         style={{
@@ -56,6 +57,8 @@ export default function ProductCard(props) {
                     </p>
                     <div className="relative">
                         <p className="font-bold">{item.discount_price} VNĐ</p>
+
+                        {/* Add to card button  */}
                         <div className="absolute bottom-0 right-0 inline-flex items-center leading-sm px-2 py-1 rounded-lg bg-white border border-gray-extra_dark">
                             <ShoppingCartOutlined
                                 style={{
@@ -69,7 +72,6 @@ export default function ProductCard(props) {
                         </div>
                     </div>
                 </div>
-                {/* Heart count  */}
             </Card>
         </div>
     );

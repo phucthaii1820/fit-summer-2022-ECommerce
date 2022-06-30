@@ -1,23 +1,14 @@
 import React from "react";
 
-import { Carousel } from "antd";
-
 import TrendingProducts from "@/page/HomePage/TrendingProducts";
 import CustomerFeedback from "@/page/HomePage/CustomerFeedback";
 import Banner from "@/page/HomePage/Banner";
+import Services from "@/page/HomePage/Services";
 
 export default function LayoutHomePage() {
-    const contentStyle = {
-        height: "576px",
-        color: "#fff",
-        lineHeight: "576px",
-        textAlign: "center",
-        background: "#364d79",
-    };
-
     return (
-        <div className="bg-gray-default py-6">
-            <div className=" container mx-auto">
+        <div>
+            <div className="container mx-auto">
                 {/* Banner  */}
                 <Banner />
 
@@ -28,6 +19,7 @@ export default function LayoutHomePage() {
                 <CustomerFeedback />
 
                 {/* Lý do nên chọn BIKERGEAR  */}
+                <Services />
             </div>
         </div>
     );
