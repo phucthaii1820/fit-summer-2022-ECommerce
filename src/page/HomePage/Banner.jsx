@@ -2,9 +2,7 @@ import React from "react";
 
 import { Carousel } from "antd";
 
-import ProductCard from "@/components/product-card/ProductCard";
-
-export default function HomePage() {
+export default function Banner() {
     const contentStyle = {
         height: "576px",
         color: "#fff",
@@ -30,13 +28,6 @@ export default function HomePage() {
                     <h3 style={contentStyle}>4</h3>
                 </div>
             </Carousel>
-
-            {/* Bạn đang tìm kiếm  */}
-            {/* Sản phẩm nổi bật  */}
-            <ProductCard />
-
-            {/* Khách hàng của BIKERGEAR nghĩ gì  */}
-            {/* Lý do nên chọn BIKERGEAR  */}
         </div>
     );
 }
