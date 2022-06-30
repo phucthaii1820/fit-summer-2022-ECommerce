@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Avatar, Card, Skeleton } from "antd";
+import { Avatar, Card } from "antd";
 
 const { Meta } = Card;
 
