@@ -1,12 +1,14 @@
-import Login from "@/page/Login";
-import Register_1 from "@/page/Register/Register_1";
+import LayoutMain from "@/components/Layouts/LayoutMain";
 import { Route, Routes } from "react-router-dom";
+import Profile from "./profile";
 
 export default function RegularRoute({ userData }) {
-    return(
-        <Routes>
-            <Route exact path="login" element={<Login />} />
-            <Route exact path="register" element={<Register_1 />} />
-        </Routes>
-    )
+  console.log(userData);
+  return (
+    <LayoutMain>
+      <Routes>
+        <Route exact path="profile/*" element={<Profile />} />
+      </Routes>
+    </LayoutMain>
+  );
 }
