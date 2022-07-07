@@ -4,14 +4,17 @@ module.exports = {
     theme: {
         extend: {
             colors: {
-                'yellow': {
-                  light: '#F5B301',
-                  dark: '#CF9033',
+                yellow: {
+                    light: "#F5B301",
+                    dark: "#CF9033",
                 },
-                'gray': {
-                    DEFAULT: '#F1F1F1'
-                }
-              },
+                gray: {
+                    light: "#FAFAFA",
+                    default: "#F1F1F1",
+                    dark: "#979797",
+                    extra_dark: "#797979",
+                },
+            },
         },
     },
     variants: {

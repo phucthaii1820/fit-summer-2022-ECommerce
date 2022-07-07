@@ -1,4 +1,3 @@
-import { Button, Input } from "antd";
 import {
     FaFacebookSquare,
     FaGithub,
@@ -149,7 +148,7 @@ export default function Footer() {
                         Copyright © 2021 Motorbike Accessory, EC02-02
                     </div>
                 </div>
-            </footer>
+          </footer>
         </div>
     );
 }

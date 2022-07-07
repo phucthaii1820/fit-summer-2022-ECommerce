@@ -16,14 +16,6 @@ import {
 import Local from "./local.json";
 
 export default function ChangeInformation() {
-  // const [user, setUser] = useState([]);
-
-  // useEffect(async => {
-  //   try{
-  //     const res = await get
-  //   }
-  // }, [])
-
   return (
     <div className="space-y-4">
       <div className="grid grid-cols-2 gap-16">
