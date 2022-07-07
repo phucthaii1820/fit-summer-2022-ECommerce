@@ -1,7 +1,43 @@
-import { Button, Input } from "antd";
-import React from "react";
+import { postPassword } from "@/API/user";
+import { Button, Input, message } from "antd";
+
+import React, { useState } from "react";
 
 const ChangePassword = () => {
+  const [password, setPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+
+  const handlePasswordChange = (event) => {
+    setPassword(event.target.value);
+  }
+
+  const handleNewPassChange = (event) => {
+    setNewPassword(event.target.value);
+  }
+
+  const handlePassConfirmChange = (event) => {
+    setConfirmPassword(event.target.value);
+  }
+
+  const handleUpdate = async (event) => {
+    if (password === newPassword) {
+      message.error("New password is the same the old one!");
+    }
+    else if (newPassword !== confirmPassword) {
+      message.error("Incorrect confirmation password!")
+    }
+    else {
+      try {
+        const res = await postPassword({ password: password, newPassword: newPassword });
+        message.success("Profile changed successfully!");
+      }
+      catch (err) {
+        console.log(err);
+      }
+    }
+  }
+
   return (
     <div className="space-y-4">
       <div className="space-y-1">
@@ -12,6 +48,7 @@ const ChangePassword = () => {
             borderRadius: "25px",
             padding: "6px 16px",
           }}
+          onchange={handlePasswordChange}
         ></Input>
       </div>
       <div className="space-y-1">
@@ -22,6 +59,7 @@ const ChangePassword = () => {
             borderRadius: "25px",
             padding: "6px 16px",
           }}
+          onchange={handleNewPassChange}
         ></Input>
       </div>
       <div className="space-y-1">
@@ -32,6 +70,7 @@ const ChangePassword = () => {
             borderRadius: "25px",
             padding: "6px 16px",
           }}
+          onchange={handlePassConfirmChange}
         ></Input>
       </div>
       <Button
