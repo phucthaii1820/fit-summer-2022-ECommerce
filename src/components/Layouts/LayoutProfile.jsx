@@ -8,7 +8,7 @@ import { Avatar } from "antd";
 import React from "react";
 import ButtonProfile from "../button/ButtonProfile";
 
-const LayoutProfile = ({ children, title }) => {
+const LayoutProfile = ({ children, title, userData }) => {
   return (
     <>
       <div style={{ color: "#797979" }}>Tài khoản / {title}</div>
@@ -29,7 +29,7 @@ const LayoutProfile = ({ children, title }) => {
             </div>
             <div className="w-9/12">
               <div className="font-semibold text-xl text-yellow-light truncate w-full">
-                Nguyễn Hoài thương
+                {userData.fullname ? <>{userData.fullname}</> : <>No Name</>}
               </div>
               <div style={{ color: "#797979" }}>Menber</div>
             </div>

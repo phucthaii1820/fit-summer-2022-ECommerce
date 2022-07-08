@@ -6,16 +6,17 @@ import Register from "@/page/Register/Register";
 import ChangeInformation from "@/page/UserProfile/ChangeInformation";
 
 export default function WebRoute() {
-    const user = auth();
-    const userData = user.user_data ? user.user_data : undefined;
+  const user = auth();
+  const userData = user.user_data ? user.user_data : undefined;
+  console.log(userData);
 
-    return (
-        <BrowserRouter>
-            <Routes>
-                <Route path="login" element={<Login />} />
-                <Route path="register" element={<Register />} />
-                <Route path="/*" element={<RegularRoute userData={ userData }/>}/>
-            </Routes>
-        </BrowserRouter>
-    );
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="login" element={<Login />} />
+        <Route path="register" element={<Register />} />
+        <Route path="/*" element={<RegularRoute userData={userData} />} />
+      </Routes>
+    </BrowserRouter>
+  );
 }
