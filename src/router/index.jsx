@@ -7,7 +7,7 @@ import ChangeInformation from "@/page/UserProfile/ChangeInformation";
 
 export default function WebRoute() {
   const user = auth();
-  const userData = user.user_data ? user.user_data : undefined;
+  const userData = user?.user_data ? user.user_data : undefined;
   console.log(userData);
 
   return (
