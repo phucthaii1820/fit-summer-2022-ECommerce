@@ -5,9 +5,9 @@ import {
 } from "@ant-design/icons";
 
 import React, { useState } from 'react'
-import LayoutMain from './LayoutMain'
 import Gallery from '../gallery/Gallery';
 import Logo from "src/image/Logo.svg";
+import LayoutMain from './LayoutMain';
 
 
 
@@ -20,7 +20,7 @@ const LayoutProductDetails = () => {
 
     return (
         <LayoutMain>
-            <div className="px-16">
+            {/* <div className="px-16">
                 <Breadcrumb>
                     <Breadcrumb.Item>Home</Breadcrumb.Item>
                     <Breadcrumb.Item>Mua sắm</Breadcrumb.Item>
@@ -44,7 +44,6 @@ const LayoutProductDetails = () => {
                             </div>
                             <div className="flex">
                                 <p className="text-xl font-bold">200.000&nbsp;₫</p>
-                                {/* <p className="text-xl ml-3 line-through">300.000&nbsp;₫</p> */}
                             </div>
                             <div clasName="">
                                 <a className="flex border-2 rounded-xl h-12 w-32 items-center justify-center text-xl">
@@ -67,12 +66,12 @@ const LayoutProductDetails = () => {
 
                             <div className="flex mt-6">
                                 <div className="w-64 mr-8 flex p-2 border-2 rounded-xl justify-center items-center drop-shadow-lg" style={{ backgroundColor: "#FFEBB7", color: "#E7A800" }}>
-                                    <ShoppingCartOutlined style={{ fontSize: "25px" }}/>
+                                    <ShoppingCartOutlined style={{ fontSize: "25px" }} />
                                     <button className="ml-2 text-xl font-bold">
                                         Thêm vào giỏ hàng
                                     </button>
                                 </div>
-                                <div className="p-4 border-2 rounded-xl" style={{ backgroundColor: "#F5B301" }} > 
+                                <div className="p-4 border-2 rounded-xl" style={{ backgroundColor: "#F5B301" }} >
                                     <button className="text-xl text-white font-bold drop-shadow-lg">
                                         Mua ngay
                                     </button>
@@ -80,12 +79,8 @@ const LayoutProductDetails = () => {
                             </div>
                         </div>
                     </div>
-
-                    <div>
-
-                    </div>
                 </div>
-            </div>
+            </div> */}
         </LayoutMain>
     )
 }
