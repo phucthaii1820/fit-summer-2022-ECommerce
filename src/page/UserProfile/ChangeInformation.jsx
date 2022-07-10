@@ -1,21 +1,70 @@
 import React, { useEffect, useState } from "react";
-import {
-  Form,
-  Input,
-  Button,
-  Radio,
-  Select,
-  Cascader,
-  DatePicker,
-  InputNumber,
-  TreeSelect,
-  Switch,
-  Checkbox,
-} from "antd";
-
-import Local from "./local.json";
+import { Input, Button, Radio, Select } from "antd";
 
 export default function ChangeInformation({ userData }) {
+  const [province, setProvince] = useState([]);
+  const [selectedProvince, setSelectedProvince] = useState(null);
+  const [district, setDistrict] = useState([]);
+  const [selectedDistrict, setSelectedDistrict] = useState(null);
+  const [ward, setWard] = useState([]);
+  const [selectedWard, setSelectedWard] = useState(null);
+  const { Option } = Select;
+
+  useEffect(() => {
+    async function fetchAPI() {
+      const response = await fetch(
+        "https://online-gateway.ghn.vn/shiip/public-api/master-data/province",
+        {
+          method: "GET",
+          headers: {
+            token: "a72f4514-0070-11ed-ad26-3a4226f77ff0",
+          },
+        }
+      );
+      const data = await response.json();
+      setProvince(data.data);
+    }
+    fetchAPI();
+  }, []);
+
+  useEffect(() => {
+    if (selectedProvince !== -1) {
+      async function fetchAPI() {
+        const response = await fetch(
+          `https://online-gateway.ghn.vn/shiip/public-api/master-data/district?province_id=${selectedProvince}`,
+          {
+            method: "GET",
+            headers: {
+              token: "a72f4514-0070-11ed-ad26-3a4226f77ff0",
+            },
+          }
+        );
+        const data = await response.json();
+        setDistrict(data.data);
+      }
+      fetchAPI();
+    }
+  }, [selectedProvince]);
+
+  useEffect(() => {
+    if (selectedDistrict !== -1) {
+      async function fetchAPI() {
+        const response = await fetch(
+          `https://online-gateway.ghn.vn/shiip/public-api/master-data/ward?district_id=${selectedDistrict}`,
+          {
+            method: "GET",
+            headers: {
+              token: "a72f4514-0070-11ed-ad26-3a4226f77ff0",
+            },
+          }
+        );
+        const data = await response.json();
+        setWard(data.data);
+      }
+      fetchAPI();
+    }
+  }, [selectedDistrict]);
+
   return (
     <div className="space-y-4">
       <div className="grid grid-cols-2 gap-16">
@@ -67,13 +116,93 @@ export default function ChangeInformation({ userData }) {
         </Radio.Group>
       </div>
       <div className="space-y-1">
-        <div className="font-semibold">Địa chỉ</div>
+        <div className="font-semibold">Số nhà + Tên đường</div>
         <Input
           style={{
             borderRadius: "25px",
             padding: "6px 16px",
           }}
         ></Input>
+      </div>
+      <div className="grid grid-cols-3 gap-16">
+        <div className="space-y-1">
+          <div className="font-semibold">Tỉnh/Thành Phố</div>
+          <Select
+            value={selectedProvince}
+            showSearch
+            placeholder="Select a person"
+            optionFilterProp="children"
+            onChange={(value) => {
+              setSelectedProvince(value);
+              setSelectedDistrict(null);
+              setSelectedWard(null);
+            }}
+            onSearch={(value) => {}}
+            filterOption={(input, option) =>
+              option.children.toLowerCase().includes(input.toLowerCase())
+            }
+            style={{
+              width: "100%",
+            }}
+          >
+            {province?.map((item, index) => (
+              <Option key={index} value={item.ProvinceID}>
+                {item.ProvinceName}
+              </Option>
+            ))}
+          </Select>
+        </div>
+        <div className="space-y-1">
+          <div className="font-semibold">Quận/Huyện</div>
+          <Select
+            value={selectedDistrict}
+            showSearch
+            placeholder="Select a person"
+            optionFilterProp="children"
+            onChange={(value) => {
+              setSelectedDistrict(value);
+              setSelectedWard(null);
+            }}
+            onSearch={(value) => {}}
+            filterOption={(input, option) =>
+              option.children.toLowerCase().includes(input.toLowerCase())
+            }
+            style={{
+              width: "100%",
+            }}
+          >
+            {district?.map((item, index) => (
+              <Option key={index} value={item.DistrictID}>
+                {item.DistrictName}
+              </Option>
+            ))}
+          </Select>
+        </div>
+        <div className="space-y-1">
+          <div className="font-semibold">Phường/Xã</div>
+          <Select
+            value={selectedWard}
+            showSearch
+            placeholder="Select a person"
+            optionFilterProp="children"
+            onChange={(value) => {
+              setSelectedWard(value);
+            }}
+            onSearch={(value) => {}}
+            filterOption={(input, option) =>
+              option.children.toLowerCase().includes(input.toLowerCase())
+            }
+            style={{
+              width: "100%",
+            }}
+          >
+            {ward?.map((item, index) => (
+              <Option key={index} value={item.WardCode}>
+                {item.WardName}
+              </Option>
+            ))}
+          </Select>
+        </div>
       </div>
       <div>
         <Button
