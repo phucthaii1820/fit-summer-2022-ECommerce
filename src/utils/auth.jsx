@@ -1,15 +1,18 @@
-import Cookies from "js-cookie";
+// import Cookies from "js-cookie";
+import Cookies from "universal-cookie";
 
 export const auth = () => {
-  const user = Cookies.get("user");
-  const parsed = user ? JSON.parse(JSON.stringify(user)) : "";
-  return parsed;
+  const cookies = new Cookies();
+  const user = cookies.get("user");
+  return user;
 };
 
 export const login = (user) => {
-  Cookies.set("user", user, { expires: 7 });
+  const cookies = new Cookies();
+  cookies.set("user", user);
 };
 
 export const register = (user) => {
-  Cookies.set("user", user, { expires: 7 });
+  const cookies = new Cookies();
+  cookies.set("user", user);
 };

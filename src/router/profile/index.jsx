@@ -6,7 +6,7 @@ import WishList from "@/page/UserProfile/WishList";
 import React from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
 
-const Profile = () => {
+const Profile = ({ userData }) => {
   return (
     <>
       <Routes>
@@ -14,8 +14,8 @@ const Profile = () => {
         <Route
           path="change-info"
           element={
-            <LayoutProfile title="Thông tin tài khoản">
-              <ChangeInformation />
+            <LayoutProfile title="Thông tin tài khoản" userData={userData}>
+              <ChangeInformation userData={userData} />
             </LayoutProfile>
           }
         />

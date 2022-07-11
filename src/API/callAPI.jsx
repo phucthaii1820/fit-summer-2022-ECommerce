@@ -5,7 +5,7 @@ const BASE_API = process.env.REACT_APP_BASE_HOST;
 
 export default async function callAPI({ url, method, data, option }) {
   const user = auth();
-  const token = user.token ? user.token : ""; 
+  const token = user?.token ? user.token : "";
   return new Promise((resolve, reject) => {
     axios({
       method,

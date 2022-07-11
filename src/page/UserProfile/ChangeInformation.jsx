@@ -15,7 +15,7 @@ import {
 
 import Local from "./local.json";
 
-export default function ChangeInformation() {
+export default function ChangeInformation({ userData }) {
   return (
     <div className="space-y-4">
       <div className="grid grid-cols-2 gap-16">
