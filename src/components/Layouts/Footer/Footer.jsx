@@ -11,13 +11,25 @@ import { faCommentDots, faList } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 
 import Logo from "src/image/Logo.svg";
+import { Button, Input } from "antd";
+import { useState } from "react";
 
 export default function Footer() {
+    const [isHovering, setIsHovering] = useState(false);
+
+    const handleMouseEnter = () => {
+        setIsHovering(true);
+    };
+
+    const handleMouseLeave = () => {
+        setIsHovering(false);
+    };
+    
     return (
         <div className="container">
             <footer className="bg-white mt-auto w-screen">
-                <div className="grid grid-cols-3 gap-10 p-16 max-w-screen-2xl mx-auto px-4 p-8 text-base">
-                    <div className="text-left rounded px-5">
+                <div className="grid lg:grid-cols-3 lg:gap-10 p-16 max-w-screen-2xl mx-auto lg:px-4 p-8 text-base">
+                    <div className="text-left rounded lg:px-5">
                         <div className="flex-shrink-0 flex items-center">
                             <img
                                 className="block md:hidden h-12 w-auto"
@@ -60,7 +72,7 @@ export default function Footer() {
                                 </a>
                             </li>
                         </ul>
-                        <div className="my-5">
+                        <div className="lg:my-5">
                             <div className="font-bold">
                                 <p>Phương thức thanh toán</p>
                                 <div className="grid grid-cols-3 my-5">
@@ -85,10 +97,29 @@ export default function Footer() {
                             </div>
                             <div className="flex flex-1">
                                 <div className="flex-auto py-2">
-                                    <input placeholder="Nhập email của bạn" className="h-10 w-96 p-2 bg-gray-100 border-l-2 border-t-2 border-b-2 border-r-0 border-yellow-light rounded-l-lg rounded-tr-none rounded-br-none" />
+                                    <Input placeholder="Nhập số điện thoại của bạn" className="h-10 p-2"
+                                        style={{
+                                            borderColor: "#F5B301",
+                                            borderWidth: "2px",
+                                            borderTopRightRadius: "0px",
+                                            borderBottomRightRadius: "0px",
+                                            backgroundColor: "#f3f4f6"
+                                        }} />
                                 </div>
                                 <div className="py-2">
-                                    <button className="h-10 p-2 w-24 bg-yellow-light text-black font-bold border-r-2 border-t-2 border-b-2 border-l-0 border-yellow-light rounded-r-lg rounded-tl-none rounded-bl-none">Đăng ký</button>
+                                    <Button className="h-10 p-2"
+                                        style={{
+                                            height: "40px",
+                                            borderColor: "#F5B301",
+                                            borderTopLeftRadius: "0px",
+                                            borderBottomLeftRadius: "0px",
+                                            backgroundColor: "#F5B301",
+                                            fontWeight: "bold",
+                                            color: isHovering ? "white" : "black"
+                                        }}
+                                        onMouseEnter={handleMouseEnter}
+                                        onMouseLeave={handleMouseLeave}
+                                    >Đăng ký</Button>
                                 </div>
                             </div>
                         </div>
@@ -118,19 +149,19 @@ export default function Footer() {
                                     <div className="flex-initial flex flex-row mr-8 h-16 w-96 items-center justify-center bg-gray-100 mr-2 border border-black rounded-lg">
                                         <FontAwesomeIcon icon={faList} className="pl-2 h-6" />
                                         <a href="/" className="pl-8">
-                                            <p className="text-lg font-bold pt-4 text-black">Kiểm tra đơn hàng</p>
+                                            <p className="text-base lg:text-lg font-bold pt-4 text-black">Kiểm tra đơn hàng</p>
                                         </a>
                                     </div>
                                     <div className="flex-initial flex flex-row mr-8 h-16 w-96 items-center justify-center bg-gray-100 mr-2 border border-black rounded-lg">
                                         <FontAwesomeIcon icon={faCommentDots} className="pl-2 h-6" />
                                         <a href="/" className="pl-8">
-                                            <p className="text-lg font-bold pt-4 text-black">Góp ý - Than phiền</p>
+                                            <p className="text-base lg:text-lg font-bold pt-4 text-black">Góp ý - Than phiền</p>
                                         </a>
                                     </div>
                                 </div>
                             </div>
 
-                            <div className="font-bold text-left">
+                            <div className="font-bold text-left ml-10">
                                 <p className="text-lg mb-1">Liên hệ</p>
                                 <p className="text-gray-400 mb-1">Tư vấn mua hàng</p>
                                 <p className="text-yellow-light mb-1">1900.0009</p>
@@ -148,7 +179,7 @@ export default function Footer() {
                         Copyright © 2021 Motorbike Accessory, EC02-02
                     </div>
                 </div>
-          </footer>
+            </footer>
         </div>
     );
 }

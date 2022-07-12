@@ -5,3 +5,6 @@ export const getProfileUser = () =>
 
 export const postPassword = (data) =>
     callAPI({ url: `/user/change-password`, method: 'POST', data });
+
+export const postInfo = (data) =>
+    callAPI({ url: `/user/update-info`, method: 'POST', data });

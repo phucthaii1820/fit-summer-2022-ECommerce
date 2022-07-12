@@ -3,10 +3,8 @@ import React from 'react'
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import Logo from "src/image/Logo.svg";
-import Login from "src/image/Login.svg";
 
-const Gallery = () => {
+const Gallery = ({ data }) => {
     var settings = {
         dots: false,
         arrows: false,
@@ -33,25 +31,11 @@ const Gallery = () => {
             },
         ],
     };
-    const gallery = [
-        {
-            image: Logo
-        },
-        {
-            image: Logo
-        },
-        {
-            image: Logo
-        },
-        {
-            image: Login
-        },
-    ];
 
     return (
         <div>
             <Slider {...settings}>
-                {gallery.map((item) => (
+                {data.map((item) => (
                     <div className="mr-1">
                         <div className="w-32 h-24 border-2 rounded-lg p-2 items-center">
                             <img src={item.image} alt="ProductThumb" className="h-16 w-32"></img>
