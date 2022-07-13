@@ -21,7 +21,11 @@ const ChangePassword = () => {
   }
 
   const handleUpdate = async (event) => {
-    if (password === newPassword) {
+    console.log(password, newPassword)
+    if(password === "" || newPassword === "" || confirmPassword === ""){
+      message.error("Please fill up fully information!");
+    }
+    else if (password === newPassword) {
       message.error("New password is the same the old one!");
     }
     else if (newPassword !== confirmPassword) {
@@ -48,7 +52,7 @@ const ChangePassword = () => {
             borderRadius: "25px",
             padding: "6px 16px",
           }}
-          onchange={handlePasswordChange}
+          onChange={handlePasswordChange}
         ></Input>
       </div>
       <div className="space-y-1">
@@ -59,7 +63,7 @@ const ChangePassword = () => {
             borderRadius: "25px",
             padding: "6px 16px",
           }}
-          onchange={handleNewPassChange}
+          onChange={handleNewPassChange}
         ></Input>
       </div>
       <div className="space-y-1">
@@ -70,7 +74,7 @@ const ChangePassword = () => {
             borderRadius: "25px",
             padding: "6px 16px",
           }}
-          onchange={handlePassConfirmChange}
+          onChange={handlePassConfirmChange}
         ></Input>
       </div>
       <Button
@@ -79,6 +83,7 @@ const ChangePassword = () => {
           fontWeight: "500",
           borderRadius: "25px",
         }}
+        onClick={handleUpdate}
       >
         Cập Nhật
       </Button>

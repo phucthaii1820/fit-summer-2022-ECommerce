@@ -1,13 +1,22 @@
 import React, { useEffect, useState } from "react";
-import { Input, Button, Radio, Select } from "antd";
 
-export default function ChangeInformation({ userData }) {
+import { Input, Button, Radio, Select, message, DatePicker } from "antd";
+
+import { getProfileUser, postInfo } from "@/API/user";
+
+export default function ChangeInformation() {
   const [province, setProvince] = useState([]);
   const [selectedProvince, setSelectedProvince] = useState(null);
   const [district, setDistrict] = useState([]);
   const [selectedDistrict, setSelectedDistrict] = useState(null);
   const [ward, setWard] = useState([]);
   const [selectedWard, setSelectedWard] = useState(null);
+  const [email, setEmail] = useState("");
+  const [fullname, setFullname] = useState("");
+  const [gender, setGender] = useState("");
+  const [address, setAddress] = useState("");
+  const [dateOfBirth, setDateOfBirth] = useState("");
+  const [phone, setPhone] = useState("");
   const { Option } = Select;
 
   useEffect(() => {
@@ -28,7 +37,7 @@ export default function ChangeInformation({ userData }) {
   }, []);
 
   useEffect(() => {
-    if (selectedProvince !== -1) {
+    if (selectedProvince) {
       async function fetchAPI() {
         const response = await fetch(
           `https://online-gateway.ghn.vn/shiip/public-api/master-data/district?province_id=${selectedProvince}`,
@@ -47,7 +56,7 @@ export default function ChangeInformation({ userData }) {
   }, [selectedProvince]);
 
   useEffect(() => {
-    if (selectedDistrict !== -1) {
+    if (selectedDistrict) {
       async function fetchAPI() {
         const response = await fetch(
           `https://online-gateway.ghn.vn/shiip/public-api/master-data/ward?district_id=${selectedDistrict}`,
@@ -65,6 +74,57 @@ export default function ChangeInformation({ userData }) {
     }
   }, [selectedDistrict]);
 
+  const handleChangeEmail = (event) => {
+    setEmail(event.target.value);
+  }
+
+  const handleChangeFullname = (event) => {
+    setFullname(event.target.value);
+  }
+
+  const handleChangeGender = (event) => {
+    setGender(event.target.value);
+  }
+
+  const handleChangeAddress = (event) => {
+    setAddress(event.target.value);
+  }
+
+  const handleChangeDOB = (date, dateString) => {
+    setDateOfBirth(dateString);
+  }
+
+  const updateInfo = async (event) => {
+    try {
+      const res = await postInfo({ email, fullname, gender, address, province: selectedProvince, district: selectedDistrict, ward: selectedWard });
+      message.success("Profile changed successfully!");
+    }
+    catch (err) {
+      console.log(err);
+    }
+  }
+
+  const getUser = async (event) => {
+    try {
+      const res = await getProfileUser();
+      setFullname(res?.user_data?.fullname);
+      setEmail(res?.user_data?.email);
+      setPhone(res?.user_data?.phone);
+      setGender(res?.user_data?.gender);
+      setAddress(res?.user_data?.address);
+      setSelectedProvince(res?.user_data?.province === -1 ? null : res.user_data.province);
+      setSelectedDistrict(res?.user_data?.district === -1 ? null : res.user_data.district);
+      setSelectedWard(res?.user_data?.ward === -1 ? null : res.user_data.ward);
+    }
+    catch (err) {
+      console.log(err);
+    }
+  }
+
+  useEffect(() => {
+    getUser();
+  }, []);
+
   return (
     <div className="space-y-4">
       <div className="grid grid-cols-2 gap-16">
@@ -75,16 +135,21 @@ export default function ChangeInformation({ userData }) {
               borderRadius: "25px",
               padding: "6px 16px",
             }}
+            onChange={handleChangeFullname}
+            value={fullname}
           ></Input>
         </div>
         <div className="space-y-1">
           <div className="font-semibold">Ngày sinh</div>
-          <Input
-            style={{
-              borderRadius: "25px",
-              padding: "6px 16px",
-            }}
-          ></Input>
+          <DatePicker
+          style={{
+            borderRadius: "25px",
+            padding: "6px 16px",
+            width: "100%"
+          }}
+          onChange={handleChangeDOB}
+          // value={dateOfBirth}
+          />
         </div>
       </div>
       <div className="grid grid-cols-2 gap-16">
@@ -93,8 +158,10 @@ export default function ChangeInformation({ userData }) {
           <Input
             style={{
               borderRadius: "25px",
-              padding: "6px 16px",
+              padding: "6px 16px"
             }}
+            value={phone}
+            disabled={true}
           ></Input>
         </div>
         <div className="space-y-1">
@@ -104,15 +171,17 @@ export default function ChangeInformation({ userData }) {
               borderRadius: "25px",
               padding: "6px 16px",
             }}
+            onChange={handleChangeEmail}
+            value={email}
           ></Input>
         </div>
       </div>
       <div className="space-y-1">
         <div className="font-semibold">Giới tính</div>
-        <Radio.Group className=" mt-1 ">
-          <Radio value={1}>Nam</Radio>
-          <Radio value={2}>Nữ</Radio>
-          <Radio value={3}>Khác</Radio>
+        <Radio.Group className=" mt-1 " onChange={handleChangeGender} value={gender}>
+          <Radio value="Nam">Nam</Radio>
+          <Radio value="Nữ">Nữ</Radio>
+          <Radio value="Khác">Khác</Radio>
         </Radio.Group>
       </div>
       <div className="space-y-1">
@@ -122,6 +191,8 @@ export default function ChangeInformation({ userData }) {
             borderRadius: "25px",
             padding: "6px 16px",
           }}
+          onChange={handleChangeAddress}
+          value={address}
         ></Input>
       </div>
       <div className="grid grid-cols-3 gap-16">
@@ -137,7 +208,7 @@ export default function ChangeInformation({ userData }) {
               setSelectedDistrict(null);
               setSelectedWard(null);
             }}
-            onSearch={(value) => {}}
+            onSearch={(value) => { }}
             filterOption={(input, option) =>
               option.children.toLowerCase().includes(input.toLowerCase())
             }
@@ -163,7 +234,7 @@ export default function ChangeInformation({ userData }) {
               setSelectedDistrict(value);
               setSelectedWard(null);
             }}
-            onSearch={(value) => {}}
+            onSearch={(value) => { }}
             filterOption={(input, option) =>
               option.children.toLowerCase().includes(input.toLowerCase())
             }
@@ -188,7 +259,7 @@ export default function ChangeInformation({ userData }) {
             onChange={(value) => {
               setSelectedWard(value);
             }}
-            onSearch={(value) => {}}
+            onSearch={(value) => { }}
             filterOption={(input, option) =>
               option.children.toLowerCase().includes(input.toLowerCase())
             }
@@ -211,6 +282,7 @@ export default function ChangeInformation({ userData }) {
             fontWeight: "500",
             borderRadius: "25px",
           }}
+          onClick={updateInfo}
         >
           Cập Nhật
         </Button>

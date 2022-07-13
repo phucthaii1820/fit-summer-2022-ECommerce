@@ -1,11 +1,11 @@
-import LayoutProductDetails from "./components/Layouts/LayoutProductDetails";
+import ProductDetails from "./page/ProductDetails";
 import WebRoute from "./router";
 
 function App() {
   return (
     <div className="App">
       <WebRoute />
-      {/* <LayoutProductDetails /> */}
+      {/* <ProductDetails /> */}
     </div>
   );
 }

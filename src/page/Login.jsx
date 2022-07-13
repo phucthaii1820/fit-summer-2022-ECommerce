@@ -41,7 +41,7 @@ export default function Login() {
     return (
         <AuthLayout title={"ĐĂNG NHẬP"}>
             <div className="flex flex-col mb-4">
-                <p className="font-bold text-base text-left pb-2">Số điện thoại</p>
+                <p className="font-bold text-base text-left">Số điện thoại</p>
                 <input
                     type="text"
                     className=" rounded-lg flex-initial w-full appearance-none border border-gray-300 py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base"
@@ -51,7 +51,7 @@ export default function Login() {
             </div>
 
             <div className="flex flex-col mb-4">
-                <p className="font-bold text-base text-left py-2">Mật khẩu</p>
+                <p className="font-bold text-base text-left">Mật khẩu</p>
                 <input
                     type="password"
                     placeholder="Nhập mật khẩu"

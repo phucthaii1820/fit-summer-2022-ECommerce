@@ -1,3 +1,4 @@
+import { getProfileUser } from "@/API/user";
 import {
   HeartOutlined,
   LockOutlined,
@@ -5,10 +6,26 @@ import {
   UserOutlined,
 } from "@ant-design/icons";
 import { Avatar } from "antd";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import ButtonProfile from "../button/ButtonProfile";
 
-const LayoutProfile = ({ children, title, userData }) => {
+const LayoutProfile = ({ children, title }) => {
+  const [user, setUser] = useState({});
+
+  const getUser = async (event) => {
+    try {
+      const res = await getProfileUser();
+      setUser(res?.user_data)
+    }
+    catch (err) {
+      console.log(err);
+    }
+  }
+
+  useEffect(() => {
+    getUser();
+  }, []);
+
   return (
     <>
       <div style={{ color: "#797979" }}>Tài khoản / {title}</div>
@@ -29,56 +46,61 @@ const LayoutProfile = ({ children, title, userData }) => {
             </div>
             <div className="w-9/12">
               <div className="font-semibold text-xl text-yellow-light truncate w-full">
-                {userData.fullname ? <>{userData.fullname}</> : <>No Name</>}
+                { user?.fullname !== "" ? user.fullname : <>No Name</>}
               </div>
-              <div style={{ color: "#797979" }}>Menber</div>
+              <div style={{ color: "#797979" }}>Member</div>
             </div>
           </div>
           <div className="mt-6 flex flex-col space-y-4">
-            <ButtonProfile
-              title="Thông tin tài khoản"
-              icon={
-                <UserOutlined
-                  style={{
-                    verticalAlign: "middle",
-                  }}
-                />
-              }
-              link="/profile/change-info"
-            />
-            <ButtonProfile
-              title="Thay đổi mật khẩu"
-              icon={
-                <LockOutlined
-                  style={{
-                    verticalAlign: "middle",
-                  }}
-                />
-              }
-              link="/profile/change-password"
-            />
-            <ButtonProfile
-              title="Đơn hàng của tôi"
-              icon={
-                <MenuFoldOutlined
-                  style={{
-                    verticalAlign: "middle",
-                  }}
-                />
-              }
-              link="/profile/my-order"
-            />
-            <ButtonProfile
-              title="Danh sách yêu thích"
-              icon={
-                <HeartOutlined
-                  style={{
-                    verticalAlign: "middle",
-                  }}
-                />
-              }
-              link="/profile/wish-list"
-            />
+              <ButtonProfile
+                title="Thông tin tài khoản"
+                icon={
+                  <UserOutlined
+                    style={{
+                      verticalAlign: "middle",
+                    }}
+                  />
+                }
+                link="/profile/change-info"
+              />
+
+              <ButtonProfile
+                title="Thay đổi mật khẩu"
+                icon={
+                  <LockOutlined
+                    style={{
+                      verticalAlign: "middle",
+                    }}
+                  />
+                }
+                link="/profile/change-password"
+              />
+
+
+              <ButtonProfile
+                title="Đơn hàng của tôi"
+                icon={
+                  <MenuFoldOutlined
+                    style={{
+                      verticalAlign: "middle",
+                    }}
+                  />
+                }
+                link="/profile/my-order"
+              />
+
+              <ButtonProfile
+                title="Danh sách yêu thích"
+                icon={
+                  <HeartOutlined
+                    style={{
+                      verticalAlign: "middle",
+                    }}
+                  />
+                }
+                link="/profile/wish-list"
+              />
+
           </div>
         </div>
         <div className="col-span-2">
