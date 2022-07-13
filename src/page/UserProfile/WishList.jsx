@@ -1,5 +1,5 @@
 import { DeleteOutlined } from "@ant-design/icons";
-import { Button, Space, Table, Tag } from "antd";
+import { Button, Table } from "antd";
 import React from "react";
 
 const WishList = () => {

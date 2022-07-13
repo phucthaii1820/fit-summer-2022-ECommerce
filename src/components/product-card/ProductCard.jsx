@@ -3,8 +3,9 @@ import React from "react";
 import { Card } from "antd";
 import { HeartOutlined, ShoppingCartOutlined } from "@ant-design/icons";
 
-export default function ProductCard(props) {
-    const item = props.item;
+export default function ProductCard({ item }) {
+    // const item = props.items;
+    console.log(item)
     return (
         <div>
             <Card
@@ -28,7 +29,7 @@ export default function ProductCard(props) {
                                 <img
                                     className="object-cover max-w-full h-56"
                                     alt="example"
-                                    src={item.image}
+                                    src="https://images.unsplash.com/photo-1449426468159-d96dbf08f19f?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8a3RtJTIwYmlrZXxlbnwwfHwwfHw%3D"
                                 />
                             </div>
 
@@ -41,7 +42,7 @@ export default function ProductCard(props) {
                                     }}
                                 ></HeartOutlined>
                                 <div className="text-sm text-gray-extra_dark pl-1">
-                                    {item.heart_count}
+                                    {item?.totalWish}
                                 </div>
                             </div>
                         </div>
@@ -49,7 +50,7 @@ export default function ProductCard(props) {
                 }
             >
                 <p className="uppercase mt-2 mb-4 text-base font-bold">
-                    {item.name}
+                    {item?.title}
                 </p>
                 <div className="relative flex">
                     <div>
@@ -58,7 +59,7 @@ export default function ProductCard(props) {
                             {item.original_price} VNĐ{" "}
                         </p> */}
                         <p className="font-bold mb-1 text-red-500">
-                            {item.discount_price}&nbsp;₫
+                            {item?.type[0]?.price}&nbsp;₫
                         </p>
                     </div>
                     {/* Add to card button  */}
