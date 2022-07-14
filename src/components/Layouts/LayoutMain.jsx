@@ -1,11 +1,14 @@
 import React from "react";
+
+import { auth } from "@/utils/auth";
+
 import Footer from "./Footer/Footer";
 import Header from "./Header/Header";
 
-const LayoutMain = ({ children }) => {
+const LayoutMain = ({ children, user }) => {
   return (
     <>
-      <Header />
+      <Header user={user} />
       <div className="py-6" style={{backgroundColor: "#F1F1F1"}}>
         <div className="container mx-auto">
           <div>{children}</div>

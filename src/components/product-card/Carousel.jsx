@@ -38,15 +38,18 @@ const CarouselProducts = ({idCategory, nameCategory}) => {
 
     const [data, setData] = useState([]);
 
-    useEffect(async () => {
-        try {
-            const res = await getListProducts(idCategory, 1);
-            setData(res.data[0].producs);
-        } catch (err) {
-            console.log(err);
+    useEffect(() => {
+        async function fetchProducts() {
+            try {
+                const res = await getListProducts(idCategory, 1);
+                setData(res.data[0].producs);
+            } catch (err) {
+                console.log(err);
+            }
         }
+        fetchProducts();
     }, []);
-    console.log(data)
+
     return (
         <div>
             <div className="text-xl font-bold pl-2 pb-0">
@@ -58,8 +61,8 @@ const CarouselProducts = ({idCategory, nameCategory}) => {
             </div>
             <Slider {...settings} style={{ "cursor": "pointer" }}>
                 {data.map((item, index) => (
-                    <div className="p-2">
-                        <ProductCard key={index} item={item}></ProductCard>
+                    <div className="p-2" key={index}>
+                        <ProductCard item={item}></ProductCard>
                     </div>
                 ))}
             </Slider>

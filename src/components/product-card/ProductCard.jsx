@@ -4,8 +4,6 @@ import { Card } from "antd";
 import { HeartOutlined, ShoppingCartOutlined } from "@ant-design/icons";
 
 export default function ProductCard({ item }) {
-    // const item = props.items;
-    console.log(item)
     return (
         <div>
             <Card

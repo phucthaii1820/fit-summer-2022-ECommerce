@@ -24,23 +24,25 @@ export default function Footer() {
     const handleMouseLeave = () => {
         setIsHovering(false);
     };
-    
+
     return (
         <div className="container">
             <footer className="bg-white mt-auto w-screen">
                 <div className="grid lg:grid-cols-3 lg:gap-10 p-16 max-w-screen-2xl mx-auto lg:px-4 p-8 text-base">
                     <div className="text-left rounded lg:px-5">
                         <div className="flex-shrink-0 flex items-center">
-                            <img
-                                className="block md:hidden h-12 w-auto"
-                                src={Logo}
-                                alt="Workflow"
-                            />
-                            <img
-                                className="hidden md:block h-20 w-auto"
-                                src={Logo}
-                                alt="Workflow"
-                            />
+                            <Link to="/">
+                                <img
+                                    className="block md:hidden h-12 w-auto"
+                                    src={Logo}
+                                    alt="Workflow"
+                                />
+                                <img
+                                    className="hidden md:block h-20 w-auto"
+                                    src={Logo}
+                                    alt="Workflow"
+                                />
+                            </Link>
                         </div>
 
                         <p className="font-bold my-5">

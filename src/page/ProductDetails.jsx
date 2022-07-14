@@ -141,8 +141,8 @@ const ProductDetails = ({ idCategory, Page, idProduct }) => {
 
     var settingThumbs = {
         dots: false,
-        arrows: false,
-        infinite: true,
+        arrows: true,
+        infinite: false,
         speed: 500,
         slidesToShow: 3,
         slidesToScroll: 1,
@@ -165,7 +165,7 @@ const ProductDetails = ({ idCategory, Page, idProduct }) => {
             },
         ],
     };
-
+    console.log(selectedThumb)
     return (
         <div className="py-6">
             <div className="container m-auto">
@@ -185,8 +185,8 @@ const ProductDetails = ({ idCategory, Page, idProduct }) => {
                                 </div>
                                 <div>
                                     <Slider {...settingThumbs} style={{ "cursor": "pointer" }} onClick={onClickThumb} value={selectedThumb}>
-                                        {gallery.map((item) => (
-                                            <div className="mr-1">
+                                        {gallery.map((item, index) => (
+                                            <div className="mr-1" key={index}>
                                                 <div className="w-32 h-24 border-2 rounded-lg p-2 items-center">
                                                     <img src={item.image} alt="ProductThumb" className="h-16 w-32"></img>
                                                 </div>

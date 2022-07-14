@@ -11,10 +11,10 @@ export default function RegularRoute({ userData }) {
         <Route
           exact
           path="profile/*"
-          element={userData ? <LayoutMain><Profile /></LayoutMain> : <Login />}
+          element={userData ? <LayoutMain user={userData}><Profile /></LayoutMain> : <Login />}
         />
-        <Route exact path="" element={<LayoutMain><LayoutHomePage /></LayoutMain>} />
-        <Route exact path="/:id" element={<LayoutMain><ProductDetails /></LayoutMain>} />
+        <Route exact path="" element={<LayoutMain user={userData}><LayoutHomePage /></LayoutMain>} />
+        <Route exact path="/:id" element={<LayoutMain user={userData}><ProductDetails /></LayoutMain>} />
       </Routes>
   );
 }

@@ -10,7 +10,7 @@ const Profile = () => {
   return (
     <>
       <Routes>
-        <Route path="" element={<Navigate to="change-info" />} />
+        <Route path="" element={<Navigate to="change-info"/>} />
         <Route
           path="change-info"
           element={

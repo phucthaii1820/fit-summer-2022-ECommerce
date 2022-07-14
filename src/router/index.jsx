@@ -7,7 +7,6 @@ import Register from "@/page/Register/Register";
 export default function WebRoute() {
   const user = auth();
   const userData = user?.user_data ? user.user_data : undefined;
-  console.log(userData);
 
   return (
     <BrowserRouter>
