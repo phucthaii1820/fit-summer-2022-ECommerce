@@ -94,16 +94,6 @@ export default function ChangeInformation() {
     setDateOfBirth(dateString);
   }
 
-  const updateInfo = async (event) => {
-    try {
-      const res = await postInfo({ email, fullname, gender, address, province: selectedProvince, district: selectedDistrict, ward: selectedWard });
-      message.success("Profile changed successfully!");
-    }
-    catch (err) {
-      console.log(err);
-    }
-  }
-
   const getUser = async (event) => {
     try {
       const res = await getProfileUser();
@@ -121,10 +111,20 @@ export default function ChangeInformation() {
     }
   }
 
-  useEffect(() => {
+  const fetchData = useEffect(() => {
     getUser();
   }, []);
 
+  const updateInfo = async (event) => {
+    try {
+      const res = await postInfo({ email, fullname, gender, address, province: selectedProvince, district: selectedDistrict, ward: selectedWard });
+      message.success("Profile changed successfully!");
+    }
+    catch (err) {
+      console.log(err);
+    }
+  }
+  console.log(fullname)
   return (
     <div className="space-y-4">
       <div className="grid grid-cols-2 gap-16">

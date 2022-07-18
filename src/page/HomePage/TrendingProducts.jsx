@@ -2,8 +2,6 @@ import React from "react";
 
 import { Row, Col } from "antd";
 
-import ProductCard from "@/components/product-card/ProductCard";
-import SectionTitle from "./SectionTitle";
 import CarouselProducts from "@/components/product-card/Carousel";
 
 export default function TrendingProducts() {
