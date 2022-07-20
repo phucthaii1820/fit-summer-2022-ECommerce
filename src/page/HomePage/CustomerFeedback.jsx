@@ -40,8 +40,8 @@ export default function CustomerFeedback() {
 
                 <Row gutter={[16, 16]} style={{ width: "100%" }}>
                     {/* map items with CommentCard  */}
-                    {items.map((item) => (
-                        <Col span={12}>
+                    {items.map((item, index) => (
+                        <Col span={12} key={index}>
                             <CommentCard key={item.id} item={item} />
                         </Col>
                     ))}

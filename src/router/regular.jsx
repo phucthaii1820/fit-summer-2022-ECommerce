@@ -1,20 +1,39 @@
+import { getAllCategories } from "@/API/category";
 import LayoutHomePage from "@/components/Layouts/LayoutHomePage";
 import LayoutMain from "@/components/Layouts/LayoutMain";
-import Login from "@/page/Login";
+import Category from "@/page/Category";
 import ProductDetails from "@/page/ProductDetails";
+
+import { useEffect, useState } from "react";
 import { Route, Routes } from "react-router-dom";
-import Profile from "./profile";
 
 export default function RegularRoute({ userData }) {
+  const [categories, setCategories] = useState([]);
+  useEffect(() => {
+    async function fetchCategories() {
+      try {
+        const res = await getAllCategories()
+        setCategories(res);
+      } catch (err) {
+        console.log(err)
+      }
+    }
+    fetchCategories();
+  }, []);
+
   return (
+    <LayoutMain user={userData}>
       <Routes>
-        <Route
-          exact
-          path="profile/*"
-          element={userData ? <LayoutMain user={userData}><Profile /></LayoutMain> : <Login />}
-        />
-        <Route exact path="" element={<LayoutMain user={userData}><LayoutHomePage /></LayoutMain>} />
-        <Route exact path="/:id" element={<LayoutMain user={userData}><ProductDetails /></LayoutMain>} />
+        <Route exact path="" element={<LayoutHomePage />} />
+        {
+          categories.map((item, index) => (
+            <Route exact path={"/category/" + item._id} key={index} element={
+              <Category idCategory={item._id} nameCategory={item.name} />
+            } />
+          ))
+        }
+        <Route exact path="/product-detail/:id" element={<ProductDetails />} />
       </Routes>
+    </LayoutMain>
   );
 }

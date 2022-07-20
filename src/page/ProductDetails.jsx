@@ -14,8 +14,9 @@ import Logo from "src/image/Logo.svg";
 import Login from "src/image/Login.svg";
 import { getListProducts, getProductInfo } from '@/API/product';
 import CarouselProducts from '@/components/product-card/Carousel';
+import { useParams } from 'react-router';
 
-const ProductDetails = ({ idCategory, Page, idProduct }) => {
+const ProductDetails = ({ idCategory, Page }) => {
     const gallery = [
         {
             image: Logo
@@ -31,71 +32,8 @@ const ProductDetails = ({ idCategory, Page, idProduct }) => {
         },
     ];
 
-    // const items = [
-    //     {
-    //         id: 1,
-    //         name: "Phuộc xe đạp chính hãng",
-    //         original_price: "1.500.000",
-    //         discount_percent: "10%",
-    //         discount_price: "1.300.000",
-    //         image: "https://images.unsplash.com/photo-1449426468159-d96dbf08f19f?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8a3RtJTIwYmlrZXxlbnwwfHwwfHw%3D",
-    //         heart_count: 999,
-    //     },
-    //     {
-    //         id: 2,
-    //         name: "Phuộc xe đạp chính hãng",
-    //         original_price: "1.500.000",
-    //         discount_percent: "10%",
-    //         discount_price: "1.300.000",
-    //         image: "https://images.unsplash.com/photo-1449426468159-d96dbf08f19f?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8a3RtJTIwYmlrZXxlbnwwfHwwfHw%3D",
-    //         heart_count: 999,
-    //     },
-    //     {
-    //         id: 3,
-    //         name: "Phuộc xe đạp chính hãng",
-    //         original_price: "1.500.000",
-    //         discount_percent: "10%",
-    //         discount_price: "1.300.000",
-    //         image: "https://images.unsplash.com/photo-1449426468159-d96dbf08f19f?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8a3RtJTIwYmlrZXxlbnwwfHwwfHw%3D",
-    //         heart_count: 999,
-    //     },
-    //     {
-    //         id: 4,
-    //         name: "Phuộc xe đạp chính hãng",
-    //         original_price: "1.500.000",
-    //         discount_percent: "10%",
-    //         discount_price: "1.300.000",
-    //         image: "https://images.unsplash.com/photo-1449426468159-d96dbf08f19f?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8a3RtJTIwYmlrZXxlbnwwfHwwfHw%3D",
-    //         heart_count: 999,
-    //     },
-    //     {
-    //         id: 5,
-    //         name: "Phuộc xe đạp chính hãng",
-    //         original_price: "1.500.000",
-    //         discount_percent: "10%",
-    //         discount_price: "1.300.000",
-    //         image: "https://images.unsplash.com/photo-1449426468159-d96dbf08f19f?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8a3RtJTIwYmlrZXxlbnwwfHwwfHw%3D",
-    //         heart_count: 999,
-    //     },
-    //     {
-    //         id: 6,
-    //         name: "Phuộc xe đạp chính hãng",
-    //         original_price: "1.500.000",
-    //         discount_percent: "10%",
-    //         discount_price: "1.300.000",
-    //         image: "https://images.unsplash.com/photo-1449426468159-d96dbf08f19f?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8a3RtJTIwYmlrZXxlbnwwfHwwfHw%3D",
-    //         heart_count: 999,
-    //     },
-    //     {
-    //         id: 7,
-    //         name: "Phuộc xe đạp chính hãng",
-    //         original_price: "1.500.000",
-    //         discount_percent: "10%",
-    //         discount_price: "1.300.000",
-    //         image: "https://images.unsplash.com/photo-1449426468159-d96dbf08f19f?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8a3RtJTIwYmlrZXxlbnwwfHwwfHw%3D",
-    //         heart_count: 999,
-    //     },
-    // ];
+    const { id } = useParams();
+    const [products, setProducts] = useState([]);
     const [quantity, setQuantity] = useState(1);
     const [product, setProduct] = useState({});
     const [type, setType] = useState([]);
@@ -113,22 +51,24 @@ const ProductDetails = ({ idCategory, Page, idProduct }) => {
     const onClickThumb = (e) => {
         setSelectedThumb(e.target.value);
     };
-    // useEffect(() => {
-    //     async function fetchProducts() {
-    //         try {
-    //             // const res = await getListProducts(idCategory, Page);
-    //             const res = await getListProducts("62ab68801094bceaaaa5c981", "1");
-    //         } catch (err) {
-    //             console.log(err);
-    //         }
-    //     }
-    //     fetchProducts();
-    // }, []);
+
+    useEffect(() => {
+        async function fetchProducts() {
+            try {
+                // const res = await getListProducts(idCategory, Page);
+                const res = await getListProducts("62ab68801094bceaaaa5c981", "1");
+                setProducts(res);
+            } catch (err) {
+                console.log(err);
+            }
+        }
+        fetchProducts();
+    }, []);
 
     useEffect(() => {
         async function fetchProduct() {
             try {
-                // const res = await getProductInfo(idProduct);
+                // const res = await getProductInfo(product_id);
                 const res = await getProductInfo("62bd79c9dcccb6ee9faf9cd9");
                 setProduct(res);
                 setType(res?.data?.type)
@@ -138,7 +78,7 @@ const ProductDetails = ({ idCategory, Page, idProduct }) => {
         }
         fetchProduct();
     }, []);
-
+    console.log(products);
     var settingThumbs = {
         dots: false,
         arrows: true,

@@ -124,7 +124,7 @@ export default function ChangeInformation() {
       console.log(err);
     }
   }
-  console.log(fullname)
+
   return (
     <div className="space-y-4">
       <div className="grid grid-cols-2 gap-16">
