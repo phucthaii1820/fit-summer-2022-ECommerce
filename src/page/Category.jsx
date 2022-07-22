@@ -1,22 +1,42 @@
-import { Pagination, Row, Col, Breadcrumb } from "antd";
 import { useState, useEffect } from "react";
-import ProductCard from "@/components/product-card/ProductCard";
+import { useParams } from 'react-router';
 import React from 'react'
-import { getListProducts } from "@/API/product";
 
-const Category = ({ idCategory, nameCategory }) => {
+import { getListProducts } from "@/API/product";
+import ProductCard from "@/components/product-card/ProductCard";
+
+import { Pagination, Row, Col, Breadcrumb } from "antd";
+import { getCategoryInfo } from "@/API/category";
+
+const Category = () => {
     const [data, setData] = useState([]);
+    const [category, setCategory] = useState([]);
     const [lowerBound, setLowerBound] = useState(0);
     const [upperBound, setUpperBound] = useState(1);
     const [totalItems, setTotalItems] = useState(10);
     const [curPage, setCurPage] = useState("1");
+
+    const { idCate } = useParams();
     const pageSize = 20;
+
+    useEffect(() => {
+        async function fetchCategory(){
+            try {
+                const res = await getCategoryInfo(idCate);
+                setCategory(res);
+            } catch (err) {
+                console.log(err);
+            }
+        }
+        fetchCategory();
+    }, []);
 
     useEffect(() => {
         async function fetchDataCategory(){
             try {
-                const res = await getListProducts(idCategory, curPage);
+                const res = await getListProducts(idCate, curPage);
                 setData(res?.data[0]?.producs);
+                setTotalItems(res?.data[2]?.totalPages * pageSize);
                 setLowerBound(0);
                 setUpperBound(pageSize);
             } catch (err) {
@@ -42,7 +62,7 @@ const Category = ({ idCategory, nameCategory }) => {
                 <Breadcrumb>
                     <Breadcrumb.Item>Home</Breadcrumb.Item>
                     <Breadcrumb.Item>Category</Breadcrumb.Item>
-                    <Breadcrumb.Item>{nameCategory}</Breadcrumb.Item>
+                    <Breadcrumb.Item>{category.name}</Breadcrumb.Item>
                 </Breadcrumb>
                 <Row>
                     {data.slice(lowerBound, upperBound).map((item, index) => (
@@ -54,7 +74,7 @@ const Category = ({ idCategory, nameCategory }) => {
                     ))}
                 </Row>
                 <div className="p-3 grid justify-items-end">
-                    <Pagination defaultCurrent={1} total={10} onChange={handleChange} pageSize={pageSize}/>
+                    <Pagination defaultCurrent={1} total={totalItems} onChange={handleChange} pageSize={pageSize}/>
                 </div>
             </div>
         </div>

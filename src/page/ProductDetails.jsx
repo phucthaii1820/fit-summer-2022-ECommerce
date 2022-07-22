@@ -32,7 +32,7 @@ const ProductDetails = ({ idCategory, Page }) => {
         },
     ];
 
-    const { id } = useParams();
+    const { idProduct } = useParams();
     const [products, setProducts] = useState([]);
     const [quantity, setQuantity] = useState(1);
     const [product, setProduct] = useState({});
@@ -68,8 +68,7 @@ const ProductDetails = ({ idCategory, Page }) => {
     useEffect(() => {
         async function fetchProduct() {
             try {
-                // const res = await getProductInfo(product_id);
-                const res = await getProductInfo("62bd79c9dcccb6ee9faf9cd9");
+                const res = await getProductInfo(idProduct);
                 setProduct(res);
                 setType(res?.data?.type)
             } catch (err) {
@@ -78,7 +77,7 @@ const ProductDetails = ({ idCategory, Page }) => {
         }
         fetchProduct();
     }, []);
-    console.log(products);
+
     var settingThumbs = {
         dots: false,
         arrows: true,
@@ -105,7 +104,7 @@ const ProductDetails = ({ idCategory, Page }) => {
             },
         ],
     };
-    console.log(selectedThumb)
+
     return (
         <div className="py-6">
             <div className="container m-auto">
@@ -113,7 +112,6 @@ const ProductDetails = ({ idCategory, Page }) => {
                     <Breadcrumb>
                         <Breadcrumb.Item>Home</Breadcrumb.Item>
                         <Breadcrumb.Item>Mua sắm</Breadcrumb.Item>
-                        <Breadcrumb.Item>Đồ kiểng xe máy</Breadcrumb.Item>
                         <Breadcrumb.Item>{product?.data?.title}</Breadcrumb.Item>
                     </Breadcrumb>
 
