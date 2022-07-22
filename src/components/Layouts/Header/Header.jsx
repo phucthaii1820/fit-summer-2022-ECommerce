@@ -6,7 +6,7 @@ import ReactImageFallback from "react-image-fallback";
 
 import { Menu, Input, Button, Dropdown } from "antd";
 import { UserOutlined, ShoppingCartOutlined } from "@ant-design/icons";
-import { FaUserCircle, FaBook, FaShoppingCart, FaSignOutAlt, FaRegHeart, FaKey } from "react-icons/fa";
+import { FaUserCircle, FaShoppingCart, FaSignOutAlt, FaRegHeart, FaKey } from "react-icons/fa";
 
 import Logo from "src/image/Logo.svg";
 import { getProfileUser } from "@/API/user";
@@ -254,14 +254,9 @@ export default function Header({ user, ...props }) {
                 ) : (
                   <div className="flex space-x-4 mt-3 ml-3">
                     <Link to="/login"
-                      className="bg-gray-700 hover:text-yellow-light text-white px-3 py-2 rounded-md text-sm font-medium hidden md:block"
+                      className="hover:text-yellow-light text-black px-3 py-2 rounded-md text-sm hidden md:block"
                     >
-                      Đăng nhập
-                    </Link>
-                    <Link to="/register"
-                      className="bg-gray-700 hover:text-yellow-light text-white px-3 py-2 rounded-md text-sm font-medium hidden md:block"
-                    >
-                      Đăng ký
+                      <UserOutlined style={{ fontSize: "2em" }} />
                     </Link>
                   </div>
                 )}

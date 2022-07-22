@@ -1,7 +1,5 @@
 import React from "react";
 
-import { Row, Col } from "antd";
-
 import CarouselProducts from "@/components/product-card/Carousel";
 
 export default function TrendingProducts() {
@@ -19,13 +17,6 @@ export default function TrendingProducts() {
                 </div>
             </div>
 
-            {/* <Row gutter={[16, 16]} style={{ width: "100%" }}>
-                {items.map((item) => (
-                    <Col span={6}>
-                        <ProductCard key={item.id} item={item} />
-                    </Col>
-                ))}
-            </Row> */}
             <CarouselProducts idCategory="62ab68801094bceaaaa5c981" nameCategory="Phuộc"></CarouselProducts>
         </div>
     );

@@ -8,18 +8,19 @@ import Services from "@/page/HomePage/Services";
 export default function LayoutHomePage() {
     return (
         <div>
-            <div className="container mx-auto">
-                {/* Banner  */}
-                <Banner />
-
-                {/* Sản phẩm nổi bật  */}
-                <TrendingProducts />
-
-                {/* Khách hàng của BIKERGEAR nghĩ gì  */}
-                <CustomerFeedback />
-
-                {/* Lý do nên chọn BIKERGEAR  */}
-                <Services />
+            <div className="container">
+                <div>
+                    <Banner />
+                </div>
+                <div>
+                    <TrendingProducts />
+                </div>
+                <div>
+                    <CustomerFeedback />
+                </div>
+                <div>
+                    <Services />
+                </div>
             </div>
         </div>
     );

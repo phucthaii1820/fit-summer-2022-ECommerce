@@ -8,10 +8,11 @@ import { MenuOutlined } from "@ant-design/icons";
 import { logout } from "../../utils/auth";
 
 const DrawerMenu = ({ categories, user, profileUser }) => {
-    const location = useLocation();
+    // const location = useLocation();
+    // const HOST = process.env.REACT_APP_BASE_HOST;
+
     const [visible, setVisible] = useState(false);
     const [childrenDrawer, setChildrenDrawer] = useState(false);
-    const HOST = process.env.REACT_APP_BASE_HOST;
 
     const showDrawer = () => {
         setVisible(true);

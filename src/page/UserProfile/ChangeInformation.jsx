@@ -122,10 +122,11 @@ export default function ChangeInformation() {
     }
   }
 
-  const fetchData = useEffect(() => {
+  useEffect(() => {
     getUser();
     setIsLoading(false);
   }, []);
+
   console.log(isLoading)
   const updateInfo = async (event) => {
     try {

@@ -12,17 +12,16 @@ export default function CommentCard(props) {
             <Card
                 style={{
                     width: "100%",
-                    marginTop: 16,
                 }}
             >
                 <Meta
                     avatar={
                         <div className="p-1 rounded-full ring-2 ring-yellow-light">
-                            <Avatar size={100} src={item.avatar} />
+                            <Avatar size={100} src={item?.avatar} />
                         </div>
                     }
-                    title={item.name}
-                    description={item.content}
+                    title={item?.name}
+                    description={item?.content}
                 />
             </Card>
         </div>

@@ -18,7 +18,7 @@ const Category = () => {
 
     const { idCate } = useParams();
     const pageSize = 20;
-
+    
     useEffect(() => {
         async function fetchCategory(){
             try {
@@ -29,7 +29,7 @@ const Category = () => {
             }
         }
         fetchCategory();
-    }, []);
+    }, [idCate]);
 
     useEffect(() => {
         async function fetchDataCategory(){
@@ -44,7 +44,7 @@ const Category = () => {
             }
         }
         fetchDataCategory();
-    }, []);
+    }, [idCate, curPage]);
 
     const handleChange = (value) => {
         if (value <= 1) {
@@ -59,7 +59,7 @@ const Category = () => {
     return (
         <div className="relative">
             <div className="container mx-auto xl:px-40">
-                <Breadcrumb>
+                <Breadcrumb style={{ fontSize: "1rem" }}>
                     <Breadcrumb.Item>Home</Breadcrumb.Item>
                     <Breadcrumb.Item>Category</Breadcrumb.Item>
                     <Breadcrumb.Item>{category.name}</Breadcrumb.Item>
@@ -68,7 +68,7 @@ const Category = () => {
                     {data.slice(lowerBound, upperBound).map((item, index) => (
                         <Col xl={6} lg={6} md={8} xs={12} sm={12} key={index}>
                             <div className="p-2">
-                                <ProductCard item={item} />
+                                <ProductCard item={item} idCate={idCate}/>
                             </div>
                         </Col>
                     ))}
