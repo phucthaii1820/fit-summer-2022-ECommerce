@@ -8,7 +8,7 @@ import { getListProducts } from '@/API/product';
 import ProductCard from "./ProductCard";
 import { Link } from "react-router-dom";
 
-const CarouselProducts = ({idCategory, nameCategory}) => {
+const CarouselProducts = ({ idCategory, nameCategory }) => {
     var settings = {
         dots: false,
         arrows: true,
@@ -62,7 +62,7 @@ const CarouselProducts = ({idCategory, nameCategory}) => {
             <Slider {...settings} style={{ "cursor": "pointer" }}>
                 {data.map((item, index) => (
                     <div className="p-2" key={index}>
-                        <ProductCard item={item}></ProductCard>
+                        <ProductCard item={item} idCate={idCategory}></ProductCard>
                     </div>
                 ))}
             </Slider>

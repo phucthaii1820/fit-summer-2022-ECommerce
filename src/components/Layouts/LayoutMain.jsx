@@ -1,7 +1,5 @@
 import React from "react";
 
-import { auth } from "@/utils/auth";
-
 import Footer from "./Footer/Footer";
 import Header from "./Header/Header";
 

@@ -6,7 +6,7 @@ import ReactImageFallback from "react-image-fallback";
 
 import { Menu, Input, Button, Dropdown } from "antd";
 import { UserOutlined, ShoppingCartOutlined } from "@ant-design/icons";
-import { FaUserCircle, FaBook, FaShoppingCart, FaSignOutAlt, FaRegHeart, FaKey } from "react-icons/fa";
+import { FaUserCircle, FaShoppingCart, FaSignOutAlt, FaRegHeart, FaKey } from "react-icons/fa";
 
 import Logo from "src/image/Logo.svg";
 import { getProfileUser } from "@/API/user";
@@ -96,22 +96,50 @@ export default function Header({ user, ...props }) {
       window.location.href = "/search?query=" + encodeURIComponent(search);
     }
   };
+  
+  const menuItems = [
+    {
+      key: 'info',
+      icon: <FaUserCircle />,
+      label: "Thông tin tài khoản",
+    },
+    {
+      key: 'changePassword',
+      icon: <FaKey />,
+      label: "Thay đổi mật khẩu",
+    },
+    {
+      key: 'myOrder',
+      icon: <FaShoppingCart />,
+      label: "Đơn hàng của tôi",
+    },
+    {
+      key: 'wishList',
+      icon: <FaRegHeart />,
+      label: "Danh sách yêu thích",
+    },
+    {
+      key: 'logOut',
+      icon: <FaSignOutAlt />,
+      label: "Đăng xuất",
+    },
+  ]
 
   const menu = (
     <Menu className="bg-white dark:bg-dark-black dark:text-dark-text z-top w-68 p-3 rounded-xl shadow-md max-w-sm dark:shadow-dark">
-      <Menu.Item icon={<FaUserCircle />} >
+      <Menu.Item icon={<FaUserCircle />} key="info">
         <Link to="/profile">Thông tin tài khoản</Link>
       </Menu.Item>
-      <Menu.Item icon={<FaKey />}>
+      <Menu.Item icon={<FaKey />} key="changePassword">
         <Link to="/profile/change-password">Thay đổi mật khẩu</Link>
       </Menu.Item>
-      <Menu.Item icon={<FaShoppingCart />}>
+      <Menu.Item icon={<FaShoppingCart />} key="myOrder">
         <Link to="/profile/my-order">Đơn hàng của tôi</Link>
       </Menu.Item>
-      <Menu.Item icon={<FaRegHeart />}>
+      <Menu.Item icon={<FaRegHeart />} key="wishList">
         <Link to="/profile/wish-list">Danh sách yêu thích</Link>
       </Menu.Item>
-      <Menu.Item icon={<FaSignOutAlt />}>
+      <Menu.Item icon={<FaSignOutAlt />} key="logOut">
         <a onClick={logout}>Đăng xuất</a>
       </Menu.Item>
     </Menu>
@@ -226,14 +254,9 @@ export default function Header({ user, ...props }) {
                 ) : (
                   <div className="flex space-x-4 mt-3 ml-3">
                     <Link to="/login"
-                      className="bg-gray-700 hover:text-yellow-light text-white px-3 py-2 rounded-md text-sm font-medium hidden md:block"
+                      className="hover:text-yellow-light text-black px-3 py-2 rounded-md text-sm hidden md:block"
                     >
-                      Đăng nhập
-                    </Link>
-                    <Link to="/register"
-                      className="bg-gray-700 hover:text-yellow-light text-white px-3 py-2 rounded-md text-sm font-medium hidden md:block"
-                    >
-                      Đăng ký
+                      <UserOutlined style={{ fontSize: "2em" }} />
                     </Link>
                   </div>
                 )}

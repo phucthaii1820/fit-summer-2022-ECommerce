@@ -2,7 +2,7 @@
 import Cookies from "universal-cookie";
 
 const timestamp = new Date().getTime();
-const expire = timestamp + (60 * 60 * 24 * 1000 * 7);
+const expire = timestamp + (60 * 60 * 24 * 1000 * 2);
 const expireDate = new Date(expire);
 
 export const auth = () => {

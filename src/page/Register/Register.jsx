@@ -48,7 +48,10 @@ export default function Register() {
   };
 
   const handleRegister = async (event) => {
-    if (password !== passwordConfirm) {
+    if(password === "" || passwordConfirm === "" || phone === ""){
+      message.error("Please fill up fully information!");
+    }
+    else if (password !== passwordConfirm) {
       message.error("Incorrect confirmation password!");
     } else if (phone.length < 10) {
       message.error("Your phone must be longer than 10 characters!");
@@ -71,7 +74,10 @@ export default function Register() {
 
   const handleModal = async () => {
     const user = await checkExistUser({ phone });
-    if (password !== passwordConfirm) {
+    if(password === "" || passwordConfirm === "" || phone === ""){
+      message.error("Please fill up fully information!");
+    }
+    else if (password !== passwordConfirm) {
       message.error("Incorrect confirmation password!");
     } else if (phone.length < 10) {
       message.error("Your phone must be longer than 10 characters!");
@@ -165,8 +171,7 @@ export default function Register() {
           <Link to="/login" className="text-left text-sm text-black font-bold">
             Bạn đã có tài khoản?
           </Link>
-        </div>
-        <div id="recaptcha-container"></div>
+        </div>  
         <div className="col-span py-2">
           <Link to="/login">
             <div className="text-right text-sm font-bold text-black hover:text-yellow-light">
@@ -178,6 +183,7 @@ export default function Register() {
             </div>
           </Link>
         </div>
+        <div id="recaptcha-container"></div>
       </div>
 
       <Modal

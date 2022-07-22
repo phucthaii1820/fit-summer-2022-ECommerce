@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 
-import { Input, Button, Radio, Select, message, DatePicker } from "antd";
+import { Input, Button, Radio, Select, message, DatePicker, Spin } from "antd";
+import { LoadingOutlined } from '@ant-design/icons';
 
 import { getProfileUser, postInfo } from "@/API/user";
 
@@ -17,7 +18,17 @@ export default function ChangeInformation() {
   const [address, setAddress] = useState("");
   const [dateOfBirth, setDateOfBirth] = useState("");
   const [phone, setPhone] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
+
   const { Option } = Select;
+  const antIcon = (
+    <LoadingOutlined
+      style={{
+        fontSize: 64,
+      }}
+      spin
+    />
+  );
 
   useEffect(() => {
     async function fetchAPI() {
@@ -111,10 +122,12 @@ export default function ChangeInformation() {
     }
   }
 
-  const fetchData = useEffect(() => {
+  useEffect(() => {
     getUser();
+    setIsLoading(false);
   }, []);
 
+  console.log(isLoading)
   const updateInfo = async (event) => {
     try {
       const res = await postInfo({ email, fullname, gender, address, province: selectedProvince, district: selectedDistrict, ward: selectedWard });
@@ -124,169 +137,177 @@ export default function ChangeInformation() {
       console.log(err);
     }
   }
-  console.log(fullname)
+
   return (
-    <div className="space-y-4">
-      <div className="grid grid-cols-2 gap-16">
-        <div className="space-y-1">
-          <div className="font-semibold">Họ và Tên</div>
-          <Input
-            style={{
-              borderRadius: "25px",
-              padding: "6px 16px",
-            }}
-            onChange={handleChangeFullname}
-            value={fullname}
-          ></Input>
+    <div>
+      {isLoading ? (
+        <div className="flex justify-center">
+          <Spin indicator={antIcon} />;
         </div>
-        <div className="space-y-1">
-          <div className="font-semibold">Ngày sinh</div>
-          <DatePicker
-          style={{
-            borderRadius: "25px",
-            padding: "6px 16px",
-            width: "100%"
-          }}
-          onChange={handleChangeDOB}
-          // value={dateOfBirth}
-          />
-        </div>
-      </div>
-      <div className="grid grid-cols-2 gap-16">
-        <div className="space-y-1">
-          <div className="font-semibold">Số điện thoại</div>
-          <Input
-            style={{
-              borderRadius: "25px",
-              padding: "6px 16px"
-            }}
-            value={phone}
-            disabled={true}
-          ></Input>
-        </div>
-        <div className="space-y-1">
-          <div className="font-semibold">Email</div>
-          <Input
-            style={{
-              borderRadius: "25px",
-              padding: "6px 16px",
-            }}
-            onChange={handleChangeEmail}
-            value={email}
-          ></Input>
-        </div>
-      </div>
-      <div className="space-y-1">
-        <div className="font-semibold">Giới tính</div>
-        <Radio.Group className=" mt-1 " onChange={handleChangeGender} value={gender}>
-          <Radio value="Nam">Nam</Radio>
-          <Radio value="Nữ">Nữ</Radio>
-          <Radio value="Khác">Khác</Radio>
-        </Radio.Group>
-      </div>
-      <div className="space-y-1">
-        <div className="font-semibold">Số nhà + Tên đường</div>
-        <Input
-          style={{
-            borderRadius: "25px",
-            padding: "6px 16px",
-          }}
-          onChange={handleChangeAddress}
-          value={address}
-        ></Input>
-      </div>
-      <div className="grid grid-cols-3 gap-16">
-        <div className="space-y-1">
-          <div className="font-semibold">Tỉnh/Thành Phố</div>
-          <Select
-            value={selectedProvince}
-            showSearch
-            placeholder="Select a person"
-            optionFilterProp="children"
-            onChange={(value) => {
-              setSelectedProvince(value);
-              setSelectedDistrict(null);
-              setSelectedWard(null);
-            }}
-            onSearch={(value) => { }}
-            filterOption={(input, option) =>
-              option.children.toLowerCase().includes(input.toLowerCase())
-            }
-            style={{
-              width: "100%",
-            }}
-          >
-            {province?.map((item, index) => (
-              <Option key={index} value={item.ProvinceID}>
-                {item.ProvinceName}
-              </Option>
-            ))}
-          </Select>
-        </div>
-        <div className="space-y-1">
-          <div className="font-semibold">Quận/Huyện</div>
-          <Select
-            value={selectedDistrict}
-            showSearch
-            placeholder="Select a person"
-            optionFilterProp="children"
-            onChange={(value) => {
-              setSelectedDistrict(value);
-              setSelectedWard(null);
-            }}
-            onSearch={(value) => { }}
-            filterOption={(input, option) =>
-              option.children.toLowerCase().includes(input.toLowerCase())
-            }
-            style={{
-              width: "100%",
-            }}
-          >
-            {district?.map((item, index) => (
-              <Option key={index} value={item.DistrictID}>
-                {item.DistrictName}
-              </Option>
-            ))}
-          </Select>
-        </div>
-        <div className="space-y-1">
-          <div className="font-semibold">Phường/Xã</div>
-          <Select
-            value={selectedWard}
-            showSearch
-            placeholder="Select a person"
-            optionFilterProp="children"
-            onChange={(value) => {
-              setSelectedWard(value);
-            }}
-            onSearch={(value) => { }}
-            filterOption={(input, option) =>
-              option.children.toLowerCase().includes(input.toLowerCase())
-            }
-            style={{
-              width: "100%",
-            }}
-          >
-            {ward?.map((item, index) => (
-              <Option key={index} value={item.WardCode}>
-                {item.WardName}
-              </Option>
-            ))}
-          </Select>
-        </div>
-      </div>
-      <div>
-        <Button
-          type="primary"
-          style={{
-            fontWeight: "500",
-            borderRadius: "25px",
-          }}
-          onClick={updateInfo}
-        >
-          Cập Nhật
-        </Button>
-      </div>
+      ):(
+            <div className="space-y-4">
+            <div className="grid grid-cols-2 gap-16">
+              <div className="space-y-1">
+                <div className="font-semibold">Họ và Tên</div>
+                <Input
+                  style={{
+                    borderRadius: "25px",
+                    padding: "6px 16px",
+                  }}
+                  onChange={handleChangeFullname}
+                  value={fullname}
+                ></Input>
+              </div>
+              <div className="space-y-1">
+                <div className="font-semibold">Ngày sinh</div>
+                <DatePicker
+                style={{
+                  borderRadius: "25px",
+                  padding: "6px 16px",
+                  width: "100%"
+                }}
+                onChange={handleChangeDOB}
+                // value={dateOfBirth}
+                />
+              </div>
+            </div>
+            <div className="grid grid-cols-2 gap-16">
+              <div className="space-y-1">
+                <div className="font-semibold">Số điện thoại</div>
+                <Input
+                  style={{
+                    borderRadius: "25px",
+                    padding: "6px 16px"
+                  }}
+                  value={phone}
+                  disabled={true}
+                ></Input>
+              </div>
+              <div className="space-y-1">
+                <div className="font-semibold">Email</div>
+                <Input
+                  style={{
+                    borderRadius: "25px",
+                    padding: "6px 16px",
+                  }}
+                  onChange={handleChangeEmail}
+                  value={email}
+                ></Input>
+              </div>
+            </div>
+            <div className="space-y-1">
+              <div className="font-semibold">Giới tính</div>
+              <Radio.Group className=" mt-1 " onChange={handleChangeGender} value={gender}>
+                <Radio value="Nam">Nam</Radio>
+                <Radio value="Nữ">Nữ</Radio>
+                <Radio value="Khác">Khác</Radio>
+              </Radio.Group>
+            </div>
+            <div className="space-y-1">
+              <div className="font-semibold">Số nhà + Tên đường</div>
+              <Input
+                style={{
+                  borderRadius: "25px",
+                  padding: "6px 16px",
+                }}
+                onChange={handleChangeAddress}
+                value={address}
+              ></Input>
+            </div>
+            <div className="grid grid-cols-3 gap-16">
+              <div className="space-y-1">
+                <div className="font-semibold">Tỉnh/Thành Phố</div>
+                <Select
+                  value={selectedProvince}
+                  showSearch
+                  placeholder="Select a person"
+                  optionFilterProp="children"
+                  onChange={(value) => {
+                    setSelectedProvince(value);
+                    setSelectedDistrict(null);
+                    setSelectedWard(null);
+                  }}
+                  onSearch={(value) => { }}
+                  filterOption={(input, option) =>
+                    option.children.toLowerCase().includes(input.toLowerCase())
+                  }
+                  style={{
+                    width: "100%",
+                  }}
+                >
+                  {province?.map((item, index) => (
+                    <Option key={index} value={item.ProvinceID}>
+                      {item.ProvinceName}
+                    </Option>
+                  ))}
+                </Select>
+              </div>
+              <div className="space-y-1">
+                <div className="font-semibold">Quận/Huyện</div>
+                <Select
+                  value={selectedDistrict}
+                  showSearch
+                  placeholder="Select a person"
+                  optionFilterProp="children"
+                  onChange={(value) => {
+                    setSelectedDistrict(value);
+                    setSelectedWard(null);
+                  }}
+                  onSearch={(value) => { }}
+                  filterOption={(input, option) =>
+                    option.children.toLowerCase().includes(input.toLowerCase())
+                  }
+                  style={{
+                    width: "100%",
+                  }}
+                >
+                  {district?.map((item, index) => (
+                    <Option key={index} value={item.DistrictID}>
+                      {item.DistrictName}
+                    </Option>
+                  ))}
+                </Select>
+              </div>
+              <div className="space-y-1">
+                <div className="font-semibold">Phường/Xã</div>
+                <Select
+                  value={selectedWard}
+                  showSearch
+                  placeholder="Select a person"
+                  optionFilterProp="children"
+                  onChange={(value) => {
+                    setSelectedWard(value);
+                  }}
+                  onSearch={(value) => { }}
+                  filterOption={(input, option) =>
+                    option.children.toLowerCase().includes(input.toLowerCase())
+                  }
+                  style={{
+                    width: "100%",
+                  }}
+                >
+                  {ward?.map((item, index) => (
+                    <Option key={index} value={item.WardCode}>
+                      {item.WardName}
+                    </Option>
+                  ))}
+                </Select>
+              </div>
+            </div>
+            <div>
+              <Button
+                type="primary"
+                style={{
+                  fontWeight: "500",
+                  borderRadius: "25px",
+                }}
+                onClick={updateInfo}
+              >
+                Cập Nhật
+              </Button>
+            </div>
+          </div>
+      )}
     </div>
   );
 }

@@ -3,23 +3,23 @@ import { Link } from "react-router-dom";
 
 const DropDownMenu = ({ categories }) => {
     const menu = (
-        <Menu
-            style={{
-                marginTop: "20px"
-            }}
-        >
-            <Row>
-                {categories.map((item, index) => (
-                    <Col xl={6} md={6} key={index}>
-                        <Menu.Item>
-                            <Link to={"/category/" + item?._id} className="text-center">
-                                <div className="text-center">{item?.name}</div>
-                            </Link>
-                        </Menu.Item>
-                    </Col>
-                ))}
-            </Row>
-        </Menu>
+        <div className="mt-2">
+            <Menu>
+                <Row gutter={[16, 16]} style={{ margin: 1 }}>
+                    {categories.map((item, index) => (
+                        <Col xl={8} md={8} key={index}>
+                            <Menu.Item style={{
+                                backgroundColor: "#ffffff",
+                            }}>
+                                <Link to={"/category/" + item?._id}>
+                                    <div className="text-center text-base">{item?.name}</div>
+                                </Link>
+                            </Menu.Item>
+                        </Col>
+                    ))}
+                </Row>
+            </Menu>
+        </div>
     );
     return (
         <Dropdown overlay={menu}>

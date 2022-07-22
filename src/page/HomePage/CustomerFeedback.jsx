@@ -35,13 +35,12 @@ export default function CustomerFeedback() {
 
     return (
         <div className="py-10">
-            <div className="bg-gray-light">
+            <div className="bg-gray-light h-auto">
                 <SectionTitle title="Khách hàng của BIKERGEAR nghĩ gì" />
 
-                <Row gutter={[16, 16]} style={{ width: "100%" }}>
-                    {/* map items with CommentCard  */}
-                    {items.map((item) => (
-                        <Col span={12}>
+                <Row gutter={[16, 16]} style={{ width: "100%", margin: "0px", paddingBottom: "16px"}}>
+                    {items.map((item, index) => (
+                        <Col span={12} key={index}>
                             <CommentCard key={item.id} item={item} />
                         </Col>
                     ))}
