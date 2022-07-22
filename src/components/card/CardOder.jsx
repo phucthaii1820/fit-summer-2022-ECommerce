@@ -11,7 +11,7 @@ const CardOder = () => {
         </div>
         <div className="text-yellow-light font-bold">Xem chi tiết</div>
       </div>
-      <div to="" class="grid grid-cols-2 gap-4">
+      <div to="" className="grid grid-cols-2 gap-4">
         <div>
           <CardProductOder />
         </div>
