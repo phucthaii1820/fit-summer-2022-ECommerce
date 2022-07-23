@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { Disclosure } from "@headlessui/react";
 import ReactImageFallback from "react-image-fallback";
 
-import { Menu, Input, Button, Dropdown, Modal } from "antd";
+import { Menu, Input, Button, Dropdown, Modal, AutoComplete } from "antd";
 import { UserOutlined, ShoppingCartOutlined } from "@ant-design/icons";
 import {
   FaUserCircle,
@@ -20,8 +20,9 @@ import { getAllCategories } from "@/API/category";
 import { logout } from "@/utils/auth";
 import DrawerMenu from "@/components/Menu/DrawerMenu";
 import DropDownMenu from "@/components/Menu/DropDownMenu";
+import { searchProducts } from "@/API/product";
 
-const { Search } = Input;
+// const { Search } = Input;
 
 export default function Header({ user, ...props }) {
   const location = useLocation();
@@ -30,6 +31,8 @@ export default function Header({ user, ...props }) {
   const [search, setSearch] = useState([]);
   const [isHovering, setIsHovering] = useState(false);
   const [showCart, setShowCart] = useState(false);
+  const [keyword, setKeyword] = useState("");
+  const [options, setOptions] = useState([]);
 
   const handleMouseEnter = () => {
     setIsHovering(true);
@@ -62,7 +65,7 @@ export default function Header({ user, ...props }) {
 
   const handleSearch = (event) => {
     if (event.key === "Enter") {
-      window.location.href = "/search?query=" + encodeURIComponent(search);
+      window.location.href = "/search?keyword=" + encodeURIComponent(keyword);
     }
   };
 
@@ -113,6 +116,44 @@ export default function Header({ user, ...props }) {
       </Menu.Item>
     </Menu>
   );
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const res = await searchProducts(keyword, "1");
+        let data = [];
+        res?.data[0]?.producs.map((item) => {
+          data.push({
+            value: item.title,
+            id: item._id,
+            category: item.category,
+          });
+        });
+        setOptions(data);
+      } catch (err) {
+        console.log(err);
+      }
+    }
+    if (keyword !== "") {
+      const timer = setTimeout(() => {
+        fetchData();
+      }, 700);
+      return () => clearTimeout(timer);
+    } else {
+      setOptions([]);
+    }
+  }, [keyword]);
+
+  const onSearch = async (searchText) => {
+    setKeyword(searchText);
+  };
+
+  const onSelect = (val, option) => {
+    console.log(option);
+    window.location.href = `/product-detail/${option.category}/${option.id}`;
+  };
+
+  console.log(options);
 
   return (
     <Disclosure as="nav" className="animate-none shadow-xl">
@@ -185,7 +226,7 @@ export default function Header({ user, ...props }) {
 
               <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0 space-x-6">
                 <div className="hidden md:block ">
-                  <Input
+                  {/* <Input
                     style={{
                       width: "20rem",
                       borderRadius: "25px",
@@ -194,6 +235,19 @@ export default function Header({ user, ...props }) {
                     placeholder="Search"
                     onChange={ChangeHandler}
                     onKeyDown={handleSearch}
+                  /> */}
+                  <AutoComplete
+                    options={options}
+                    style={{
+                      width: "20rem",
+
+                      margin: "0x 16px 0 0",
+                    }}
+                    onSelect={(val, option) => onSelect(val, option)}
+                    onSearch={onSearch}
+                    onKeyDown={handleSearch}
+                    placeholder="Search"
+                    notFoundContent="Không tìm thấy kết quả"
                   />
                 </div>
                 <div className="">
