@@ -11,7 +11,11 @@ export default function RegularRoute({ userData }) {
       <Routes>
         <Route exact path="" element={<LayoutHomePage />} />
         <Route exact path="/category/:idCate" element={<Category />} />
-        <Route exact path="/product-detail/:idCate/:idProduct" element={<ProductDetails />} />
+        <Route
+          exact
+          path="/product-detail/:idCate/:idProduct"
+          element={<ProductDetails />}
+        />
       </Routes>
     </LayoutMain>
   );

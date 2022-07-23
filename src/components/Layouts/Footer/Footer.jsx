@@ -1,10 +1,10 @@
 import {
-    FaFacebookSquare,
-    FaGithub,
-    FaGoogle,
-    FaInstagram,
-    FaTwitter,
-    FaYoutube,
+  FaFacebookSquare,
+  FaGithub,
+  FaGoogle,
+  FaInstagram,
+  FaTwitter,
+  FaYoutube,
 } from "react-icons/fa";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCommentDots, faList } from "@fortawesome/free-solid-svg-icons";
@@ -15,35 +15,35 @@ import { Button, Input } from "antd";
 import { useState } from "react";
 
 export default function Footer() {
-    const [isHovering, setIsHovering] = useState(false);
+  const [isHovering, setIsHovering] = useState(false);
 
-    const handleMouseEnter = () => {
-        setIsHovering(true);
-    };
+  const handleMouseEnter = () => {
+    setIsHovering(true);
+  };
 
-    const handleMouseLeave = () => {
-        setIsHovering(false);
-    };
+  const handleMouseLeave = () => {
+    setIsHovering(false);
+  };
 
-    return (
-        <div className="container">
-            <footer className="bg-white mt-auto w-screen">
-                <div className="grid lg:grid-cols-3 lg:gap-10 p-16 max-w-screen-2xl mx-auto lg:px-4 p-8 text-base">
-                    <div className="text-left rounded lg:px-5">
-                        <div className="flex-shrink-0 flex items-center">
-                            <Link to="/">
-                                <img
-                                    className="block md:hidden h-12 w-auto"
-                                    src={Logo}
-                                    alt="Workflow"
-                                />
-                                <img
-                                    className="hidden md:block h-20 w-auto"
-                                    src={Logo}
-                                    alt="Workflow"
-                                />
-                            </Link>
-                        </div>
+  return (
+    <div className="container">
+      <footer className="bg-white mt-auto">
+        <div className="grid lg:grid-cols-3 lg:gap-10 p-16 max-w-screen-2xl mx-auto lg:px-4 p-8 text-base">
+          <div className="text-left rounded lg:px-5">
+            <div className="flex-shrink-0 flex items-center">
+              <Link to="/">
+                <img
+                  className="block md:hidden h-12 w-auto"
+                  src={Logo}
+                  alt="Workflow"
+                />
+                <img
+                  className="hidden md:block h-20 w-auto"
+                  src={Logo}
+                  alt="Workflow"
+                />
+              </Link>
+            </div>
 
                         <p className="font-bold my-5">
                             CÔNG TY TNHH SẢN XUẤT THƯƠNG MẠI & DỊCH VỤ BIKEGEAR
@@ -162,26 +162,69 @@ export default function Footer() {
                                     </div>
                                 </div>
                             </div>
+            <div className="flex my-8">
+              <div className="flex-auto w-72">
+                <div className="grid grid-cols-3 gap-10 mb-6 text-left">
+                  <div className="col-span">
+                    <p className="text-lg font-bold mb-1">Thông tin</p>
+                    <p className="mb-1">Giới thiệu</p>
+                    <p className="mb-1">Liên hệ công ty</p>
+                    <p>Gia nhập BIKEGEAR</p>
+                  </div>
+                  <div className="col-span">
+                    <p className="text-lg font-bold mb-1">Chính sách</p>
+                    <p className="mb-1">Chính sách đổi hàng</p>
+                    <p className="mb-1">Chính sách bảo hành</p>
+                    <p>Chính sách hoàn tiền</p>
+                  </div>
+                  <div className="col-span">
+                    <p className="text-lg font-bold mb-1">Hỏi đáp</p>
+                    <p className="mb-1">Thanh toán và vận chuyển</p>
+                    <p>Kiểm tra thông tin đơn hàng</p>
+                  </div>
+                </div>
+                <div className="flex justify-center">
+                  <div className="flex-initial flex flex-row mr-8 h-16 w-96 items-center justify-center bg-gray-100 mr-2 border border-black rounded-lg">
+                    <FontAwesomeIcon icon={faList} className="pl-2 h-6" />
+                    <a href="/" className="pl-8">
+                      <p className="text-base lg:text-lg font-bold pt-4 text-black">
+                        Kiểm tra đơn hàng
+                      </p>
+                    </a>
+                  </div>
+                  <div className="flex-initial flex flex-row mr-8 h-16 w-96 items-center justify-center bg-gray-100 mr-2 border border-black rounded-lg">
+                    <FontAwesomeIcon
+                      icon={faCommentDots}
+                      className="pl-2 h-6"
+                    />
+                    <a href="/" className="pl-8">
+                      <p className="text-base lg:text-lg font-bold pt-4 text-black">
+                        Góp ý - Than phiền
+                      </p>
+                    </a>
+                  </div>
+                </div>
+              </div>
 
-                            <div className="font-bold text-left ml-10">
-                                <p className="text-lg mb-1">Liên hệ</p>
-                                <p className="text-gray-400 mb-1">Tư vấn mua hàng</p>
-                                <p className="text-yellow-light mb-1">1900.0009</p>
-                                <p className="text-yellow-light mb-1">(T2-T7 8g30 - 21h00)</p>
-                                <p className="text-gray-400 mb-1">Hotline góp ý</p>
-                                <p className="text-yellow-light mb-1">123.456.7890 (24/7)</p>
-                                <p className="text-gray-400 mb-1">Email chăm sóc khách hàng</p>
-                                <p className="text-yellow-light">cskh@bikegear.vn</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div className="text-center text-base">
-                    <div className="mx-24">
-                        Copyright © 2021 Motorbike Accessory, EC02-02
-                    </div>
-                </div>
-            </footer>
+              <div className="font-bold text-left ml-10">
+                <p className="text-lg mb-1">Liên hệ</p>
+                <p className="text-gray-400 mb-1">Tư vấn mua hàng</p>
+                <p className="text-yellow-light mb-1">1900.0009</p>
+                <p className="text-yellow-light mb-1">(T2-T7 8g30 - 21h00)</p>
+                <p className="text-gray-400 mb-1">Hotline góp ý</p>
+                <p className="text-yellow-light mb-1">123.456.7890 (24/7)</p>
+                <p className="text-gray-400 mb-1">Email chăm sóc khách hàng</p>
+                <p className="text-yellow-light">cskh@bikegear.vn</p>
+              </div>
+            </div>
+          </div>
         </div>
-    );
+        <div className="text-center text-base">
+          <div className="mx-24">
+            Copyright © 2021 Motorbike Accessory, EC02-02
+          </div>
+        </div>
+      </footer>
+    </div>
+  );
 }

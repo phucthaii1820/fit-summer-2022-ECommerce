@@ -30,4 +30,4 @@ const DropDownMenu = ({ categories }) => {
     );
 }
 
-export default DropDownMenu
+export default DropDownMenu;

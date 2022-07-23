@@ -7,11 +7,19 @@ import Services from "@/page/HomePage/Services";
 
 export default function LayoutHomePage() {
   return (
-    <div className="">
-      <Banner />
-      <TrendingProducts />
-      <CustomerFeedback />
-      <Services />
+    <div>
+      <div className="container">
+        <div>{/* <Banner /> */}</div>
+        <div>
+          <TrendingProducts />
+        </div>
+        <div>
+          <CustomerFeedback />
+        </div>
+        <div>
+          <Services />
+        </div>
+      </div>
     </div>
   );
 }
