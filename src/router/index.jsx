@@ -1,5 +1,5 @@
 import { auth } from "@/utils/auth";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import RegularRoute from "./regular";
 import Login from "@/page/Login";
 import Register from "@/page/Register/Register";
@@ -13,13 +13,27 @@ export default function WebRoute() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="login" element={<Login />} />
-        <Route path="register" element={<Register />} />
+        <Route
+          path="login"
+          element={!userData ? <Login /> : <Navigate to="/" />}
+        />
+        <Route
+          path="register"
+          element={!userData ? <Register /> : <Navigate to="/" />}
+        />
         <Route path="/*" element={<RegularRoute userData={userData} />} />
         <Route
           exact
           path="profile/*"
-          element={userData ? <LayoutMain user={userData}><Profile /></LayoutMain> : <Login />}
+          element={
+            userData ? (
+              <LayoutMain>
+                <Profile />
+              </LayoutMain>
+            ) : (
+              <Navigate to="/login" />
+            )
+          }
         />
       </Routes>
     </BrowserRouter>

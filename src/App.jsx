@@ -1,4 +1,5 @@
 import WebRoute from "./router";
+import "./App.less";
 
 function App() {
   return (

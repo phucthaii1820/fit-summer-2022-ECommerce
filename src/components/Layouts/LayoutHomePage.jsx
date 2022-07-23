@@ -6,22 +6,20 @@ import Banner from "@/page/HomePage/Banner";
 import Services from "@/page/HomePage/Services";
 
 export default function LayoutHomePage() {
-    return (
+  return (
+    <div>
+      <div className="container">
+        <div>{/* <Banner /> */}</div>
         <div>
-            <div className="container">
-                <div>
-                    <Banner />
-                </div>
-                <div>
-                    <TrendingProducts />
-                </div>
-                <div>
-                    <CustomerFeedback />
-                </div>
-                <div>
-                    <Services />
-                </div>
-            </div>
+          <TrendingProducts />
         </div>
-    );
+        <div>
+          <CustomerFeedback />
+        </div>
+        <div>
+          <Services />
+        </div>
+      </div>
+    </div>
+  );
 }
