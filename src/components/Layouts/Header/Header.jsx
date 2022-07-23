@@ -53,23 +53,6 @@ export default function Header({ user, ...props }) {
   //   },
   // ];
 
-  // const action_items = [
-  //   // remember to pass the key prop which is required
-  //   {
-  //     label: "",
-  //     key: "",
-  //     icon: <UserOutlined style={{ fontSize: "2em" }} />,
-  //     children: [
-  //       { label: "Thông tin tài khoản", key: "user-action-item-1" },
-  //       { label: "Thay đổi mật khẩu", key: "user-action-item-2" },
-  //       { label: "Đơn hàng của tôi", key: "user-action-item-3" },
-  //       { label: "Quản lý thông báo", key: "user-action-item-4" },
-  //       { label: "Danh sách yêu thích", key: "user-action-item-5" },
-  //       { label: "Đăng xuất", key: "user-action-item-6" },
-  //     ],
-  //   },
-  // ];
-
   useEffect(() => {
     async function fetchHeader() {
       try {
@@ -235,7 +218,8 @@ export default function Header({ user, ...props }) {
                     <Dropdown
                       overlay={menu}
                       trigger={["click"]}
-                      className="cursor-pointer"
+                      placement="bottomRight"
+                      arrow
                     >
                       <div
                         className="ml-3 ring ring-gray flex items-center justify-center overflow-hidden rounded-full cursor-pointer"

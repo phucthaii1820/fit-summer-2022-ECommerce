@@ -49,8 +49,8 @@ export default function Footer() {
                             CÔNG TY TNHH SẢN XUẤT THƯƠNG MẠI & DỊCH VỤ BIKEGEAR
                         </p>
                         <div className="my-5">
-                            <p>Giấy CNĐKDN: 0316810152 - Ngày cấp: 19/04/2021 - Nơi cấp: Sở Kế Hoạch và Đầu Tư TPHCM</p>
-                            <p>Địa chỉ: 304-306 Nguyễn Trãi, Phường 08, Quận 05, Thành phố Hồ Chí Minh - Điện thoại: 028.2220.7878 - Email: cskh@totoday.vn</p>
+                            {/* <p>Giấy CNĐKDN: 0316810152 - Ngày cấp: 19/04/2021 - Nơi cấp: Sở Kế Hoạch và Đầu Tư TPHCM</p> */}
+                            <p>Địa chỉ: 227 Nguyễn Văn Cừ, Phường 04, Quận 05, Thành phố Hồ Chí Minh - Điện thoại: 028.910.1123 - Email: cskh@bikegear.vn</p>
                         </div>
                         <ul>
                             <li className="flex text-3xl ">

@@ -5,9 +5,9 @@ const DropDownMenu = ({ categories }) => {
     const menu = (
         <div className="mt-2">
             <Menu>
-                <Row gutter={[16, 16]} style={{ margin: 1 }}>
+                <Row gutter={[6, 6]}>
                     {categories.map((item, index) => (
-                        <Col xl={8} md={8} key={index}>
+                        <Col span={24} key={index}>
                             <Menu.Item style={{
                                 backgroundColor: "#ffffff",
                             }}>
@@ -22,7 +22,7 @@ const DropDownMenu = ({ categories }) => {
         </div>
     );
     return (
-        <Dropdown overlay={menu}>
+        <Dropdown overlay={menu} placement="bottomLeft" arrow>
             <a className="ant-dropdown-link" onClick={(e) => e.preventDefault()}>
                 Category
             </a>
