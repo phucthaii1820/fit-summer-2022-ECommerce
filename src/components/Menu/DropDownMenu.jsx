@@ -24,7 +24,7 @@ const DropDownMenu = ({ categories }) => {
     return (
         <Dropdown overlay={menu} placement="bottomLeft" arrow>
             <a className="ant-dropdown-link" onClick={(e) => e.preventDefault()}>
-                Category
+                Danh mục
             </a>
         </Dropdown>
     );

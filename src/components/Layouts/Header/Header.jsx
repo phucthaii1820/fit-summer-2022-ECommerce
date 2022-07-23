@@ -199,7 +199,7 @@ export default function Header({ user, ...props }) {
                           onMouseEnter={handleMouseEnter}
                           onMouseLeave={handleMouseLeave}
                         >
-                          Home
+                          Trang chủ
                         </Button>
                       </Link>
                     </div>
@@ -238,17 +238,18 @@ export default function Header({ user, ...props }) {
                   /> */}
                   <AutoComplete
                     options={options}
-                    style={{
-                      width: "20rem",
-
-                      margin: "0x 16px 0 0",
-                    }}
                     onSelect={(val, option) => onSelect(val, option)}
                     onSearch={onSearch}
                     onKeyDown={handleSearch}
                     placeholder="Search"
                     notFoundContent="Không tìm thấy kết quả"
-                  />
+                  >
+                    <Input style={{
+                      width: "20rem",
+                      borderRadius: "25px",
+                      margin: "0x 16px 0 0",
+                    }}></Input>
+                    </ AutoComplete>
                 </div>
                 <div className="">
                   <button
