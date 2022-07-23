@@ -226,7 +226,6 @@ export default function Header({ user, ...props }) {
                       placement="bottomRight"
                       overlay={menu}
                       trigger={["click"]}
-                      placement="bottomRight"
                       arrow
                     >
                       <div
@@ -243,7 +242,7 @@ export default function Header({ user, ...props }) {
                     </Dropdown>
                   </div>
                 ) : (
-                  <div className="flex space-x-4 mt-3 ml-3">
+                  <div className="flex space-x-4 ml-3">
                     <Link
                       to="/login"
                       className="hover:text-yellow-light text-black px-3 py-2 rounded-md text-sm hidden md:block"

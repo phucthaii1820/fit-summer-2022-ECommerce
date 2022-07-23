@@ -26,9 +26,9 @@ export default function Footer() {
   };
 
   return (
-    <div className="container">
+    <div className="container mx-auto">
       <footer className="bg-white mt-auto">
-        <div className="grid lg:grid-cols-3 lg:gap-10 p-16 max-w-screen-2xl mx-auto lg:px-4 p-8 text-base">
+        <div className="grid lg:grid-cols-3 lg:gap-10 p-16 max-w-screen-2xl lg:px-4 p-8 text-base">
           <div className="text-left rounded lg:px-5">
             <div className="flex-shrink-0 flex items-center">
               <Link to="/">
@@ -45,123 +45,91 @@ export default function Footer() {
               </Link>
             </div>
 
-                        <p className="font-bold my-5">
-                            CÔNG TY TNHH SẢN XUẤT THƯƠNG MẠI & DỊCH VỤ BIKEGEAR
-                        </p>
-                        <div className="my-5">
-                            {/* <p>Giấy CNĐKDN: 0316810152 - Ngày cấp: 19/04/2021 - Nơi cấp: Sở Kế Hoạch và Đầu Tư TPHCM</p> */}
-                            <p>Địa chỉ: 227 Nguyễn Văn Cừ, Phường 04, Quận 05, Thành phố Hồ Chí Minh - Điện thoại: 028.910.1123 - Email: cskh@bikegear.vn</p>
-                        </div>
-                        <ul>
-                            <li className="flex text-3xl ">
-                                <a href="/" className="pr-2 text-yellow-light">
-                                    <FaFacebookSquare></FaFacebookSquare>
-                                </a>
-                                <a href="/" className="pr-2 text-yellow-light">
-                                    <FaGithub></FaGithub>
-                                </a>
-                                <a href="/" className="pr-2 text-yellow-light">
-                                    <FaInstagram></FaInstagram>
-                                </a>
-                                <a href="/" className="pr-2 text-yellow-light">
-                                    <FaYoutube></FaYoutube>
-                                </a>
-                                <a href="/" className="pr-2 text-yellow-light">
-                                    <FaTwitter></FaTwitter>
-                                </a>
-                                <a href="/" className="pr-2 text-yellow-light">
-                                    <FaGoogle></FaGoogle>
-                                </a>
-                            </li>
-                        </ul>
-                        <div className="lg:my-5">
-                            <div className="font-bold">
-                                <p>Phương thức thanh toán</p>
-                                <div className="grid grid-cols-3 my-5">
-                                    <div className="col-span bg-gray-100 mr-2 border border-black rounded-lg h-20">
-
-                                    </div>
-                                    <div className="col-span bg-gray-100 mx-2 border border-black rounded-lg h-20">
-
-                                    </div>
-                                    <div className="col-span bg-gray-100 ml-2 border border-black rounded-lg h-20">
-
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="col-span-2">
-                        <div className="p-5 text-left flex border border-black rounded-lg bg-gray-100">
-                            <div className="flex-1">
-                                <p className="font-bold mb-1">Đăng ký nhận tin qua email</p>
-                                <p className="mb-0">Nhận tin qua email để không bỏ lỡ các tin tức khuyến mãi</p>
-                            </div>
-                            <div className="flex flex-1">
-                                <div className="flex-auto py-2">
-                                    <Input placeholder="Nhập số điện thoại của bạn" className="h-10 p-2"
-                                        style={{
-                                            borderColor: "#F5B301",
-                                            borderWidth: "2px",
-                                            borderTopRightRadius: "0px",
-                                            borderBottomRightRadius: "0px",
-                                            backgroundColor: "#f3f4f6"
-                                        }} />
-                                </div>
-                                <div className="py-2">
-                                    <Button className="h-10 p-2"
-                                        style={{
-                                            height: "40px",
-                                            borderColor: "#F5B301",
-                                            borderTopLeftRadius: "0px",
-                                            borderBottomLeftRadius: "0px",
-                                            backgroundColor: "#F5B301",
-                                            fontWeight: "bold",
-                                            color: isHovering ? "white" : "black"
-                                        }}
-                                        onMouseEnter={handleMouseEnter}
-                                        onMouseLeave={handleMouseLeave}
-                                    >Đăng ký</Button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div className="flex my-8">
-                            <div className="flex-auto w-72">
-                                <div className="grid grid-cols-3 gap-10 mb-6 text-left">
-                                    <div className="col-span">
-                                        <p className="text-lg font-bold mb-1">Thông tin</p>
-                                        <p className="mb-1">Giới thiệu</p>
-                                        <p className="mb-1">Liên hệ công ty</p>
-                                        <p>Gia nhập BIKEGEAR</p>
-                                    </div>
-                                    <div className="col-span">
-                                        <p className="text-lg font-bold mb-1">Chính sách</p>
-                                        <p className="mb-1">Chính sách đổi hàng</p>
-                                        <p className="mb-1">Chính sách bảo hành</p>
-                                        <p>Chính sách hoàn tiền</p>
-                                    </div>
-                                    <div className="col-span">
-                                        <p className="text-lg font-bold mb-1">Hỏi đáp</p>
-                                        <p className="mb-1">Thanh toán và vận chuyển</p>
-                                        <p>Kiểm tra thông tin đơn hàng</p>
-                                    </div>
-                                </div>
-                                <div className="flex justify-center">
-                                    <div className="flex-initial flex flex-row mr-8 h-16 w-96 items-center justify-center bg-gray-100 mr-2 border border-black rounded-lg">
-                                        <FontAwesomeIcon icon={faList} className="pl-2 h-6" />
-                                        <a href="/" className="pl-8">
-                                            <p className="text-base lg:text-lg font-bold pt-4 text-black">Kiểm tra đơn hàng</p>
-                                        </a>
-                                    </div>
-                                    <div className="flex-initial flex flex-row mr-8 h-16 w-96 items-center justify-center bg-gray-100 mr-2 border border-black rounded-lg">
-                                        <FontAwesomeIcon icon={faCommentDots} className="pl-2 h-6" />
-                                        <a href="/" className="pl-8">
-                                            <p className="text-base lg:text-lg font-bold pt-4 text-black">Góp ý - Than phiền</p>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
+            <p className="font-bold my-5">
+              CÔNG TY TNHH SẢN XUẤT THƯƠNG MẠI & DỊCH VỤ BIKEGEAR
+            </p>
+            <div className="my-5">
+              {/* <p>Giấy CNĐKDN: 0316810152 - Ngày cấp: 19/04/2021 - Nơi cấp: Sở Kế Hoạch và Đầu Tư TPHCM</p> */}
+              <p>
+                Địa chỉ: 227 Nguyễn Văn Cừ, Phường 04, Quận 05, Thành phố Hồ Chí
+                Minh - Điện thoại: 028.910.1123 - Email: cskh@bikegear.vn
+              </p>
+            </div>
+            <ul>
+              <li className="flex text-3xl ">
+                <a href="/" className="pr-2 text-yellow-light">
+                  <FaFacebookSquare></FaFacebookSquare>
+                </a>
+                <a href="/" className="pr-2 text-yellow-light">
+                  <FaGithub></FaGithub>
+                </a>
+                <a href="/" className="pr-2 text-yellow-light">
+                  <FaInstagram></FaInstagram>
+                </a>
+                <a href="/" className="pr-2 text-yellow-light">
+                  <FaYoutube></FaYoutube>
+                </a>
+                <a href="/" className="pr-2 text-yellow-light">
+                  <FaTwitter></FaTwitter>
+                </a>
+                <a href="/" className="pr-2 text-yellow-light">
+                  <FaGoogle></FaGoogle>
+                </a>
+              </li>
+            </ul>
+            <div className="lg:my-5">
+              <div className="font-bold">
+                <p>Phương thức thanh toán</p>
+                <div className="grid grid-cols-3 my-5">
+                  <div className="col-span bg-gray-100 mr-2 border border-black rounded-lg h-20"></div>
+                  <div className="col-span bg-gray-100 mx-2 border border-black rounded-lg h-20"></div>
+                  <div className="col-span bg-gray-100 ml-2 border border-black rounded-lg h-20"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="col-span-2">
+            <div className="p-5 text-left flex border border-black rounded-lg bg-gray-100">
+              <div className="flex-1">
+                <p className="font-bold mb-1">Đăng ký nhận tin qua email</p>
+                <p className="mb-0">
+                  Nhận tin qua email để không bỏ lỡ các tin tức khuyến mãi
+                </p>
+              </div>
+              <div className="flex flex-1">
+                <div className="flex-auto py-2">
+                  <Input
+                    placeholder="Nhập số điện thoại của bạn"
+                    className="h-10 p-2"
+                    style={{
+                      borderColor: "#F5B301",
+                      borderWidth: "2px",
+                      borderTopRightRadius: "0px",
+                      borderBottomRightRadius: "0px",
+                      backgroundColor: "#f3f4f6",
+                    }}
+                  />
+                </div>
+                <div className="py-2">
+                  <Button
+                    className="h-10 p-2"
+                    style={{
+                      height: "40px",
+                      borderColor: "#F5B301",
+                      borderTopLeftRadius: "0px",
+                      borderBottomLeftRadius: "0px",
+                      backgroundColor: "#F5B301",
+                      fontWeight: "bold",
+                      color: isHovering ? "white" : "black",
+                    }}
+                    onMouseEnter={handleMouseEnter}
+                    onMouseLeave={handleMouseLeave}
+                  >
+                    Đăng ký
+                  </Button>
+                </div>
+              </div>
+            </div>
             <div className="flex my-8">
               <div className="flex-auto w-72">
                 <div className="grid grid-cols-3 gap-10 mb-6 text-left">
