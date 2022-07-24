@@ -20,6 +20,7 @@ import { getAllCategories } from "@/API/category";
 import { logout } from "@/utils/auth";
 import DrawerMenu from "@/components/Menu/DrawerMenu";
 import DropDownMenu from "@/components/Menu/DropDownMenu";
+import ShoppingCartModal from "@/components/shopping-cart/ShoppingCartModal";
 import { searchProducts } from "@/API/product";
 
 // const { Search } = Input;
@@ -153,8 +154,6 @@ export default function Header({ user, ...props }) {
     window.location.href = `/product-detail/${option.category}/${option.id}`;
   };
 
-  console.log(options);
-
   return (
     <Disclosure as="nav" className="animate-none shadow-xl">
       {({ open }) => (
@@ -199,7 +198,7 @@ export default function Header({ user, ...props }) {
                           onMouseEnter={handleMouseEnter}
                           onMouseLeave={handleMouseLeave}
                         >
-                          Trang chủ
+                          Home
                         </Button>
                       </Link>
                     </div>
@@ -225,70 +224,45 @@ export default function Header({ user, ...props }) {
               </div>
 
               <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0 space-x-6">
-                <div className="hidden md:block ">
-                  {/* <Input
+                <AutoComplete
+                  options={options}
+                  onSelect={(val, option) => onSelect(val, option)}
+                  onSearch={onSearch}
+                  onKeyDown={handleSearch}
+                  placeholder="Search"
+                  notFoundContent="Không tìm thấy kết quả"
+                  style={{
+                    border: "0px",
+                  }}
+                >
+                  <Input
                     style={{
                       width: "20rem",
                       borderRadius: "25px",
                       margin: "0x 16px 0 0",
                     }}
-                    placeholder="Search"
-                    onChange={ChangeHandler}
-                    onKeyDown={handleSearch}
-                  /> */}
-                  <AutoComplete
-                    options={options}
-                    onSelect={(val, option) => onSelect(val, option)}
-                    onSearch={onSearch}
-                    onKeyDown={handleSearch}
-                    placeholder="Search"
-                    notFoundContent="Không tìm thấy kết quả"
-                  >
-                    <Input style={{
-                      width: "20rem",
-                      borderRadius: "25px",
-                      margin: "0x 16px 0 0",
-                    }}></Input>
-                    </ AutoComplete>
-                </div>
-                <div className="">
-                  <button
-                    type="primary"
-                    onClick={() => {
-                      setShowCart(true);
-                    }}
-                  >
-                    <ShoppingCartOutlined style={{ fontSize: "2em" }} />
-                  </button>
-                  <Modal
-                    title="Basic Modal"
-                    visible={showCart}
-                    onOk={() => {
-                      setShowCart(false);
-                    }}
-                    onCancel={() => {
-                      setShowCart(false);
-                    }}
-                  >
-                    <p>Some contents...</p>
-                    <p>Some contents...</p>
-                    <p>Some contents...</p>
-                  </Modal>
-                </div>
+                  ></Input>
+                </AutoComplete>
+
+                {user ? <ShoppingCartModal></ShoppingCartModal> : null}
+
                 {user ? (
                   <div className="hidden md:block ">
                     <Dropdown
                       placement="bottomRight"
                       overlay={menu}
                       trigger={["click"]}
-                      arrow
+                      className="cursor-pointer"
                     >
                       <div
-                        className="ml-3 ring ring-gray flex items-center justify-center overflow-hidden rounded-full cursor-pointer"
-                        style={{ width: 40, height: 40 }}
+                        className="ing ring-gray flex items-center justify-center overflow-hidden rounded-full cursor-pointer border-2 border-gray-300 border-solid"
+                        style={{
+                          width: 40,
+                          height: 40,
+                        }}
                       >
                         <ReactImageFallback
-                          className="min-w-full min-h-full block flex-shrink-0"
+                          className="min-w-full min-h-full block flex-shrink-0  "
                           src={Logo}
                           alt="logo"
                           fallbackImage={Logo}
@@ -297,19 +271,16 @@ export default function Header({ user, ...props }) {
                     </Dropdown>
                   </div>
                 ) : (
-                  <div className="flex space-x-4 ml-3">
+                  <div className="">
                     <Link
                       to="/login"
-                      className="hover:text-yellow-light text-black px-3 py-2 rounded-md text-sm hidden md:block"
+                      className="hover:text-yellow-light text-black rounded-md text-sm hidden md:block"
                     >
                       <UserOutlined style={{ fontSize: "2em" }} />
                     </Link>
                   </div>
                 )}
               </div>
-              {/* <div className="block md:hidden">
-                <SearchMoblie></SearchMoblie>
-              </div> */}
             </div>
           </div>
         </>
