@@ -26,9 +26,9 @@ export default function Footer() {
   };
 
   return (
-    <div className="container">
+    <div className="container mx-auto">
       <footer className="bg-white mt-auto">
-        <div className="grid lg:grid-cols-3 lg:gap-10 p-16 max-w-screen-2xl mx-auto lg:px-4 p-8 text-base">
+        <div className="grid lg:grid-cols-3 lg:gap-10 p-16 max-w-screen-2xl lg:px-4 p-8 text-base">
           <div className="text-left rounded lg:px-5">
             <div className="flex-shrink-0 flex items-center">
               <Link to="/">
@@ -49,13 +49,10 @@ export default function Footer() {
               CÔNG TY TNHH SẢN XUẤT THƯƠNG MẠI & DỊCH VỤ BIKEGEAR
             </p>
             <div className="my-5">
+              {/* <p>Giấy CNĐKDN: 0316810152 - Ngày cấp: 19/04/2021 - Nơi cấp: Sở Kế Hoạch và Đầu Tư TPHCM</p> */}
               <p>
-                Giấy CNĐKDN: 0316810152 - Ngày cấp: 19/04/2021 - Nơi cấp: Sở Kế
-                Hoạch và Đầu Tư TPHCM
-              </p>
-              <p>
-                Địa chỉ: 304-306 Nguyễn Trãi, Phường 08, Quận 05, Thành phố Hồ
-                Chí Minh - Điện thoại: 028.2220.7878 - Email: cskh@totoday.vn
+                Địa chỉ: 227 Nguyễn Văn Cừ, Phường 04, Quận 05, Thành phố Hồ Chí
+                Minh - Điện thoại: 028.910.1123 - Email: cskh@bikegear.vn
               </p>
             </div>
             <ul>
@@ -133,7 +130,6 @@ export default function Footer() {
                 </div>
               </div>
             </div>
-
             <div className="flex my-8">
               <div className="flex-auto w-72">
                 <div className="grid grid-cols-3 gap-10 mb-6 text-left">
