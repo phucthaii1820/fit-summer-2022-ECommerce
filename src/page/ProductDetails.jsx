@@ -82,7 +82,7 @@ const ProductDetails = () => {
       }
     }
     fetchProduct();
-  }, []);
+  }, [idProduct]);
 
   var settingThumbs = {
     dots: false,

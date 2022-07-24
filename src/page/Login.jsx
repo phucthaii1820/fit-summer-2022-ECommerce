@@ -50,7 +50,7 @@ export default function Login() {
       }, 1000);
     } catch (err) {
       setIsLoading(false);
-      message.error(err.response?.data?.message ?? "Login failed");
+      message.error("Kiểm tra lại mật khẩu và số điện thoại!!");
       console.log(err);
     }
   };

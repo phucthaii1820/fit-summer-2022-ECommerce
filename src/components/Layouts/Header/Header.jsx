@@ -199,7 +199,7 @@ export default function Header({ user, ...props }) {
                           onMouseEnter={handleMouseEnter}
                           onMouseLeave={handleMouseLeave}
                         >
-                          Home
+                          Trang chủ
                         </Button>
                       </Link>
                     </div>
@@ -238,17 +238,18 @@ export default function Header({ user, ...props }) {
                   /> */}
                   <AutoComplete
                     options={options}
-                    style={{
-                      width: "20rem",
-
-                      margin: "0x 16px 0 0",
-                    }}
                     onSelect={(val, option) => onSelect(val, option)}
                     onSearch={onSearch}
                     onKeyDown={handleSearch}
                     placeholder="Search"
                     notFoundContent="Không tìm thấy kết quả"
-                  />
+                  >
+                    <Input style={{
+                      width: "20rem",
+                      borderRadius: "25px",
+                      margin: "0x 16px 0 0",
+                    }}></Input>
+                    </ AutoComplete>
                 </div>
                 <div className="">
                   <button
@@ -280,7 +281,7 @@ export default function Header({ user, ...props }) {
                       placement="bottomRight"
                       overlay={menu}
                       trigger={["click"]}
-                      className="cursor-pointer"
+                      arrow
                     >
                       <div
                         className="ml-3 ring ring-gray flex items-center justify-center overflow-hidden rounded-full cursor-pointer"
@@ -296,7 +297,7 @@ export default function Header({ user, ...props }) {
                     </Dropdown>
                   </div>
                 ) : (
-                  <div className="flex space-x-4 mt-3 ml-3">
+                  <div className="flex space-x-4 ml-3">
                     <Link
                       to="/login"
                       className="hover:text-yellow-light text-black px-3 py-2 rounded-md text-sm hidden md:block"

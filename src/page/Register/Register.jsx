@@ -35,6 +35,27 @@ export default function Register() {
   const [result, setResult] = useState("");
   const [otp, setOtp] = useState("");
 
+  const validatePass = function validatePassword(pass) {
+    var newPassword = pass;
+    var minNumberofChars = 6;
+    var maxNumberofChars = 16;
+    var regularExpression =
+      /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,16}$/;
+    alert(newPassword);
+    if (
+      newPassword.length < minNumberofChars ||
+      newPassword.length > maxNumberofChars
+    ) {
+      return false;
+    }
+    if (!regularExpression.test(newPassword)) {
+      alert(
+        "password should contain atleast one number and one special character"
+      );
+      return false;
+    }
+  };
+
   const handlePhoneChange = (event) => {
     setEnterPhone(event.target.value);
   };
@@ -48,10 +69,9 @@ export default function Register() {
   };
 
   const handleRegister = async (event) => {
-    if(password === "" || passwordConfirm === "" || phone === ""){
+    if (password === "" || passwordConfirm === "" || phone === "") {
       message.error("Please fill up fully information!");
-    }
-    else if (password !== passwordConfirm) {
+    } else if (password !== passwordConfirm) {
       message.error("Incorrect confirmation password!");
     } else if (phone.length < 10) {
       message.error("Your phone must be longer than 10 characters!");
@@ -74,13 +94,12 @@ export default function Register() {
 
   const handleModal = async () => {
     const user = await checkExistUser({ phone });
-    if(password === "" || passwordConfirm === "" || phone === ""){
-      message.error("Please fill up fully information!");
-    }
-    else if (password !== passwordConfirm) {
-      message.error("Incorrect confirmation password!");
+    if (password === "" || passwordConfirm === "" || phone === "") {
+      message.error("Vui lòng điền đầy đủ thông tin!");
+    } else if (password !== passwordConfirm) {
+      message.error("Mật khẩu xác nhận không đúng!");
     } else if (phone.length < 10) {
-      message.error("Your phone must be longer than 10 characters!");
+      message.error("Số điện thoại đăng ký phải lớn hơn 9 kí tự!");
     } else if (user?.user_data) {
       message.error("Số điện thọai này đã tồn tại!");
     } else {
@@ -122,7 +141,7 @@ export default function Register() {
         message.success("Tạo Tài Khoản Thành Công!");
       })
       .catch((err) => {
-        message.error("Incorrect code");
+        message.error("Kiểm tra lại mã xác nhận");
       });
   };
   return (
@@ -171,7 +190,7 @@ export default function Register() {
           <Link to="/login" className="text-left text-sm text-black font-bold">
             Bạn đã có tài khoản?
           </Link>
-        </div>  
+        </div>
         <div className="col-span py-2">
           <Link to="/login">
             <div className="text-right text-sm font-bold text-black hover:text-yellow-light">
