@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 
 import {
     OrderedListOutlined,
@@ -8,7 +8,7 @@ import {
     BarChartOutlined,
 } from "@ant-design/icons";
 
-import AccountManagement from "@/components/admin-dashboard/account-management/AccountManagement";
+import UserManagement from "@/components/admin-dashboard/user-management/UserManagement";
 import CategoryManagement from "@/components/admin-dashboard/category-management/CategoryManagement";
 import ProductManagement from "@/components/admin-dashboard/product-management/ProductManagement";
 import OrderManagement from "@/components/admin-dashboard/order-management/OrderManagement";
@@ -31,13 +31,7 @@ function getItem(label, key, icon, children, content) {
 const items = [
     getItem("Thông tin cá nhân", 1, <UserOutlined />, null, null),
     getItem("Quản lý", 2, <BarChartOutlined />, [
-        getItem(
-            "Tài khoản",
-            "2-1",
-            <TeamOutlined />,
-            null,
-            <AccountManagement />
-        ),
+        getItem("Tài khoản", "2-1", <TeamOutlined />, null, <UserManagement />),
         getItem(
             "Thể loại",
             "2-2",
@@ -104,7 +98,7 @@ export default function LayoutAdmin() {
                 {/* Admin Action  */}
                 <Menu
                     theme="dark"
-                    SelectedKeys={["1"]}
+                    SelectedKeys={selectedKeys}
                     mode="inline"
                     items={items}
                     onClick={(e) => {
@@ -160,7 +154,7 @@ export default function LayoutAdmin() {
                         ) : selectedKeys === "2" ? (
                             "Quản lý "
                         ) : selectedKeys === "2-1" ? (
-                            <AccountManagement />
+                            <UserManagement />
                         ) : selectedKeys === "2-2" ? (
                             <CategoryManagement />
                         ) : selectedKeys === "2-3" ? (
@@ -183,7 +177,3 @@ export default function LayoutAdmin() {
         </Layout>
     );
 }
-
-// a = "2-1";
-// b = "2";
-// b = a.split("-")[0];
