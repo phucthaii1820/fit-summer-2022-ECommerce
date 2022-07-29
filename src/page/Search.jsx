@@ -82,8 +82,8 @@ const Search = () => {
         <div className="relative">
           <div className="container mx-auto xl:px-40">
             <Breadcrumb style={{ fontSize: "1rem" }}>
-              <Breadcrumb.Item>Home</Breadcrumb.Item>
-              <Breadcrumb.Item>search</Breadcrumb.Item>
+              <Breadcrumb.Item>Trang chủ</Breadcrumb.Item>
+              <Breadcrumb.Item>Tìm kiếm</Breadcrumb.Item>
               <Breadcrumb.Item>{keyword}</Breadcrumb.Item>
             </Breadcrumb>
             <Row>

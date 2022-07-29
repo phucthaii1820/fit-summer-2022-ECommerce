@@ -5,6 +5,7 @@ import Login from "@/page/Login";
 import Register from "@/page/Register/Register";
 import Profile from "./profile";
 import LayoutMain from "@/components/Layouts/LayoutMain";
+import ForgetPassword from "@/page/ForgetPassword";
 
 export default function WebRoute() {
   const user = auth();
@@ -20,6 +21,10 @@ export default function WebRoute() {
         <Route
           path="register"
           element={!userData ? <Register /> : <Navigate to="/" />}
+        />
+        <Route
+          path="forget-password"
+          element={!userData ? <ForgetPassword /> : <Navigate to="/" />}
         />
         <Route path="/*" element={<RegularRoute userData={userData} />} />
         <Route

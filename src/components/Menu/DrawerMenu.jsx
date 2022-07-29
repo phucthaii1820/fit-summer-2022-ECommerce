@@ -1,6 +1,5 @@
 import React, { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
-import ReactImageFallback from "react-image-fallback";
+import { Link } from "react-router-dom";
 
 import { Drawer } from "antd";
 import { MenuOutlined } from "@ant-design/icons";

@@ -12,10 +12,8 @@ export const auth = () => {
 };
 
 export const login = (user) => {
-  console.log(user);
   const cookies = new Cookies();
   cookies.set("user", user, { expires: expireDate, path: "/" });
-  console.log(cookies.get("user"));
 };
 
 export const register = (user) => {
@@ -26,6 +24,5 @@ export const register = (user) => {
 export const logout = () => {
   const cookies = new Cookies();
   cookies.remove("user");
-  console.log(cookies.get("user"));
   window.location.reload();
 };

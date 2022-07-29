@@ -153,8 +153,6 @@ export default function Header({ user, ...props }) {
     window.location.href = `/product-detail/${option.category}/${option.id}`;
   };
 
-  console.log(options);
-
   return (
     <Disclosure as="nav" className="animate-none shadow-xl">
       {({ open }) => (
@@ -225,17 +223,7 @@ export default function Header({ user, ...props }) {
               </div>
 
               <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0 space-x-6">
-                <div className="hidden md:block ">
-                  {/* <Input
-                    style={{
-                      width: "20rem",
-                      borderRadius: "25px",
-                      margin: "0x 16px 0 0",
-                    }}
-                    placeholder="Search"
-                    onChange={ChangeHandler}
-                    onKeyDown={handleSearch}
-                  /> */}
+                <div className="hidden md:block hover:border-0">
                   <AutoComplete
                     options={options}
                     onSelect={(val, option) => onSelect(val, option)}
@@ -248,7 +236,7 @@ export default function Header({ user, ...props }) {
                       width: "20rem",
                       borderRadius: "25px",
                       margin: "0x 16px 0 0",
-                    }}></Input>
+                    }} />
                     </ AutoComplete>
                 </div>
                 <div className="">
