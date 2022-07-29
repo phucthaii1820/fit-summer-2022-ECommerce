@@ -5,11 +5,8 @@ import Login from "@/page/Login";
 import Register from "@/page/Register/Register";
 import Profile from "./profile";
 import LayoutMain from "@/components/Layouts/LayoutMain";
-<<<<<<< HEAD
 import ForgetPassword from "@/page/ForgetPassword";
-=======
 import LayoutAdmin from "@/components/Layouts/Admin/LayoutAdmin";
->>>>>>> main
 
 export default function WebRoute() {
     const user = auth();
