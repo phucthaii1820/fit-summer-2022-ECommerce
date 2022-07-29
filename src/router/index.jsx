@@ -5,11 +5,15 @@ import Login from "@/page/Login";
 import Register from "@/page/Register/Register";
 import Profile from "./profile";
 import LayoutMain from "@/components/Layouts/LayoutMain";
+<<<<<<< HEAD
 import ForgetPassword from "@/page/ForgetPassword";
+=======
+import LayoutAdmin from "@/components/Layouts/Admin/LayoutAdmin";
+>>>>>>> main
 
 export default function WebRoute() {
-  const user = auth();
-  const userData = user?.user_data ? user.user_data : undefined;
+    const user = auth();
+    const userData = user?.user_data ? user.user_data : undefined;
 
   return (
     <BrowserRouter>
@@ -39,6 +43,11 @@ export default function WebRoute() {
               <Navigate to="/login" />
             )
           }
+        />
+        <Route
+          exact
+          path="admin/*"
+          element={<LayoutAdmin></LayoutAdmin>}
         />
       </Routes>
     </BrowserRouter>

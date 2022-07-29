@@ -1,0 +1,54 @@
+{
+    "data": [
+        {
+            "id": 1,
+            "name": "Product 1",
+            "image": "https://picsum.photos/200/300/?random",
+            "category": "Category 1",
+            "color": [
+                {
+                    "id": 1,
+                    "name": "Red",
+                    "hex": "#ff0000"
+                },
+                {
+                    "id": 2,
+                    "name": "Green",
+                    "hex": "#00ff00"
+                },
+                {
+                    "id": 3,
+                    "name": "Blue",
+                    "hex": "#0000ff"
+                }
+            ],
+            "quantity": 1,
+            "price": 100
+        },
+        {
+            "id": 2,
+            "name": "Product 2",
+            "image": "https://picsum.photos/200/300/?random",
+            "category": "Category 1",
+            "color": [
+                {
+                    "id": 1,
+                    "name": "Red",
+                    "hex": "#ff0000"
+                },
+                {
+                    "id": 2,
+                    "name": "Green",
+                    "hex": "#00ff00"
+                },
+                {
+                    "id": 3,
+                    "name": "Blue",
+                    "hex": "#0000ff"
+                }
+            ],
+            "quantity": 2,
+            "price": 200
+        }
+    ]
+}
