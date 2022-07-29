@@ -22,6 +22,7 @@ const WishList = () => {
     this.key = "";
     this.name = "";
     this.status = "";
+    this.image = "";
   }
 
   const productsWish = (wishList) => {
@@ -32,6 +33,7 @@ const WishList = () => {
       product.key = wishList[i]?._id;
       product.name = wishList[i]?.title;
       product.status = productStatus(wishList[i]);
+      product.image = wishList[i]?.image[0];
       data.push(product);
     }
     return data;
@@ -58,18 +60,23 @@ const WishList = () => {
     }
   };
 
-  const onClickRemove = (e) => {
-    console.log(e.target.vaue);
-    // removeProduct(e);
-    // setChangeWishList(true);
+  const onClickRemove = (event, key) => {
+    removeProduct(key);
+    setChangeWishList(true);
   };
 
   const columns = [
     {
+      title: "Hình ảnh",
+      dataIndex: "image",
+      key: "image",
+      render: ( image ) => image ? <img src={image} className="w-16 h-16 bg-cover"></img> : <p>No image</p>,
+    },
+    {
       title: "Sản phẩm",
       dataIndex: "name",
       key: "name",
-      render: (text) => <a>{text}</a>,
+      render: (text, {key}) => <Link to={"/product-detail/" + key}>{text}</Link>,
     },
     {
       title: "Trạng thái",
@@ -100,7 +107,7 @@ const WishList = () => {
               Thêm giỏ hàng
             </Button>
           </div>
-          <button onClick={onClickRemove} value={key}>
+          <button onClick={event => onClickRemove(event, key)}>
             <DeleteOutlined
               style={{
                 color: "red",
@@ -111,7 +118,7 @@ const WishList = () => {
       ),
     },
   ];
-
+  
   return (
     <div>
       <Table columns={columns} dataSource={data} />
