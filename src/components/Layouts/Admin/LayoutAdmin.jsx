@@ -102,9 +102,7 @@ export default function LayoutAdmin() {
                     mode="inline"
                     items={items}
                     onClick={(e) => {
-                        console.log(e);
                         setSelectedKeys(e.key);
-                        console.log(selectedKeys);
                     }}
                 />
             </Sider>
