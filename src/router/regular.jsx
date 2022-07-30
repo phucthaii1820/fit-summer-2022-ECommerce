@@ -15,7 +15,7 @@ export default function RegularRoute({ userData }) {
         <Route exact path="/search" element={<Search />} />
         <Route
           exact
-          path="/product-detail/:idCate/:idProduct"
+          path="/product-detail/:idProduct"
           element={<ProductDetails />}
         />
       </Routes>
