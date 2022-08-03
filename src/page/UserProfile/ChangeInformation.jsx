@@ -152,8 +152,6 @@ export default function ChangeInformation() {
     }
   };
 
-  console.log(isLoading);
-
   return (
     <div>
       {isLoading ? (

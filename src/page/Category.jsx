@@ -82,8 +82,8 @@ const Category = () => {
         <div className="relative">
           <div className="container mx-auto xl:px-40">
             <Breadcrumb style={{ fontSize: "1rem" }}>
-              <Breadcrumb.Item>Home</Breadcrumb.Item>
-              <Breadcrumb.Item>Category</Breadcrumb.Item>
+              <Breadcrumb.Item>Trang chủ</Breadcrumb.Item>
+              <Breadcrumb.Item>Danh mục</Breadcrumb.Item>
               <Breadcrumb.Item>{category.name}</Breadcrumb.Item>
             </Breadcrumb>
             <Row>

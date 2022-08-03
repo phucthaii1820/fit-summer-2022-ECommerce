@@ -1,8 +1,9 @@
-import { Breadcrumb, Radio, Spin } from "antd";
+import { Breadcrumb, message, Radio, Spin } from "antd";
 import {
-  HeartOutlined,
+  HeartFilled,
   LoadingOutlined,
   ShoppingCartOutlined,
+  HeartOutlined,
 } from "@ant-design/icons";
 
 import Slider from "react-slick";
@@ -12,23 +13,24 @@ import "slick-carousel/slick/slick-theme.css";
 import React, { useEffect, useState } from "react";
 
 import Logo from "src/image/Logo.svg";
-import Login from "src/image/Login.svg";
 import { getProductInfo } from "@/API/product";
 import CarouselProducts from "@/components/product-card/Carousel";
 import { useParams } from "react-router-dom";
 import { getCategoryInfo } from "@/API/category";
+import { addWishProduct, getProfileUser, removeWishProduct } from "@/API/user";
 
 const ProductDetails = () => {
-  const { idProduct, idCate } = useParams();
+  const { idProduct } = useParams();
   const [category, setCategory] = useState([]);
   const [quantity, setQuantity] = useState(1);
   const [product, setProduct] = useState({});
   const [type, setType] = useState([]);
   const [selectedType, setSelectedType] = useState("0");
-  const [selectedThumb, setSelectedThumb] = useState(0);
   const [nav1, setNav1] = React.useState(null);
   const [nav2, setNav2] = React.useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [isWish, setIsWish] = useState(false);
+  const [userInfo, setUserInfo] = useState([]);
   let slider1 = [];
   let slider2 = [];
 
@@ -40,49 +42,6 @@ const ProductDetails = () => {
       spin
     />
   );
-
-  React.useEffect(() => {
-    setNav1(slider1);
-    setNav2(slider2);
-  }, [slider1, slider2]);
-
-  const quantityHandler = (event) => {
-    setQuantity(event.target.value);
-  };
-
-  const onChangeRadio = (e) => {
-    setSelectedType(e.target.value);
-  };
-
-  const onClickThumb = (e) => {
-    setSelectedThumb(e.target.value);
-  };
-
-  useEffect(() => {
-    async function fetchCategory() {
-      try {
-        const res = await getCategoryInfo(idCate);
-        setCategory(res);
-      } catch (err) {
-        console.log(err);
-      }
-    }
-    fetchCategory();
-  }, []);
-
-  useEffect(() => {
-    async function fetchProduct() {
-      try {
-        const res = await getProductInfo(idProduct);
-        setProduct(res?.data);
-        setType(res?.data?.type);
-        setIsLoading(false);
-      } catch (err) {
-        console.log(err);
-      }
-    }
-    fetchProduct();
-  }, [idProduct]);
 
   var settingThumbs = {
     dots: false,
@@ -109,6 +68,62 @@ const ProductDetails = () => {
         },
       },
     ],
+  };
+
+  React.useEffect(() => {
+    setNav1(slider1);
+    setNav2(slider2);
+  }, [slider1, slider2]);
+
+  const quantityHandler = (event) => {
+    setQuantity(event.target.value);
+  };
+
+  const onChangeRadio = (e) => {
+    setSelectedType(e.target.value);
+  };
+
+  useEffect(() => {
+    async function fetchProduct() {
+      try {
+        const res = await getProductInfo(idProduct);
+        setProduct(res?.data);
+        setType(res?.data?.type);
+        setIsLoading(false);
+        const resCate = await getCategoryInfo(res?.data?.category);
+        setCategory(resCate);
+        const resProfile = await getProfileUser();
+        setUserInfo(resProfile?.user_data);
+        if (
+          resProfile?.user_data?.wish.some(
+            (wish) => wish.product_id === idProduct
+          )
+        ) {
+          setIsWish(true);
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    }
+    fetchProduct();
+  }, [idProduct, isWish]);
+
+  const wishProduct = async () => {
+    try {
+      if (isWish) {
+        const res = await removeWishProduct({ product_id: idProduct });
+        setIsWish(false);
+      } else {
+        const res = await addWishProduct({ product_id: idProduct });
+        setIsWish(true);
+      }
+    } catch (err) {
+      message.error("Vui lòng đăng nhập để thực hiện chức năng!")
+    }
+  };
+
+  const onClickWish = () => {
+    wishProduct();
   };
 
   return (
@@ -156,8 +171,6 @@ const ProductDetails = () => {
                         asNavFor={nav1}
                         ref={(slider) => (slider2 = slider)}
                         {...settingThumbs}
-                        // onClick={onClickThumb}
-                        // value={selectedThumb}
                         slidesToShow={3}
                         swipeToSlide={true}
                         focusOnSelect={true}
@@ -185,7 +198,10 @@ const ProductDetails = () => {
                     </div>
                     <div className="flex mt-3">
                       <p className="text-xl text-red-500 font-bold">
-                        {type[selectedType]?.price}&nbsp;₫
+                        {new Intl.NumberFormat("vi-VN", {
+                          style: "currency",
+                          currency: "VND",
+                        }).format(type[selectedType]?.price)}
                       </p>
                     </div>
 
@@ -217,7 +233,10 @@ const ProductDetails = () => {
                                 style={{ backgroundColor: item?.color }}
                               ></div>
                               <div className="font-bold">
-                                {item?.price}&nbsp;₫
+                                {new Intl.NumberFormat("vi-VN", {
+                                  style: "currency",
+                                  currency: "VND",
+                                }).format(item?.price)}
                               </div>
                             </div>
                           </Radio>
@@ -225,16 +244,36 @@ const ProductDetails = () => {
                       </Radio.Group>
                     </div>
 
-                    <div className="">
-                      <a className="flex border-2 rounded-xl h-12 w-32 items-center justify-center text-xl">
-                        <HeartOutlined
-                          style={{
-                            marginRight: "10px",
-                          }}
-                        />
-                        {product?.totalWish}
-                      </a>
-                    </div>
+                    {!isWish ? (
+                      <div className="">
+                        <a
+                          className="flex border-2 rounded-xl h-12 w-32 items-center justify-center text-xl"
+                          onClick={onClickWish}
+                        >
+                          <HeartOutlined
+                            style={{
+                              marginRight: "10px",
+                            }}
+                          />
+                          {product?.totalWish}
+                        </a>
+                      </div>
+                    ) : (
+                      <div className="">
+                        <a
+                          className="flex border-2 rounded-xl h-12 w-32 hover:border-yellow-light items-center justify-center text-xl"
+                          onClick={onClickWish}
+                        >
+                          <HeartFilled
+                            style={{
+                              marginRight: "10px",
+                              color: "#F5B301",
+                            }}
+                          />
+                          {product?.totalWish}
+                        </a>
+                      </div>
+                    )}
                     <div className="mt-6">
                       <p>{product?.description}</p>
 

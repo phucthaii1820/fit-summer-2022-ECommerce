@@ -96,7 +96,9 @@ export default function Login() {
 
           <div className="grid grid-cols-2">
             <div className="col-span py-2">
-              <div className="text-left text-sm font-bold">Quên mật khẩu?</div>
+              <Link to="/forget-password">
+                <div className="text-black text-left text-sm font-bold">Quên mật khẩu?</div>
+              </Link>  
             </div>
 
             <div className="col-span">
