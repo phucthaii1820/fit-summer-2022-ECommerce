@@ -1,14 +1,41 @@
 import { Button, Space, Table } from "antd";
 import React, { useState, useEffect } from "react";
 import { getAllCategories } from "@/API/category";
-import { getListProducts } from "@/API/product";
+import { getAllProducts } from "@/API/product";
+import ProductDetailModal from "./product-detail-modal/ProductDetailModal";
 
 export default function ProductManagement() {
     const [filteredInfo, setFilteredInfo] = useState({});
     const [sortedInfo, setSortedInfo] = useState({});
     const [categories, setCategories] = useState([]);
-    const [isLoading, setIsLoading] = useState(false);
+    const [loading, setLoading] = useState(false);
     const [productList, setProductList] = useState([]);
+
+    useEffect(() => {
+        setLoading(true);
+
+        async function fetchCategories() {
+            try {
+                const resCategories = await getAllCategories();
+                setCategories(resCategories);
+            } catch (err) {
+                console.log(err);
+            }
+        }
+
+        async function fetchProducts() {
+            try {
+                const resProducts = await getAllProducts();
+                setProductList(resProducts.data);
+            } catch (err) {
+                console.log(err);
+            }
+        }
+
+        fetchCategories();
+        fetchProducts();
+        setLoading(false);
+    }, [categories, productList]);
 
     const clearFilters = () => {
         setFilteredInfo({});
@@ -24,60 +51,76 @@ export default function ProductManagement() {
         setFilteredInfo(filters);
         setSortedInfo(sorter);
     };
-    const data = [];
 
-    const columns = [];
+    const columns = [
+        {
+            title: "Tên sản phẩm",
+            dataIndex: "title",
+            key: "title",
+            ellipsis: true,
+        },
 
-    useEffect(() => {
-        async function fetchCategories() {
-            try {
-                const resCategories = await getAllCategories();
-                setCategories(resCategories);
-                setIsLoading(false);
-            } catch (err) {
-                console.log(err);
-            }
-        }
-        fetchCategories();
-
-        async function fetchProductList() {
-            try {
-                const resProductList = await getListProducts();
-                setProductList(resProductList);
-                setIsLoading(false);
-            } catch (err) {
-                console.log(err);
-            }
-        }
-        fetchProductList();
-    }, [categories]);
+        {
+            title: "Tên hãng",
+            dataIndex: "nameBrand",
+            key: "nameBrand",
+            ellipsis: true,
+        },
+        {
+            title: "Số lượt thích",
+            dataIndex: "totalWish",
+            key: "totalWish",
+            ellipsis: true,
+        },
+        {
+            title: "Danh mục",
+            dataIndex: "category",
+            key: "category",
+            ellipsis: true,
+            render: (_, record) => (
+                // Map category id to category name
+                <div>
+                    {
+                        categories.find(
+                            (category) => category.id === record.categoryId
+                        ).name
+                    }
+                </div>
+            ),
+        },
+        {
+            title: "Thao tác",
+            key: "action",
+            render: (_, record) => (
+                <ProductDetailModal product={record}></ProductDetailModal>
+            ),
+        },
+    ];
 
     return (
         <>
-            {isLoading ? (
+            {loading ? (
                 <div>Loading...</div>
             ) : (
-                <Space size={[8, 16]} wrap>
-                    {categories.map((categories) => (
-                        <Button>{categories.name}</Button>
-                    ))}
-                    <Button>Add Category</Button>
-                </Space>
-            )}
-            <Space
-                style={{
-                    marginBottom: 16,
-                }}
-            >
-                <Button onClick={clearFilters}>Xóa bộ lọc</Button>
-                <Button onClick={clearAll}>Xóa sắp xếp và bộ lọc</Button>
-            </Space>
+                <>
+                    <Space
+                        style={{
+                            marginBottom: 16,
+                        }}
+                    >
+                        <Button onClick={clearFilters}>Xóa bộ lọc</Button>
+                        <Button onClick={clearAll}>
+                            Xóa sắp xếp và bộ lọc
+                        </Button>
+                    </Space>
 
-            <Table
-                columns={columns}
-                dataSource={data}
-                onChange={handleChange}
-            />
+                    <Table
+                        columns={columns}
+                        dataSource={productList}
+                        onChange={handleChange}
+                    />
+                </>
+            )}
         </>
     );
 }

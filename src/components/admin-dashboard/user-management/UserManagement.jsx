@@ -1,11 +1,26 @@
-import { Button, Space, Table } from "antd";
-import React, { useState } from "react";
+import { Button, Space, Table, Tag } from "antd";
+import React, { useEffect, useState } from "react";
+import UserDetailModal from "./user-detail-modal/UserDetailModal";
+import { getAllUsers } from "@/API/user";
 
-export default function UserManagement(props) {
+export default function UserManagement() {
+    const [loading, setLoading] = useState(true);
     const [filteredInfo, setFilteredInfo] = useState({});
     const [sortedInfo, setSortedInfo] = useState({});
+    const [users, setUsers] = useState([]);
 
-    // useEffect(() => {
+    useEffect(() => {
+        async function fetchUsers() {
+            try {
+                const resUsers = await getAllUsers();
+                setUsers(resUsers.users);
+                setLoading(false);
+            } catch (err) {
+                console.log(err);
+            }
+        }
+        fetchUsers();
+    }, [users]);
 
     const clearFilters = () => {
         setFilteredInfo({});
@@ -21,92 +36,6 @@ export default function UserManagement(props) {
         setFilteredInfo(filters);
         setSortedInfo(sorter);
     };
-    const data = [
-        {
-            phone: "0989898989",
-            fullname: "Nguyễn Văn A 1",
-            email: "email@gmai.com",
-            CreatedAt: "2020-01-01",
-            role: "admin",
-        },
-        {
-            phone: "0989898989",
-            fullname: "Nguyễn Văn A 2",
-            email: "email@gmai.com",
-            CreatedAt: "2020-01-01",
-            role: "admin",
-        },
-        {
-            phone: "0989898989",
-            fullname: "Nguyễn Văn A 2",
-            email: "email@gmai.com",
-            CreatedAt: "2020-01-02",
-            role: "admin",
-        },
-        {
-            phone: "0989898989",
-            fullname: "Nguyễn Văn A 2",
-            email: "email@gmai.com",
-            CreatedAt: "2020-01-03",
-            role: "admin",
-        },
-        {
-            phone: "0989898989",
-            fullname: "Nguyễn Văn A 2",
-            email: "email@gmai.com",
-            CreatedAt: "2020-01-04",
-            role: "admin",
-        },
-        {
-            phone: "0989898989",
-            fullname: "Nguyễn Văn A 2",
-            email: "email@gmai.com",
-            CreatedAt: "2020-01-05",
-            role: "admin",
-        },
-        {
-            phone: "0989898989",
-            fullname: "Nguyễn Văn A 2",
-            email: "email@gmai.com",
-            CreatedAt: "2020-01-06",
-            role: "admin",
-        },
-        {
-            phone: "0989898989",
-            fullname: "Nguyễn Văn A 2",
-            email: "email@gmai.com",
-            CreatedAt: "2020-01-07",
-            role: "admin",
-        },
-        {
-            phone: "0989898989",
-            fullname: "Nguyễn Văn A 2",
-            email: "email@gmai.com",
-            CreatedAt: "2020-01-08",
-            role: "admin",
-        },
-        {
-            phone: "0989898989",
-            fullname: "Nguyễn Văn A 2",
-            email: "email@gmai.com",
-            CreatedAt: "2020-01-09",
-            role: "admin",
-        },
-        {
-            phone: "0989898989",
-            fullname: "Nguyễn Văn A 2",
-            email: "email@gmai.com",
-            CreatedAt: "2020-01-10",
-            role: "admin",
-        },
-        {
-            phone: "0989898989",
-            fullname: "Nguyễn Văn A 2",
-            email: "email@gmai.com",
-            CreatedAt: "2020-01-01",
-            role: "admin",
-        },
-    ];
 
     const columns = [
         {
@@ -127,15 +56,7 @@ export default function UserManagement(props) {
             key: "fullname",
             ellipsis: true,
         },
-        {
-            title: "Ngày tạo",
-            dataIndex: "CreatedAt",
-            key: "CreatedAt",
-            ellipsis: true,
-            sorter: (a, b) => a.CreatedAt - b.CreatedAt,
-            sortOrder:
-                sortedInfo.columnKey === "CreatedAt" ? sortedInfo.order : null,
-        },
+
         {
             title: "Vai trò",
             dataIndex: "role",
@@ -143,15 +64,37 @@ export default function UserManagement(props) {
             filters: [
                 {
                     text: "admin",
-                    value: 1,
+                    value: 1000,
                 },
                 {
                     text: "customer",
-                    value: 0,
+                    value: 1,
                 },
             ],
             filteredValue: filteredInfo.role || null,
             onFilter: (value, record) => record.value === value,
+            render: (_, { role }) => {
+                if (role === 1000) {
+                    return (
+                        <Tag color={"gold"} key={role}>
+                            Admin
+                        </Tag>
+                    );
+                } else {
+                    return (
+                        <Tag color={"blue"} key={role}>
+                            Customer
+                        </Tag>
+                    );
+                }
+            },
+        },
+        {
+            title: "Thao tác",
+            key: "action",
+            render: (_, record) => (
+                <UserDetailModal user={record}></UserDetailModal>
+            ),
         },
     ];
 
@@ -166,11 +109,16 @@ export default function UserManagement(props) {
                 <Button onClick={clearAll}>Xóa sắp xếp và bộ lọc</Button>
             </Space>
 
-            <Table
-                columns={columns}
-                dataSource={data}
-                onChange={handleChange}
-            />
+            {loading ? (
+                <div>Loading...</div>
+            ) : (
+                <Table
+                    loading={loading}
+                    columns={columns}
+                    dataSource={users}
+                    onChange={handleChange}
+                />
+            )}
         </>
     );
 }
