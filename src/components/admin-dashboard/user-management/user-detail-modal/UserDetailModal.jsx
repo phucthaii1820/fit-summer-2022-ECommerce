@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Button, Modal, Form, Input, Radio, DatePicker } from "antd";
-import { EyeOutlined, DeleteOutlined } from "@ant-design/icons";
+import { FolderOpenOutlined, DeleteOutlined } from "@ant-design/icons";
 
 export default function UserDetailModal(props) {
     const user = props.user;
@@ -26,9 +26,11 @@ export default function UserDetailModal(props) {
             <Button
                 type="primary"
                 onClick={showModal}
-                shape="circle"
-                icon={<EyeOutlined />}
-            ></Button>
+                shape="round"
+                icon={<FolderOpenOutlined />}
+            >
+                Chi tiết
+            </Button>
             <Modal
                 visible={visible}
                 title="Thông tin chi tiết"
@@ -83,7 +85,7 @@ export default function UserDetailModal(props) {
                         <Input value={user.bio} />
                     </Form.Item>
                     <Form.Item label={"Ngày tạo"}>
-                        <Input value={user.createdAt} />
+                        <Input value={user.createAt} />
                     </Form.Item>
                 </Form>
             </Modal>

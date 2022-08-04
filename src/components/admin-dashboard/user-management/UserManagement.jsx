@@ -10,7 +10,7 @@ export default function UserManagement() {
     const [users, setUsers] = useState([]);
 
     useEffect(() => {
-        async function fetchUsers() {
+        async function fetchData() {
             try {
                 const resUsers = await getAllUsers();
                 setUsers(resUsers.users);
@@ -19,8 +19,9 @@ export default function UserManagement() {
                 console.log(err);
             }
         }
-        fetchUsers();
-    }, [users]);
+        fetchData();
+        // }, [users]);
+    }, []);
 
     const clearFilters = () => {
         setFilteredInfo({});
@@ -44,17 +45,22 @@ export default function UserManagement() {
             key: "phone",
             ellipsis: true,
         },
-        {
-            title: "Email",
-            dataIndex: "email",
-            key: "email",
-            ellipsis: true,
-        },
+
         {
             title: "Họ tên",
             dataIndex: "fullname",
             key: "fullname",
             ellipsis: true,
+        },
+
+        {
+            title: "Ngày tạo",
+            dataIndex: "createAt",
+            key: "createAt",
+            ellipsis: true,
+            // sorter: (a, b) => new Date(a.createAt) - new Date(b.createAt),
+            sorter: (a, b) =>
+                new Date(a.createAt).getTime() - new Date(b.createAt).getTime(),
         },
 
         {
@@ -72,7 +78,7 @@ export default function UserManagement() {
                 },
             ],
             filteredValue: filteredInfo.role || null,
-            onFilter: (value, record) => record.value === value,
+            onFilter: (value, record) => record.role === value,
             render: (_, { role }) => {
                 if (role === 1000) {
                     return (

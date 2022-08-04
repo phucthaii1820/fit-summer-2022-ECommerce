@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { getAllCategories } from "@/API/category";
 import { Space, Button, Table } from "antd";
+import { PlusCircleOutlined } from "@ant-design/icons";
 
 export default function CategoryManagement() {
-    // Get all categories
     const [categories, setCategories] = useState([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        async function fetchCategories() {
+        setLoading(true);
+
+        async function fetchData() {
             try {
                 const resCategories = await getAllCategories();
                 setCategories(resCategories);
@@ -17,8 +19,9 @@ export default function CategoryManagement() {
                 console.log(err);
             }
         }
-        fetchCategories();
-    }, [categories]);
+
+        fetchData();
+    }, []);
 
     const columns = [
         {
@@ -32,7 +35,7 @@ export default function CategoryManagement() {
             dataIndex: "action",
             key: "action",
             ellipsis: true,
-            render: (text, record) => (
+            render: (_, record) => (
                 <Space size="middle">
                     <Button
                         type="primary"
@@ -48,7 +51,7 @@ export default function CategoryManagement() {
                             console.log("delete", record);
                         }}
                     >
-                        Xóa{" "}
+                        Xóa
                     </Button>
                 </Space>
             ),
@@ -60,13 +63,9 @@ export default function CategoryManagement() {
             {loading ? (
                 <div>Loading...</div>
             ) : (
-                <Space size={[8, 16]} wrap>
-                    <Table
-                        loading={loading}
-                        columns={columns}
-                        dataSource={categories}
-                    />
-                    <Button>Add Category</Button>
+                <Space>
+                    <Table columns={columns} dataSource={categories} />
+                    <Button icon={PlusCircleOutlined}>Thêm danh mục</Button>
                 </Space>
             )}
         </>
