@@ -4,6 +4,7 @@ import {
     OrderedListOutlined,
     UserOutlined,
     TeamOutlined,
+    AppstoreAddOutlined,
     ShoppingOutlined,
     BarChartOutlined,
 } from "@ant-design/icons";
@@ -35,7 +36,7 @@ const items = [
         getItem(
             "Thể loại",
             "2-2",
-            <TeamOutlined />,
+            <AppstoreAddOutlined />,
             null,
             <CategoryManagement />
         ),
@@ -60,7 +61,7 @@ const items = [
 export default function LayoutAdmin() {
     const [collapsed, setCollapsed] = useState(false);
 
-    const [selectedKeys, setSelectedKeys] = useState("1");
+    const [selectedKeys, setSelectedKeys] = useState("2-1");
 
     return (
         <Layout

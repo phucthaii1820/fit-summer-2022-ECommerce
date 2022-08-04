@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { getAllCategories } from "@/API/category";
-import { Space, Button } from "antd";
+import { Space, Button, Table } from "antd";
+import { PlusCircleOutlined } from "@ant-design/icons";
 
 export default function CategoryManagement() {
-    // Get all categories
     const [categories, setCategories] = useState([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        async function fetchCategories() {
+        setLoading(true);
+
+        async function fetchData() {
             try {
                 const resCategories = await getAllCategories();
                 setCategories(resCategories);
@@ -17,19 +19,53 @@ export default function CategoryManagement() {
                 console.log(err);
             }
         }
-        fetchCategories();
-    }, [categories]);
+
+        fetchData();
+    }, []);
+
+    const columns = [
+        {
+            title: "Tên danh mục",
+            dataIndex: "name",
+            key: "name",
+            ellipsis: true,
+        },
+        {
+            title: "Hành động",
+            dataIndex: "action",
+            key: "action",
+            ellipsis: true,
+            render: (_, record) => (
+                <Space size="middle">
+                    <Button
+                        type="primary"
+                        onClick={() => {
+                            console.log("edit", record);
+                        }}
+                    >
+                        Sửa
+                    </Button>
+                    <Button
+                        type="danger"
+                        onClick={() => {
+                            console.log("delete", record);
+                        }}
+                    >
+                        Xóa
+                    </Button>
+                </Space>
+            ),
+        },
+    ];
 
     return (
         <>
             {loading ? (
                 <div>Loading...</div>
             ) : (
-                <Space size={[8, 16]} wrap>
-                    {categories.map((categories) => (
-                        <Button>{categories.name}</Button>
-                    ))}
-                    <Button>Add Category</Button>
+                <Space>
+                    <Table columns={columns} dataSource={categories} />
+                    <Button icon={PlusCircleOutlined}>Thêm danh mục</Button>
                 </Space>
             )}
         </>
