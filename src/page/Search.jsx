@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
-import { useSearchParams, useParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import React from "react";
 
 import ProductCard from "@/components/product-card/ProductCard";
 
-import { Pagination, Row, Col, Breadcrumb, Spin } from "antd";
+import { Row, Col, Breadcrumb, Spin } from "antd";
 
 import Logo from "src/image/Logo.svg";
 import { LoadingOutlined } from "@ant-design/icons";
@@ -14,8 +14,6 @@ const Search = () => {
   const [data, setData] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  // const { idCate } = useParams();
-  const pageSize = 20;
   const [searchParams] = useSearchParams();
 
   const keyword = searchParams.get("keyword");

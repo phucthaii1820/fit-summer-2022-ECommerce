@@ -1,0 +1,3 @@
+.ant-select-selector, ::before, ::after{
+    border-style: none;
+}

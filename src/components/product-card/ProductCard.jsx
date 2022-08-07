@@ -1,13 +1,23 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
-import { addWishProduct, getProfileUser, removeWishProduct } from "@/API/user";
+import {
+  addShoppingCart,
+  addWishProduct,
+  getProfileUser,
+  removeWishProduct,
+} from "@/API/user";
 
 import { Card, message } from "antd";
-import { HeartOutlined, ShoppingCartOutlined, HeartFilled } from "@ant-design/icons";
+import {
+  HeartOutlined,
+  ShoppingCartOutlined,
+  HeartFilled,
+} from "@ant-design/icons";
 
 export default function ProductCard({ item, fetchProductsCard }) {
   const [isWish, setIsWish] = useState(false);
+  const [userData, setUserData] = useState({});
 
   const index = (item) => {
     for (let i = 0; i < item?.type.length; i++) {
@@ -22,7 +32,7 @@ export default function ProductCard({ item, fetchProductsCard }) {
     async function fetchProduct() {
       try {
         const resProfile = await getProfileUser();
-
+        setUserData(resProfile?.user_data);
         if (
           resProfile?.user_data?.wish.some(
             (wish) => wish.product_id === item?._id
@@ -39,21 +49,43 @@ export default function ProductCard({ item, fetchProductsCard }) {
 
   const wishProduct = async () => {
     try {
-      if (isWish) {
-        const res = await removeWishProduct({ product_id: item?._id });
-        setIsWish(false);
-      } else {
-        const res = await addWishProduct({ product_id: item?._id });
-        setIsWish(true);
+      if (Object.entries(userData).length !== 0) {
+        if (isWish) {
+          const res = await removeWishProduct({ product_id: item?._id });
+          setIsWish(false);
+        } else {
+          const res = await addWishProduct({ product_id: item?._id });
+          setIsWish(true);
+        }
+        fetchProductsCard();
       }
-      fetchProductsCard();
+      else{
+        message.error("Vui lòng đăng nhập để thực hiện chức năng!");
+      }
     } catch (err) {
-      message.error("Vui lòng đăng nhập để thực hiện chức năng!");
+      message.error("Hệ thống đang xử lý! Vui lòng trở lại sau!");
     }
   };
 
   const onClickWish = () => {
     wishProduct();
+  };
+
+  const addCart = async () => {
+    try {
+      if (Object.entries(userData).length !== 0) {
+        const res = await addShoppingCart({product_id: item?._id, type_id: item?.type[index(item)]?._id, quantity: 1})
+      }
+      else{
+        message.error("Vui lòng đăng nhập để thực hiện chức năng!");
+      }
+    } catch (err) {
+      message.error("Hệ thống đang xử lý! Vui lòng trở lại sau!");
+    }
+  };
+
+  const onClickAddCart = () => {
+    addCart();
   };
   return (
     <div className="">
@@ -117,13 +149,14 @@ export default function ProductCard({ item, fetchProductsCard }) {
             </div>
           }
         >
-          <Link to={"/product-detail/" + item?._id}>
-            <div>
+          <div>
+            <Link to={"/product-detail/" + item?._id}>
               <p className="uppercase mt-2 mb-4 text-base font-bold truncate">
                 {item?.title}
               </p>
-
-              <div className="relative flex">
+            </Link>
+            <div className="relative flex">
+              <Link to={"/product-detail/" + item?._id}>
                 <div>
                   {/* <p className="line-through text-gray-dark">
                                 {" "}
@@ -141,19 +174,22 @@ export default function ProductCard({ item, fetchProductsCard }) {
                     <p className="font-bold mb-1 text-red-500">Hết hàng</p>
                   )}
                 </div>
-                {/* Add to card button  */}
-                <button className="absolute bottom-0 right-0 inline-flex items-center leading-sm px-2 py-1 rounded-lg bg-white border border-gray-extra_dark">
-                  <ShoppingCartOutlined
-                    style={{
-                      verticalAlign: "middle",
-                      color: "#797979",
-                    }}
-                  ></ShoppingCartOutlined>
-                  <div className="text-sm text-gray-extra_dark pl-1">Thêm</div>
-                </button>
-              </div>
+              </Link>
+              {/* Add to card button  */}
+              <button
+                className="absolute bottom-0 right-0 inline-flex items-center leading-sm px-2 py-1 border border-solid rounded-lg border-gray-extra_dark hover:border-yellow-light"
+                onClick={onClickAddCart}
+              >
+                <ShoppingCartOutlined
+                  style={{
+                    verticalAlign: "middle",
+                    color: "#797979",
+                  }}
+                ></ShoppingCartOutlined>
+                <div className="text-sm text-gray-extra_dark pl-1">Thêm</div>
+              </button>
             </div>
-          </Link>
+          </div>
         </Card>
       ) : null}
     </div>
