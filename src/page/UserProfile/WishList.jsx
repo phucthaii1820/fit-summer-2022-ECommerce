@@ -1,4 +1,3 @@
-import { getProductInfo } from "@/API/product";
 import { getWishList, removeWishProduct } from "@/API/user";
 import { DeleteOutlined } from "@ant-design/icons";
 import { Button, message, Table } from "antd";
@@ -11,7 +10,7 @@ const WishList = () => {
 
   const productStatus = (item) => {
     for (let i = 0; i < item?.type.length; i++) {
-      if (item?.type[i]?.quantity > -1) {
+      if (item?.type[i]?.quantity > 0) {
         return "Còn hàng";
       }
     }
@@ -70,7 +69,7 @@ const WishList = () => {
       title: "Hình ảnh",
       dataIndex: "image",
       key: "image",
-      render: ( image ) => image ? <img src={image} className="w-16 h-16 bg-cover"></img> : <p>No image</p>,
+      render: ( image ) => image ? <img src={image} alt="productImg" className="w-16 h-16 bg-cover"></img> : <p>No image</p>,
     },
     {
       title: "Sản phẩm",
