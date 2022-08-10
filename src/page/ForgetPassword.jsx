@@ -8,8 +8,8 @@ import React, { useState } from "react";
 import useQuery from "@/utils/query";
 
 import { postRegister } from "@/API/auth";
-import { checkExistUser } from "@/API/user";
-import { register } from "@/utils/auth";
+import { checkExistUser, forgotPassword } from "@/API/user";
+import { login, register } from "@/utils/auth";
 
 import firebase from "firebase/compat/app";
 import "firebase/compat/auth";
@@ -41,7 +41,7 @@ export default function ForgetPassword() {
     var maxNumberofChars = 16;
     var regularExpression =
       /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,16}$/;
-    alert(newPassword);
+
     if (
       newPassword.length < minNumberofChars ||
       newPassword.length > maxNumberofChars
@@ -49,11 +49,9 @@ export default function ForgetPassword() {
       return false;
     }
     if (!regularExpression.test(newPassword)) {
-      alert(
-        "password should contain atleast one number and one special character"
-      );
       return false;
     }
+    return true;
   };
 
   const handlePhoneChange = (event) => {
@@ -78,7 +76,12 @@ export default function ForgetPassword() {
       message.error("Số điện thoại phải lớn hơn 9 kí tự!");
     } else if (!user?.user_data) {
       message.error("Số điện thọai này chưa tồn tại!");
-    } else {
+    } else if(!validatePass(password)){
+      message.error("Mật khẩu chứa ít nhất 1 chữ số và 1 kí tự đặc biệt!");
+    } else if(password.length < 6 || password.length > 16){
+      message.error("Độ dài mật khẩu không hợp lệ!");
+    }
+    else {
       let verify = new firebase.auth.RecaptchaVerifier("recaptcha-container", {
         size: "invisible",
       });
@@ -102,14 +105,9 @@ export default function ForgetPassword() {
       .confirm(otp)
       .then(async (result) => {
         try {
-          const res = await postRegister({
-            phone: phone,
-            password: password,
-            passwordConfirm: passwordConfirm,
-          });
-          register(res);
+          const res = await forgotPassword({ phone: phone, newPassword: password });
           setTimeout(() => {
-            window.location.href = queryURL.get("redirect") ?? "/";
+            window.location.href = "/login";
           }, 1000);
         } catch (err) {
           console.log(err);
@@ -136,7 +134,7 @@ export default function ForgetPassword() {
         <p className="font-bold text-base text-left">Nhập mật khẩu</p>
         <input
           type="password"
-          placeholder="Nhập mật khẩu"
+          placeholder="Nhập 6-16 kí tự gồm 1 số và 1 kí tự đặc biệt"
           className="rounded-lg flex-initial w-full appearance-none border border-gray-300 py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base"
           onChange={handlePassChange}
         />
