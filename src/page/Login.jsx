@@ -78,7 +78,7 @@ export default function Login() {
             <p className="font-bold text-base text-left">Mật khẩu</p>
             <input
               type="password"
-              placeholder="Nhập mật khẩu"
+              placeholder="Nhập 6-16 kí tự gồm 1 số và 1 kí tự đặc biệt"
               className="rounded-lg flex-initial w-full appearance-none border border-gray-300 py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base"
               onChange={handlePassChange}
             />

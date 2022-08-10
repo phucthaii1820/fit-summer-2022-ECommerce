@@ -9,6 +9,9 @@ export const getWishList = () =>
 export const postPassword = (data) =>
     callAPI({ url: `/user/change-password`, method: "POST", data });
 
+export const forgotPassword = (data) =>
+    callAPI({ url: `/user/forgot-password`, method: "POST", data });
+
 export const postInfo = (data) =>
     callAPI({ url: `/user/update-info`, method: "POST", data });
 

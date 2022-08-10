@@ -25,8 +25,6 @@ import { searchProducts } from "@/API/product";
 
 import "./Header.css"
 
-// const { Search } = Input;
-
 export default function Header({ user, ...props }) {
   const location = useLocation();
   const [categories, setCategories] = useState([]);
@@ -196,6 +194,7 @@ export default function Header({ user, ...props }) {
                             border: "0px",
                             paddingInline: "10px",
                             color: isHovering ? "black" : "black",
+                            transition: isHovering ? "width .2s ease-in-out": "",
                           }}
                           onMouseEnter={handleMouseEnter}
                           onMouseLeave={handleMouseLeave}
@@ -214,6 +213,7 @@ export default function Header({ user, ...props }) {
                           border: "0px",
                           paddingInline: "10px",
                           color: isHovering ? "black" : "black",
+                          transition: isHovering ? "width .2s ease-in-out": "",
                         }}
                         onMouseEnter={handleMouseEnter}
                         onMouseLeave={handleMouseLeave}
