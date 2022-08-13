@@ -23,6 +23,10 @@ export default function CategoryManagement() {
         fetchData();
     }, []);
 
+    useEffect(() => {
+        console.log(categories);
+    }, [categories]);
+
     const columns = [
         {
             title: "Tên danh mục",
@@ -63,10 +67,14 @@ export default function CategoryManagement() {
             {loading ? (
                 <div>Loading...</div>
             ) : (
-                <Space>
-                    <Table columns={columns} dataSource={categories} />
-                    <Button icon={PlusCircleOutlined}>Thêm danh mục</Button>
-                </Space>
+                <>
+                    <Space direction="vertical">
+                        <Table columns={columns} dataSource={categories} />
+                        <Button icon={<PlusCircleOutlined />}>
+                            Thêm danh mục
+                        </Button>
+                    </Space>
+                </>
             )}
         </>
     );

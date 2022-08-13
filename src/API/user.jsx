@@ -23,3 +23,6 @@ export const addWishProduct = (data) =>
 
 export const removeWishProduct = (data) =>
     callAPI({ url: `/user/remove-wish-product`, method: "POST", data });
+
+export const deleteUser = (id) =>
+    callAPI({ url: `/user/delete-user?id=${id}`, method: "GET" });

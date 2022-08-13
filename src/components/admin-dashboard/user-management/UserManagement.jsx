@@ -9,6 +9,8 @@ export default function UserManagement() {
     const [sortedInfo, setSortedInfo] = useState({});
     const [users, setUsers] = useState([]);
 
+    const [deleteUser, setDeleteUser] = useState(false);
+
     useEffect(() => {
         async function fetchData() {
             try {
@@ -21,7 +23,7 @@ export default function UserManagement() {
         }
         fetchData();
         // }, [users]);
-    }, []);
+    }, [deleteUser]);
 
     const clearFilters = () => {
         setFilteredInfo({});
@@ -58,9 +60,11 @@ export default function UserManagement() {
             dataIndex: "createAt",
             key: "createAt",
             ellipsis: true,
-            // sorter: (a, b) => new Date(a.createAt) - new Date(b.createAt),
             sorter: (a, b) =>
                 new Date(a.createAt).getTime() - new Date(b.createAt).getTime(),
+
+            sortOrder:
+                sortedInfo.columnKey === "createAt" ? sortedInfo.order : null,
         },
 
         {
@@ -99,7 +103,10 @@ export default function UserManagement() {
             title: "Thao tác",
             key: "action",
             render: (_, record) => (
-                <UserDetailModal user={record}></UserDetailModal>
+                <UserDetailModal
+                    user={record}
+                    deleteUser={() => setDeleteUser(!deleteUser)}
+                />
             ),
         },
     ];
