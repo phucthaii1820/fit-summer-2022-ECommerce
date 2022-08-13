@@ -9,6 +9,9 @@ export const getWishList = () =>
 export const postPassword = (data) =>
     callAPI({ url: `/user/change-password`, method: "POST", data });
 
+export const forgotPassword = (data) =>
+    callAPI({ url: `/user/forgot-password`, method: "POST", data });
+
 export const postInfo = (data) =>
     callAPI({ url: `/user/update-info`, method: "POST", data });
 
@@ -23,6 +26,12 @@ export const addWishProduct = (data) =>
 
 export const removeWishProduct = (data) =>
     callAPI({ url: `/user/remove-wish-product`, method: "POST", data });
+
+export const addShoppingCart = (data) =>
+    callAPI({ url: `/user/add-cart`, method: "POST", data });
+
+export const removeShoppingCart = (data) =>
+    callAPI({ url: `/user/remove-cart`, method: "POST", data });
 
 export const deleteUser = (id) =>
     callAPI({ url: `/user/delete-user?id=${id}`, method: "GET" });

@@ -81,19 +81,19 @@ export default function Footer() {
               <div className="font-bold">
                 <p>Phương thức thanh toán</p>
                 <div className="grid grid-cols-3 my-5">
-                  <div className="col-span bg-gray-100 mr-2 border border-black rounded-lg h-20"></div>
-                  <div className="col-span bg-gray-100 mx-2 border border-black rounded-lg h-20"></div>
-                  <div className="col-span bg-gray-100 ml-2 border border-black rounded-lg h-20"></div>
+                  <div className="col-span bg-gray-100 mr-2 border border-solid border-black rounded-lg h-20"></div>
+                  <div className="col-span bg-gray-100 mx-2 border border-solid border-black rounded-lg h-20"></div>
+                  <div className="col-span bg-gray-100 ml-2 border border-solid border-black rounded-lg h-20"></div>
                 </div>
               </div>
             </div>
           </div>
           <div className="col-span-2">
-            <div className="p-5 text-left flex border border-black rounded-lg bg-gray-100">
+            <div className="p-5 text-left flex border border-solid border-black rounded-lg bg-gray-100">
               <div className="flex-1">
-                <p className="font-bold mb-1">Đăng ký nhận tin qua email</p>
+                <p className="font-bold mb-1">Đăng ký tài khoản</p>
                 <p className="mb-0">
-                  Nhận tin qua email để không bỏ lỡ các tin tức khuyến mãi
+                  Nhập số điện thoại để tham gia cùng BIKEGEAR
                 </p>
               </div>
               <div className="flex flex-1">
@@ -152,7 +152,7 @@ export default function Footer() {
                   </div>
                 </div>
                 <div className="flex justify-center">
-                  <div className="flex-initial flex flex-row mr-8 h-16 w-96 items-center justify-center bg-gray-100 mr-2 border border-black rounded-lg">
+                  <div className="flex-initial flex flex-row mr-8 h-16 w-96 items-center justify-center bg-gray-100 mr-2 border border-solid border-black rounded-lg">
                     <FontAwesomeIcon icon={faList} className="pl-2 h-6" />
                     <a href="/" className="pl-8">
                       <p className="text-base lg:text-lg font-bold pt-4 text-black">
@@ -160,7 +160,7 @@ export default function Footer() {
                       </p>
                     </a>
                   </div>
-                  <div className="flex-initial flex flex-row mr-8 h-16 w-96 items-center justify-center bg-gray-100 mr-2 border border-black rounded-lg">
+                  <div className="flex-initial flex flex-row mr-8 h-16 w-96 items-center justify-center bg-gray-100 mr-2 border border-solid border-black rounded-lg">
                     <FontAwesomeIcon
                       icon={faCommentDots}
                       className="pl-2 h-6"

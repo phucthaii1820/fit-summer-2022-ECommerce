@@ -23,7 +23,7 @@ import DropDownMenu from "@/components/Menu/DropDownMenu";
 import ShoppingCartModal from "@/components/shopping-cart/ShoppingCartModal";
 import { searchProducts } from "@/API/product";
 
-// const { Search } = Input;
+import "./Header.css"
 
 export default function Header({ user, ...props }) {
   const location = useLocation();
@@ -151,7 +151,7 @@ export default function Header({ user, ...props }) {
 
   const onSelect = (val, option) => {
     console.log(option);
-    window.location.href = `/product-detail/${option.category}/${option.id}`;
+    window.location.href = `/product-detail/${option.id}`;
   };
 
   return (
@@ -194,6 +194,7 @@ export default function Header({ user, ...props }) {
                             border: "0px",
                             paddingInline: "10px",
                             color: isHovering ? "black" : "black",
+                            transition: isHovering ? "width .2s ease-in-out": "",
                           }}
                           onMouseEnter={handleMouseEnter}
                           onMouseLeave={handleMouseLeave}
@@ -212,6 +213,7 @@ export default function Header({ user, ...props }) {
                           border: "0px",
                           paddingInline: "10px",
                           color: isHovering ? "black" : "black",
+                          transition: isHovering ? "width .2s ease-in-out": "",
                         }}
                         onMouseEnter={handleMouseEnter}
                         onMouseLeave={handleMouseLeave}

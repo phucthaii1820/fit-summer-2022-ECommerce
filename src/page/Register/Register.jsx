@@ -35,27 +35,6 @@ export default function Register() {
   const [result, setResult] = useState("");
   const [otp, setOtp] = useState("");
 
-  const validatePass = function validatePassword(pass) {
-    var newPassword = pass;
-    var minNumberofChars = 6;
-    var maxNumberofChars = 16;
-    var regularExpression =
-      /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,16}$/;
-    alert(newPassword);
-    if (
-      newPassword.length < minNumberofChars ||
-      newPassword.length > maxNumberofChars
-    ) {
-      return false;
-    }
-    if (!regularExpression.test(newPassword)) {
-      alert(
-        "password should contain atleast one number and one special character"
-      );
-      return false;
-    }
-  };
-
   const handlePhoneChange = (event) => {
     setEnterPhone(event.target.value);
   };
@@ -68,28 +47,23 @@ export default function Register() {
     setEnterPassConfirm(event.target.value);
   };
 
-  const handleRegister = async (event) => {
-    if (password === "" || passwordConfirm === "" || phone === "") {
-      message.error("Please fill up fully information!");
-    } else if (password !== passwordConfirm) {
-      message.error("Incorrect confirmation password!");
-    } else if (phone.length < 10) {
-      message.error("Your phone must be longer than 10 characters!");
-    } else {
-      try {
-        const res = await postRegister({
-          phone: phone,
-          password: password,
-          passwordConfirm: passwordConfirm,
-        });
-        register(res);
-        setTimeout(() => {
-          window.location.href = queryURL.get("redirect") ?? "/";
-        }, 1000);
-      } catch (err) {
-        console.log(err);
-      }
+  const validatePass = function validatePassword(pass) {
+    var newPassword = pass;
+    var minNumberofChars = 6;
+    var maxNumberofChars = 16;
+    var regularExpression =
+      /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,16}$/;
+
+    if (
+      newPassword.length < minNumberofChars ||
+      newPassword.length > maxNumberofChars
+    ) {
+      return false;
     }
+    if (!regularExpression.test(newPassword)) {
+      return false;
+    }
+    return true;
   };
 
   const handleModal = async () => {
@@ -102,6 +76,10 @@ export default function Register() {
       message.error("Số điện thoại đăng ký phải lớn hơn 9 kí tự!");
     } else if (user?.user_data) {
       message.error("Số điện thọai này đã tồn tại!");
+    } else if(!validatePass(password)){
+      message.error("Mật khẩu chứa ít nhất 1 chữ số và 1 kí tự đặc biệt!");
+    } else if(password.length < 6 || password.length > 16){
+      message.error("Độ dài mật khẩu không hợp lệ!");
     } else {
       let verify = new firebase.auth.RecaptchaVerifier("recaptcha-container", {
         size: "invisible",
@@ -159,7 +137,7 @@ export default function Register() {
         <p className="font-bold text-base text-left">Nhập mật khẩu</p>
         <input
           type="password"
-          placeholder="Nhập mật khẩu"
+          placeholder="Nhập 6-16 kí tự gồm 1 số và 1 kí tự đặc biệt"
           className="rounded-lg flex-initial w-full appearance-none border border-gray-300 py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base"
           onChange={handlePassChange}
         />

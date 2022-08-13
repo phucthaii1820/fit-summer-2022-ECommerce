@@ -1,4 +1,4 @@
-import { Breadcrumb, message, Radio, Spin } from "antd";
+import { Breadcrumb, InputNumber, message, Radio, Spin } from "antd";
 import {
   HeartFilled,
   LoadingOutlined,
@@ -17,7 +17,12 @@ import { getProductInfo } from "@/API/product";
 import CarouselProducts from "@/components/product-card/Carousel";
 import { useParams } from "react-router-dom";
 import { getCategoryInfo } from "@/API/category";
-import { addWishProduct, getProfileUser, removeWishProduct } from "@/API/user";
+import {
+  addShoppingCart,
+  addWishProduct,
+  getProfileUser,
+  removeWishProduct,
+} from "@/API/user";
 
 const ProductDetails = () => {
   const { idProduct } = useParams();
@@ -110,20 +115,45 @@ const ProductDetails = () => {
 
   const wishProduct = async () => {
     try {
-      if (isWish) {
-        const res = await removeWishProduct({ product_id: idProduct });
-        setIsWish(false);
+      if (Object.entries(userInfo).length !== 0) {
+        if (isWish) {
+          const res = await removeWishProduct({ product_id: idProduct });
+          setIsWish(false);
+        } else {
+          const res = await addWishProduct({ product_id: idProduct });
+          setIsWish(true);
+        }
       } else {
-        const res = await addWishProduct({ product_id: idProduct });
-        setIsWish(true);
+        message.error("Vui lòng đăng nhập để thực hiện chức năng!");
       }
     } catch (err) {
-      message.error("Vui lòng đăng nhập để thực hiện chức năng!")
+      message.error("Hệ thống đang xử lý! Vui lòng trở lại sau!");
     }
   };
 
   const onClickWish = () => {
     wishProduct();
+  };
+
+  const AddShoppingCart = async () => {
+    try {
+      if (Object.entries(userInfo).length !== 0) {
+        const res = await addShoppingCart({
+          product_id: idProduct,
+          type_id: type[selectedType]?._id,
+          quantity: quantity,
+        });
+        message.success("Thêm vào giỏ hàng thành công");
+      } else {
+        message.error("Vui lòng đăng nhập để thực hiện chức năng!");
+      }
+    } catch (err) {
+      message.error("Hệ thống đang xử lý! Vui lòng trở lại sau!");
+    }
+  };
+
+  const onClickShoppingCart = () => {
+    AddShoppingCart();
   };
 
   return (
@@ -146,7 +176,7 @@ const ProductDetails = () => {
               <div className="py-8">
                 <div className="grid grid-cols-3 gap-20">
                   <div className="col-span">
-                    <div className="mb-8">
+                    <div className="mb-2">
                       <Slider
                         asNavFor={nav2}
                         ref={(slider) => (slider1 = slider)}
@@ -155,7 +185,7 @@ const ProductDetails = () => {
                       >
                         {product?.image?.map((item, index) => (
                           <div className="" key={index}>
-                            <div className="border-2 rounded-lg p-2 ">
+                            <div className="border-2 border-solid rounded-lg p-2">
                               <img
                                 src={item}
                                 alt="ProductThumb"
@@ -166,7 +196,7 @@ const ProductDetails = () => {
                         ))}
                       </Slider>
                     </div>
-                    <div>
+                    <div className="flex justify-center">
                       <Slider
                         asNavFor={nav1}
                         ref={(slider) => (slider2 = slider)}
@@ -177,7 +207,7 @@ const ProductDetails = () => {
                       >
                         {product?.image?.map((item, index) => (
                           <div className="mr-1" key={index}>
-                            <div className="w-32 h-24 border-2 rounded-lg p-2 items-center cursor-pointer">
+                            <div className="w-32 h-24 border-2 border-solid rounded-lg p-2 items-center cursor-pointer">
                               <img
                                 src={item}
                                 alt="ProductThumb"
@@ -215,7 +245,7 @@ const ProductDetails = () => {
                         className="mt-1"
                         onChange={onChangeRadio}
                         optionType="button"
-                        value={selectedType}
+                        defaultValue={0}
                       >
                         {type.map((item, index) => (
                           <Radio
@@ -246,8 +276,8 @@ const ProductDetails = () => {
 
                     {!isWish ? (
                       <div className="">
-                        <a
-                          className="flex border-2 rounded-xl h-12 w-32 items-center justify-center text-xl"
+                        <button
+                          className="flex border-2 border-solid rounded-xl hover:border-yellow-light h-12 w-32 items-center justify-center text-xl"
                           onClick={onClickWish}
                         >
                           <HeartOutlined
@@ -256,12 +286,12 @@ const ProductDetails = () => {
                             }}
                           />
                           {product?.totalWish}
-                        </a>
+                        </button>
                       </div>
                     ) : (
                       <div className="">
-                        <a
-                          className="flex border-2 rounded-xl h-12 w-32 hover:border-yellow-light items-center justify-center text-xl"
+                        <button
+                          className="flex border-2 border-solid rounded-xl border-yellow-light h-12 w-32 hover:border-yellow-light items-center justify-center text-xl"
                           onClick={onClickWish}
                         >
                           <HeartFilled
@@ -271,7 +301,7 @@ const ProductDetails = () => {
                             }}
                           />
                           {product?.totalWish}
-                        </a>
+                        </button>
                       </div>
                     )}
                     <div className="mt-6">
@@ -289,7 +319,7 @@ const ProductDetails = () => {
                       {type[selectedType]?.quantity > 0 ? (
                         <div>
                           <button
-                            className="border-2 rounded-tl-xl rounded-bl-xl w-12 h-10"
+                            className="border-2 border-solid border-yellow-light border-r-0 rounded-tl-xl rounded-bl-xl w-12 h-10 font-bold"
                             onClick={() => {
                               quantity > 1
                                 ? setQuantity(quantity - 1)
@@ -304,10 +334,10 @@ const ProductDetails = () => {
                             value={quantity}
                             disabled={true}
                             onChange={quantityHandler}
-                            className="border-2 text-center w-32 h-10"
+                            className="border-2 border-solid border-yellow-light text-center w-32 h-10"
                           ></input>
                           <button
-                            className="border-2 rounded-tr-xl rounded-br-xl w-12 h-10"
+                            className="border-2 border-solid border-yellow-light border-l-0 rounded-tr-xl rounded-br-xl w-12 h-10 font-bold"
                             onClick={() => {
                               quantity < type[selectedType]?.quantity
                                 ? setQuantity(quantity + 1)
@@ -330,7 +360,10 @@ const ProductDetails = () => {
                         style={{ backgroundColor: "#FFEBB7", color: "#E7A800" }}
                       >
                         <ShoppingCartOutlined style={{ fontSize: "25px" }} />
-                        <button className="ml-2 text-xl font-bold">
+                        <button
+                          className="ml-2 text-xl font-bold"
+                          onClick={onClickShoppingCart}
+                        >
                           Thêm vào giỏ hàng
                         </button>
                       </div>
