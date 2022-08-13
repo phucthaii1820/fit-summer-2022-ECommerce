@@ -33,13 +33,16 @@ export default function UserDetailModal(props) {
     };
 
     const OnClickDeleteUser = () => {
+        setConfirmVisible(true);
         Modal.confirm({
             visible: confirmVisible,
             title: "Bạn có chắc chắn muốn xóa người dùng này?",
-            icon: <DeleteOutlined />,
+            // icon: <DeleteOutlined />,
             okText: "Có",
             cancelText: "Không",
-            onOk: handleDeleteUser,
+            onOk: () => {
+                handleDeleteUser();
+            },
             onCancel: () => {
                 setConfirmVisible(false);
             },

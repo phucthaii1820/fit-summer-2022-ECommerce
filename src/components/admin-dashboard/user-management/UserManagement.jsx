@@ -22,7 +22,6 @@ export default function UserManagement() {
             }
         }
         fetchData();
-        // }, [users]);
     }, [deleteUser]);
 
     const clearFilters = () => {
@@ -105,8 +104,10 @@ export default function UserManagement() {
             render: (_, record) => (
                 <UserDetailModal
                     user={record}
-                    deleteUser={() => setDeleteUser(!deleteUser)}
-                />
+                    deleteUser={() => {
+                        setDeleteUser(!deleteUser);
+                    }}
+                ></UserDetailModal>
             ),
         },
     ];
