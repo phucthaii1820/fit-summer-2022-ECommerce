@@ -272,6 +272,7 @@ import React, { useState, useEffect } from "react";
 import { getAllCategories } from "@/API/category";
 import { getAllProducts } from "@/API/product";
 import ProductDetailModal from "./product-detail-modal/ProductDetailModal";
+import AddProductModal from "./add-product-modal/AddProductModal";
 import { PlusCircleOutlined } from "@ant-design/icons";
 
 export default function ProductManagement() {
@@ -461,7 +462,7 @@ export default function ProductManagement() {
                         }}
                     />
 
-                    <Button icon={<PlusCircleOutlined />}>Thêm sản phẩm</Button>
+                    <AddProductModal categories={categories} />
                 </>
             )}
         </>
