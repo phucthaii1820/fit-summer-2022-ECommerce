@@ -1,15 +1,17 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Modal, Form, Input, Radio, DatePicker } from "antd";
 import { FolderOpenOutlined, DeleteOutlined } from "@ant-design/icons";
+
+import { deleteUser } from "@/API/user";
 
 export default function UserDetailModal(props) {
     const user = props.user;
 
     const [loading, setLoading] = useState(false);
     const [visible, setVisible] = useState(false);
+    const [confirmVisible, setConfirmVisible] = useState(false);
 
     const showModal = () => {
-        console.log(user);
         setVisible(true);
     };
 
@@ -17,8 +19,35 @@ export default function UserDetailModal(props) {
         setVisible(false);
     };
 
-    const handleDeleteUser = () => {
+    const handleDeleteUser = async () => {
         setLoading(true);
+        // Call Api to delete User
+        const res = await deleteUser(user._id);
+        if (res.message === "Delete user success!") {
+            setLoading(false);
+            setConfirmVisible(false);
+            setVisible(false);
+            console.log("delete user");
+            props.deleteUser();
+        }
+    };
+
+    const OnClickDeleteUser = () => {
+        setConfirmVisible(true);
+        Modal.confirm({
+            visible: confirmVisible,
+            title: "Bạn có chắc chắn muốn xóa người dùng này?",
+            // icon: <DeleteOutlined />,
+            okText: "Có",
+            cancelText: "Không",
+            onOk: () => {
+                handleDeleteUser();
+            },
+            onCancel: () => {
+                setConfirmVisible(false);
+            },
+            loading: loading,
+        });
     };
 
     return (
@@ -40,7 +69,7 @@ export default function UserDetailModal(props) {
                         type="danger"
                         loading={loading}
                         icon={<DeleteOutlined />}
-                        onClick={handleDeleteUser}
+                        onClick={OnClickDeleteUser}
                     >
                         Xóa tài khoản
                     </Button>,
