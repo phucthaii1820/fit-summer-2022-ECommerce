@@ -11,6 +11,10 @@ import {
     Row,
     Col,
     Upload,
+    Switch,
+    InputNumber,
+    Popconfirm,
+    Typography,
 } from "antd";
 
 import ImgCrop from "antd-img-crop";
@@ -25,14 +29,95 @@ import {
     CheckCircleOutlined,
 } from "@ant-design/icons";
 
-export default function UserDetailModal(props) {
-    const product = props.product;
+export default function ProductDetailModal(props) {
+    const initProduct = props.product;
     const categories = props.categories;
 
+    const [product, setProduct] = useState({ ...initProduct, label: "" });
     const [loading, setLoading] = useState(false);
     const [visible, setVisible] = useState(false);
     const [notEditable, setNotEditable] = useState(true);
     const [fileList, setFileList] = useState(product.image);
+
+    const [productTypeForm] = Form.useForm();
+    const [productType, setProductType] = useState(initProduct.type);
+    const [editingKey, setEditingKey] = useState("");
+
+    const isEditing = (record) => record.key === editingKey;
+
+    // For Edit Type Product --------------------------------------------------------------------------------------------
+    const EditableCell = ({
+        editing,
+        dataIndex,
+        title,
+        inputType,
+        record,
+        index,
+        children,
+        ...restProps
+    }) => {
+        const inputNode = inputType === "number" ? <InputNumber /> : <Input />;
+        return (
+            <td {...restProps}>
+                {editing ? (
+                    <Form.Item
+                        name={dataIndex}
+                        style={{
+                            margin: 0,
+                        }}
+                        rules={[
+                            {
+                                required: true,
+                                message: `Vui lòng nhập ${title}!`,
+                            },
+                        ]}
+                    >
+                        {inputNode}
+                    </Form.Item>
+                ) : (
+                    children
+                )}
+            </td>
+        );
+    };
+
+    const editProductType = (record) => {
+        productTypeForm.setFieldsValue({
+            color: record.color,
+            store_id: record.store_id,
+            price: record.price,
+            quantity: record.quantity,
+            ...record,
+        });
+        setEditingKey(record.key);
+        console.log("record.key", record.key);
+        console.log("editingKey", editingKey);
+    };
+
+    const cancelProductType = () => {
+        setEditingKey("");
+    };
+
+    const saveProductType = async (key) => {
+        try {
+            const row = await productTypeForm.validateFields();
+            const newData = [...productTypeForm];
+            const index = newData.findIndex((item) => key === item.key);
+
+            if (index > -1) {
+                const item = newData[index];
+                newData.splice(index, 1, { ...item, ...row });
+                setProductType(newData);
+                setEditingKey("");
+            } else {
+                newData.push(row);
+                setProductType(newData);
+                setEditingKey("");
+            }
+        } catch (errInfo) {
+            console.log("Validate Failed:", errInfo);
+        }
+    };
 
     const showModal = () => {
         console.log(product.type);
@@ -47,12 +132,14 @@ export default function UserDetailModal(props) {
         }, 3000);
     };
 
+    // --------------------------------------------------------------------------------------------
+
     const handleCancel = () => {
         setVisible(false);
         setNotEditable(true);
     };
 
-    const handleDeleteUser = () => {
+    const handleDeleteProduct = () => {
         setLoading(true);
     };
 
@@ -91,7 +178,60 @@ export default function UserDetailModal(props) {
             key: "quantity",
             ellipsis: true,
         },
+
+        {
+            title: "operation",
+            dataIndex: "operation",
+            render: (_, record) => {
+                const editable = isEditing(record);
+                return editable ? (
+                    <span>
+                        <Typography.Link
+                            onClick={() => saveProductType(record.key)}
+                            style={{
+                                marginRight: 8,
+                            }}
+                        >
+                            Lưu
+                        </Typography.Link>
+                        <Popconfirm
+                            title="Sure to cancel?"
+                            onConfirm={cancelProductType}
+                        >
+                            <span className="text-red-500">Xóa</span>
+                        </Popconfirm>
+                    </span>
+                ) : (
+                    <Typography.Link
+                        disabled={editingKey !== ""}
+                        onClick={() => editProductType(record)}
+                    >
+                        Chỉnh sửa
+                    </Typography.Link>
+                );
+            },
+        },
     ];
+
+    const mergedColumns = columns.map((col) => {
+        if (!col.editable) {
+            return col;
+        }
+
+        return {
+            ...col,
+            onCell: (record) => ({
+                record,
+                inputType:
+                    col.dataIndex === "quantity" || col.dataIndex === "price"
+                        ? "number"
+                        : "text",
+                dataIndex: col.dataIndex,
+                title: col.title,
+                editing: isEditing(record),
+            }),
+        };
+    });
 
     const onChange = ({ fileList: newFileList }) => {
         setFileList(newFileList);
@@ -113,6 +253,48 @@ export default function UserDetailModal(props) {
         image.src = src;
         const imgWindow = window.open(src);
         imgWindow?.document.write(image.outerHTML);
+    };
+
+    const handleFormChange = (event, key) => {
+        switch (key) {
+            case 1:
+                setProduct({
+                    ...product,
+                    title: event.target.value,
+                });
+                break;
+            case 2:
+                setProduct({
+                    ...product,
+                    description: event.target.value,
+                });
+                break;
+            case 3:
+                setProduct({
+                    ...product,
+                    statusPost: !product.statusPost,
+                });
+                break;
+
+            case 4:
+                setProduct({
+                    ...product,
+                    nameBrand: event.target.value,
+                });
+                break;
+
+            case 5:
+                setProduct({
+                    ...product,
+                    category: event,
+                });
+                break;
+
+            default:
+                break;
+        }
+
+        console.log(product);
     };
 
     return (
@@ -164,7 +346,7 @@ export default function UserDetailModal(props) {
                         type="danger"
                         loading={loading}
                         icon={<DeleteOutlined />}
-                        onClick={handleDeleteUser}
+                        onClick={handleDeleteProduct}
                     >
                         Xóa sản phẩm
                     </Button>,
@@ -175,60 +357,56 @@ export default function UserDetailModal(props) {
                     <Row>
                         <Col>
                             <Form.Item label="Tên sản phẩm">
-                                <Input value={product.title} />
+                                <Input
+                                    value={product.title}
+                                    onChange={(e) => handleFormChange(e, 1)}
+                                />
                             </Form.Item>
                             <Form.Item label="Mô tả">
                                 <Input.TextArea
                                     value={product.description}
                                     rows={5}
+                                    onChange={(e) => handleFormChange(e, 2)}
                                 ></Input.TextArea>
                             </Form.Item>
                         </Col>
 
                         <Col>
                             <Form.Item label="Trạng thái">
-                                {product.statusPost === "0" ? (
-                                    <>
-                                        <span> Đang hiện </span>
-                                        <Button
-                                            type="link"
-                                            icon={<EyeInvisibleOutlined />}
-                                            shape="round"
-                                        >
-                                            Ẩn sản phẩm
-                                        </Button>
-                                    </>
-                                ) : (
-                                    <>
-                                        <span> Đang ẩn </span>
-                                        <Button
-                                            type="link"
-                                            icon={<EyeOutlined />}
-                                            shape="round"
-                                        >
-                                            Hiện sản phẩm
-                                        </Button>
-                                    </>
-                                )}
+                                <Switch
+                                    checked={product.statusPost}
+                                    checkedChildren="Hiện sản phẩm"
+                                    unCheckedChildren="Ẩn sản phẩm"
+                                    onChange={(e) => handleFormChange(e, 3)}
+                                />
                             </Form.Item>
                             <Form.Item label="Tên hãng">
-                                <Input value={product.nameBrand} />
+                                <Input
+                                    value={product.nameBrand}
+                                    onChange={(e) => handleFormChange(e, 4)}
+                                />
                             </Form.Item>
                             <Form.Item label="Số lượt thích">
                                 <span> {product.totalWish} </span>
                             </Form.Item>
                             <Form.Item label="Danh mục">
                                 <Select
-                                    value={
-                                        categories.find(
-                                            (category) =>
-                                                category.id ===
-                                                product.categoryId
-                                        ).name
-                                    }
+                                    value={{
+                                        value: product.category,
+                                        label: product.category
+                                            ? categories.find(
+                                                  (category) =>
+                                                      category._id ===
+                                                      product.category
+                                              ).name
+                                            : "",
+                                    }}
+                                    onChange={(value) => {
+                                        handleFormChange(value, 5);
+                                    }}
                                 >
                                     {categories.map((category) => (
-                                        <Select.Option key={category.id}>
+                                        <Select.Option value={category._id}>
                                             {category.name}
                                         </Select.Option>
                                     ))}
@@ -263,13 +441,36 @@ export default function UserDetailModal(props) {
                             </ImgCrop>
                         )}
                     </Form.Item>
-                    <Form.Item label="Loại">
+                    {/* <Form.Item label="Loại">
+                        <Form form={productTypeForm} component={false}>
+                            <Table
+                                dataSource={product.type}
+                                // columns={columns}
+                                columns={mergedColumns}
+                                pagination={false}
+                                components={{
+                                    body: {
+                                        cell: EditableCell,
+                                    },
+                                }}
+                            ></Table>
+                        </Form>
+                    </Form.Item>
+                </Form> */}
+
+                    <Form label="Loại" form={productTypeForm} component={false}>
                         <Table
                             dataSource={product.type}
-                            columns={columns}
+                            // columns={columns}
+                            columns={mergedColumns}
                             pagination={false}
+                            components={{
+                                body: {
+                                    cell: EditableCell,
+                                },
+                            }}
                         ></Table>
-                    </Form.Item>
+                    </Form>
                 </Form>
             </Modal>
         </>

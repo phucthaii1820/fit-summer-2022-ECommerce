@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Button, Modal, Form, Input, Radio, DatePicker } from "antd";
 import { FolderOpenOutlined, DeleteOutlined } from "@ant-design/icons";
 
@@ -54,7 +54,9 @@ export default function UserDetailModal(props) {
         <>
             <Button
                 type="primary"
-                onClick={showModal}
+                onClick={() => {
+                    showModal();
+                }}
                 shape="round"
                 icon={<FolderOpenOutlined />}
             >
@@ -63,13 +65,17 @@ export default function UserDetailModal(props) {
             <Modal
                 visible={visible}
                 title="Thông tin chi tiết"
-                onCancel={handleCancel}
+                onCancel={() => {
+                    handleCancel();
+                }}
                 footer={[
                     <Button
                         type="danger"
                         loading={loading}
                         icon={<DeleteOutlined />}
-                        onClick={OnClickDeleteUser}
+                        onClick={() => {
+                            OnClickDeleteUser();
+                        }}
                     >
                         Xóa tài khoản
                     </Button>,
