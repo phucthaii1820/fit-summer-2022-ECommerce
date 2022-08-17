@@ -366,7 +366,7 @@ export default function ProductManagement() {
                 <div>
                     {
                         categories.find(
-                            (category) => category.id === record.categoryId
+                            (category) => category._id === record.category
                         ).name
                     }
                 </div>
@@ -385,6 +385,7 @@ export default function ProductManagement() {
     ];
 
     const expandedRowRender = (product) => {
+        console.log(product);
         const columns = [
             {
                 title: "Màu sắc",
@@ -419,6 +420,8 @@ export default function ProductManagement() {
         ];
 
         const product_details = product.type;
+
+        console.log("product", product_details);
 
         return (
             <Table
@@ -456,9 +459,13 @@ export default function ProductManagement() {
                         columns={columns}
                         dataSource={productList}
                         onChange={handleChange}
+                        rowKey={(record) => record._id}
                         expandable={{
+                            // expandedRowRender: (record) =>
+                            // expandedRowRender(record),
                             expandedRowRender,
                             rowExpandable: (record) => record.type.length > 0,
+                            // defaultExpandedRowKeys: ["0"],
                         }}
                     />
 

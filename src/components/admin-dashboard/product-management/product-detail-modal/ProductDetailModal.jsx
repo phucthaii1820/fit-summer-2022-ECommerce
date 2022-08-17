@@ -12,6 +12,9 @@ import {
     Col,
     Upload,
     Switch,
+    InputNumber,
+    Popconfirm,
+    Typography,
 } from "antd";
 
 import ImgCrop from "antd-img-crop";
@@ -36,6 +39,86 @@ export default function ProductDetailModal(props) {
     const [notEditable, setNotEditable] = useState(true);
     const [fileList, setFileList] = useState(product.image);
 
+    const [productTypeForm] = Form.useForm();
+    const [productType, setProductType] = useState(initProduct.type);
+    const [editingKey, setEditingKey] = useState("");
+
+    const isEditing = (record) => record.key === editingKey;
+
+    // For Edit Type Product --------------------------------------------------------------------------------------------
+    const EditableCell = ({
+        editing,
+        dataIndex,
+        title,
+        inputType,
+        record,
+        index,
+        children,
+        ...restProps
+    }) => {
+        const inputNode = inputType === "number" ? <InputNumber /> : <Input />;
+        return (
+            <td {...restProps}>
+                {editing ? (
+                    <Form.Item
+                        name={dataIndex}
+                        style={{
+                            margin: 0,
+                        }}
+                        rules={[
+                            {
+                                required: true,
+                                message: `Vui lòng nhập ${title}!`,
+                            },
+                        ]}
+                    >
+                        {inputNode}
+                    </Form.Item>
+                ) : (
+                    children
+                )}
+            </td>
+        );
+    };
+
+    const editProductType = (record) => {
+        productTypeForm.setFieldsValue({
+            color: record.color,
+            store_id: record.store_id,
+            price: record.price,
+            quantity: record.quantity,
+            ...record,
+        });
+        setEditingKey(record.key);
+        console.log("record.key", record.key);
+        console.log("editingKey", editingKey);
+    };
+
+    const cancelProductType = () => {
+        setEditingKey("");
+    };
+
+    const saveProductType = async (key) => {
+        try {
+            const row = await productTypeForm.validateFields();
+            const newData = [...productTypeForm];
+            const index = newData.findIndex((item) => key === item.key);
+
+            if (index > -1) {
+                const item = newData[index];
+                newData.splice(index, 1, { ...item, ...row });
+                setProductType(newData);
+                setEditingKey("");
+            } else {
+                newData.push(row);
+                setProductType(newData);
+                setEditingKey("");
+            }
+        } catch (errInfo) {
+            console.log("Validate Failed:", errInfo);
+        }
+    };
+
     const showModal = () => {
         console.log(product.type);
         setVisible(true);
@@ -48,6 +131,8 @@ export default function ProductDetailModal(props) {
             setVisible(false);
         }, 3000);
     };
+
+    // --------------------------------------------------------------------------------------------
 
     const handleCancel = () => {
         setVisible(false);
@@ -93,7 +178,60 @@ export default function ProductDetailModal(props) {
             key: "quantity",
             ellipsis: true,
         },
+
+        {
+            title: "operation",
+            dataIndex: "operation",
+            render: (_, record) => {
+                const editable = isEditing(record);
+                return editable ? (
+                    <span>
+                        <Typography.Link
+                            onClick={() => saveProductType(record.key)}
+                            style={{
+                                marginRight: 8,
+                            }}
+                        >
+                            Lưu
+                        </Typography.Link>
+                        <Popconfirm
+                            title="Sure to cancel?"
+                            onConfirm={cancelProductType}
+                        >
+                            <span className="text-red-500">Xóa</span>
+                        </Popconfirm>
+                    </span>
+                ) : (
+                    <Typography.Link
+                        disabled={editingKey !== ""}
+                        onClick={() => editProductType(record)}
+                    >
+                        Chỉnh sửa
+                    </Typography.Link>
+                );
+            },
+        },
     ];
+
+    const mergedColumns = columns.map((col) => {
+        if (!col.editable) {
+            return col;
+        }
+
+        return {
+            ...col,
+            onCell: (record) => ({
+                record,
+                inputType:
+                    col.dataIndex === "quantity" || col.dataIndex === "price"
+                        ? "number"
+                        : "text",
+                dataIndex: col.dataIndex,
+                title: col.title,
+                editing: isEditing(record),
+            }),
+        };
+    });
 
     const onChange = ({ fileList: newFileList }) => {
         setFileList(newFileList);
@@ -303,13 +441,36 @@ export default function ProductDetailModal(props) {
                             </ImgCrop>
                         )}
                     </Form.Item>
-                    <Form.Item label="Loại">
+                    {/* <Form.Item label="Loại">
+                        <Form form={productTypeForm} component={false}>
+                            <Table
+                                dataSource={product.type}
+                                // columns={columns}
+                                columns={mergedColumns}
+                                pagination={false}
+                                components={{
+                                    body: {
+                                        cell: EditableCell,
+                                    },
+                                }}
+                            ></Table>
+                        </Form>
+                    </Form.Item>
+                </Form> */}
+
+                    <Form label="Loại" form={productTypeForm} component={false}>
                         <Table
                             dataSource={product.type}
-                            columns={columns}
+                            // columns={columns}
+                            columns={mergedColumns}
                             pagination={false}
+                            components={{
+                                body: {
+                                    cell: EditableCell,
+                                },
+                            }}
                         ></Table>
-                    </Form.Item>
+                    </Form>
                 </Form>
             </Modal>
         </>
