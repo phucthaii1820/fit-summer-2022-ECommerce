@@ -1,4 +1,3 @@
-import { auth } from "@/utils/auth";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import RegularRoute from "./regular";
 import Login from "@/page/Login";
@@ -8,31 +7,31 @@ import LayoutMain from "@/components/Layouts/LayoutMain";
 import ForgetPassword from "@/page/ForgetPassword";
 import LayoutAdmin from "@/components/Layouts/Admin/LayoutAdmin";
 
+import userStore from "@/stores/user";
+
 export default function WebRoute() {
-    const user = auth();
-    const userData = user?.user_data ? user.user_data : undefined;
+  // const user = auth();
+  // const userData = user?.user_data ? user.user_data : undefined;
+  const { user } = userStore((state) => state);
 
   return (
     <BrowserRouter>
       <Routes>
-        <Route
-          path="login"
-          element={!userData ? <Login /> : <Navigate to="/" />}
-        />
+        <Route path="login" element={!user ? <Login /> : <Navigate to="/" />} />
         <Route
           path="register"
-          element={!userData ? <Register /> : <Navigate to="/" />}
+          element={!user ? <Register /> : <Navigate to="/" />}
         />
         <Route
           path="forget-password"
-          element={!userData ? <ForgetPassword /> : <Navigate to="/" />}
+          element={!user ? <ForgetPassword /> : <Navigate to="/" />}
         />
-        <Route path="/*" element={<RegularRoute userData={userData} />} />
+        <Route path="/*" element={<RegularRoute />} />
         <Route
           exact
           path="profile/*"
           element={
-            userData ? (
+            user ? (
               <LayoutMain>
                 <Profile />
               </LayoutMain>
@@ -41,11 +40,7 @@ export default function WebRoute() {
             )
           }
         />
-        <Route
-          exact
-          path="admin/*"
-          element={<LayoutAdmin></LayoutAdmin>}
-        />
+        <Route exact path="admin/*" element={<LayoutAdmin></LayoutAdmin>} />
       </Routes>
     </BrowserRouter>
   );

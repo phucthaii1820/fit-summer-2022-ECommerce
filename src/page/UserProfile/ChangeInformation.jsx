@@ -3,24 +3,33 @@ import React, { useEffect, useState } from "react";
 import { Input, Button, Radio, Select, message, DatePicker, Spin } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
 
-import { getProfileUser, postInfo } from "@/API/user";
+import { postInfo } from "@/API/user";
 
 import Logo from "src/image/Logo.svg";
 
+import userStore from "@/stores/user";
+
 export default function ChangeInformation() {
+  const { user, loadProfile } = userStore((state) => state);
   const [province, setProvince] = useState([]);
-  const [selectedProvince, setSelectedProvince] = useState(null);
+  const [selectedProvince, setSelectedProvince] = useState(
+    user.province === -1 ? null : user.province
+  );
   const [district, setDistrict] = useState([]);
-  const [selectedDistrict, setSelectedDistrict] = useState(null);
+  const [selectedDistrict, setSelectedDistrict] = useState(
+    user.district === -1 ? null : user.district
+  );
   const [ward, setWard] = useState([]);
-  const [selectedWard, setSelectedWard] = useState(null);
-  const [email, setEmail] = useState("");
-  const [fullname, setFullname] = useState("");
-  const [gender, setGender] = useState("");
-  const [address, setAddress] = useState("");
+  const [selectedWard, setSelectedWard] = useState(
+    user.ward === -1 ? null : user.ward + ""
+  );
+  const [email, setEmail] = useState(user.email);
+  const [fullname, setFullname] = useState(user.fullname);
+  const [gender, setGender] = useState(user.gender);
+  const [address, setAddress] = useState(user.address);
   const [dateOfBirth, setDateOfBirth] = useState("");
-  const [phone, setPhone] = useState("");
-  const [isLoading, setIsLoading] = useState(true);
+  const [phone, setPhone] = useState(user.phone);
+  const [isLoading, setIsLoading] = useState(false);
 
   const { Option } = Select;
   const antIcon = (
@@ -107,35 +116,9 @@ export default function ChangeInformation() {
     setDateOfBirth(dateString);
   };
 
-  const getUser = async (event) => {
-    try {
-      const res = await getProfileUser();
-      setFullname(res?.user_data?.fullname);
-      setEmail(res?.user_data?.email);
-      setPhone(res?.user_data?.phone);
-      setGender(res?.user_data?.gender);
-      setAddress(res?.user_data?.address);
-      setSelectedProvince(
-        res?.user_data?.province === -1 ? null : res.user_data.province
-      );
-      setSelectedDistrict(
-        res?.user_data?.district === -1 ? null : res.user_data.district
-      );
-      setSelectedWard(
-        res?.user_data?.ward === -1 ? null : res.user_data.ward + ""
-      );
-      setIsLoading(false);
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
-  useEffect(() => {
-    getUser();
-  }, []);
-
   const updateInfo = async (event) => {
     try {
+      setIsLoading(true);
       const res = await postInfo({
         email,
         fullname,
@@ -146,7 +129,8 @@ export default function ChangeInformation() {
         ward: selectedWard,
       });
       message.success("Profile changed successfully!");
-      window.location.reload();
+      loadProfile();
+      setIsLoading(false);
     } catch (err) {
       console.log(err);
     }
@@ -157,7 +141,7 @@ export default function ChangeInformation() {
       {isLoading ? (
         <div className="flex justify-center items-center flex-col">
           <img className="h-14 w-auto mb-4" src={Logo} alt="Workflow" />
-          <Spin indicator={antIcon} />;
+          <Spin indicator={antIcon} />
         </div>
       ) : (
         <div className="space-y-4">
@@ -173,7 +157,7 @@ export default function ChangeInformation() {
                 value={fullname}
               ></Input>
             </div>
-            <div className="space-y-1">
+            {/* <div className="space-y-1">
               <div className="font-semibold">Ngày sinh</div>
               <DatePicker
                 style={{
@@ -182,8 +166,20 @@ export default function ChangeInformation() {
                   width: "100%",
                 }}
                 onChange={handleChangeDOB}
-                // value={dateOfBirth}
+                value={dateOfBirth}
               />
+            </div> */}
+            <div className="space-y-1">
+              <div className="font-semibold">Giới tính</div>
+              <Radio.Group
+                className=" mt-1 "
+                onChange={handleChangeGender}
+                value={gender}
+              >
+                <Radio value="Nam">Nam</Radio>
+                <Radio value="Nữ">Nữ</Radio>
+                <Radio value="Khác">Khác</Radio>
+              </Radio.Group>
             </div>
           </div>
           <div className="grid grid-cols-2 gap-16">
@@ -210,18 +206,7 @@ export default function ChangeInformation() {
               ></Input>
             </div>
           </div>
-          <div className="space-y-1">
-            <div className="font-semibold">Giới tính</div>
-            <Radio.Group
-              className=" mt-1 "
-              onChange={handleChangeGender}
-              value={gender}
-            >
-              <Radio value="Nam">Nam</Radio>
-              <Radio value="Nữ">Nữ</Radio>
-              <Radio value="Khác">Khác</Radio>
-            </Radio.Group>
-          </div>
+
           <div className="space-y-1">
             <div className="font-semibold">Số nhà + Tên đường</div>
             <Input

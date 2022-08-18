@@ -1,4 +1,3 @@
-import { getProfileUser } from "@/API/user";
 import { ShoppingCartOutlined } from "@ant-design/icons";
 import { Modal } from "antd";
 import React, { useState, useEffect } from "react";
@@ -8,11 +7,9 @@ import ShoppingCartList from "./ShoppingCartList";
 export default function ShoppingCartModal() {
   const [visible, setVisible] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
-  const [refresh, setRefresh] = useState(false);
 
   const showModal = () => {
     setVisible(true);
-    setRefresh(!refresh);
   };
 
   const handleOk = () => {
@@ -42,7 +39,7 @@ export default function ShoppingCartModal() {
         onCancel={handleCancel}
       >
         <div>
-          <ShoppingCartList visible={refresh}></ShoppingCartList>
+          <ShoppingCartList></ShoppingCartList>
         </div>
       </Modal>
     </>
