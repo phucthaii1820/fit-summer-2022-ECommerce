@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-import { Input, Button, Radio, Select, message, DatePicker, Spin } from "antd";
+import { Input, Button, Radio, Select, message, Spin } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
 
 import { postInfo } from "@/API/user";

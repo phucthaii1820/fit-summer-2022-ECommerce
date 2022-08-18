@@ -1,6 +1,6 @@
-import { Table, Image, InputNumber, Button, Select, message } from "antd";
+import { Table, Image, InputNumber, Button, Select, message, Spin } from "antd";
 import React, { useEffect, useState } from "react";
-import { DeleteOutlined } from "@ant-design/icons";
+import { DeleteOutlined, LoadingOutlined } from "@ant-design/icons";
 import { getProductInfo } from "@/API/product";
 import {
   addShoppingCart,
@@ -8,14 +8,24 @@ import {
   removeShoppingCart,
 } from "@/API/user";
 import { Link } from "react-router-dom";
-
+import Logo from "src/image/Logo.svg";
 import userStore from "@/stores/user";
 
 const { Option } = Select;
 
+const antIcon = (
+  <LoadingOutlined
+    style={{
+      fontSize: 64,
+    }}
+    spin
+  />
+);
+
 export default function ShoppingCartList({}) {
   const { user, setCart } = userStore((state) => state);
   const [productInfo, setProductInfo] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     const fetchProductInfo = async () => {
@@ -33,7 +43,9 @@ export default function ShoppingCartList({}) {
           ]);
         })
       );
+      setIsLoading(false);
     };
+    setIsLoading(true);
     setProductInfo([]);
     fetchProductInfo();
   }, [user]);
@@ -177,21 +189,19 @@ export default function ShoppingCartList({}) {
 
   return (
     <div className="w-auto">
-      <Table
-        columns={columns}
-        dataSource={productInfo}
-        pagination={false}
-        scroll={{ y: 200 }}
-      />
-      {/* <div className="flex mt-7">
-        <span className="mr-2 font-bold text-base">Tổng Tiền: </span>
-        <span className="text-red-500 text-base">
-          {new Intl.NumberFormat("vi-VN", {
-            style: "currency",
-            currency: "VND",
-          }).format(countTotalPrice())}
-        </span>
-      </div> */}
+      {isLoading ? (
+        <div className="flex justify-center items-center flex-col">
+          <img className="h-14 w-auto mb-4" src={Logo} alt="Workflow" />
+          <Spin indicator={antIcon} />
+        </div>
+      ) : (
+        <Table
+          columns={columns}
+          dataSource={productInfo}
+          pagination={false}
+          scroll={{ y: 200 }}
+        />
+      )}
     </div>
   );
 }
