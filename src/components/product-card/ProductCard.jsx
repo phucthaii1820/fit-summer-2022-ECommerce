@@ -151,7 +151,7 @@ export default function ProductCard({ item, fetchProductsCard }) {
         >
           <div>
             <Link to={"/product-detail/" + item?._id}>
-              <p className="uppercase mt-2 mb-4 text-base font-bold truncate">
+              <p className="text-left uppercase mt-2 mb-4 text-base font-bold truncate">
                 {item?.title}
               </p>
             </Link>

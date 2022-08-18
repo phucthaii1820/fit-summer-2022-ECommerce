@@ -21,6 +21,9 @@ export const checkExistUser = (data) =>
 export const getAllUsers = (data) =>
     callAPI({ url: `/user/get-all-users`, method: "GET", data });
 
+export const getUserID = (id) =>
+    callAPI({ url: `/user/get-user-by-id?id=${id}`, method: "GET" });
+
 export const addWishProduct = (data) =>
     callAPI({ url: `/user/add-wish-product`, method: "POST", data });
 

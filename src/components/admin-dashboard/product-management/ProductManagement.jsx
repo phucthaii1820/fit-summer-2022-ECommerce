@@ -29,7 +29,7 @@ export default function ProductManagement() {
 
         fetchData();
     }, []);
-
+    
     const clearFilters = () => {
         setFilteredInfo({});
     };
@@ -114,7 +114,9 @@ export default function ProductManagement() {
         },
     ];
 
-    const expandedRowRender = (product) => {
+    
+    const expandedRowRender = (record) => {
+        console.log(3)
         const columns = [
             {
                 title: "Màu sắc",
@@ -148,7 +150,7 @@ export default function ProductManagement() {
             },
         ];
 
-        const product_details = product.type;
+        const product_details = record.type;
 
         return (
             <Table
@@ -186,6 +188,7 @@ export default function ProductManagement() {
                         columns={columns}
                         dataSource={productList}
                         onChange={handleChange}
+                        rowKey = {record => record._id}
                         expandable={{
                             expandedRowRender,
                             rowExpandable: (record) => record.type.length > 0,

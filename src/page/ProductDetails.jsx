@@ -1,4 +1,4 @@
-import { Breadcrumb, InputNumber, message, Radio, Spin } from "antd";
+import { Breadcrumb, InputNumber, message, Radio, Spin, Tabs } from "antd";
 import {
   HeartFilled,
   LoadingOutlined,
@@ -23,6 +23,11 @@ import {
   getProfileUser,
   removeWishProduct,
 } from "@/API/user";
+import EditComment from "@/components/comment-card/Comment";
+import CommentQA from "@/components/comment-card/ReplyComment";
+import Readmore from "@/components/UI/Readmore";
+
+const { TabPane } = Tabs;
 
 const ProductDetails = () => {
   const { idProduct } = useParams();
@@ -36,6 +41,7 @@ const ProductDetails = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isWish, setIsWish] = useState(false);
   const [userInfo, setUserInfo] = useState([]);
+  const [comments, setComments] = useState([]);
   let slider1 = [];
   let slider2 = [];
 
@@ -87,29 +93,29 @@ const ProductDetails = () => {
   const onChangeRadio = (e) => {
     setSelectedType(e.target.value);
   };
-
-  useEffect(() => {
-    async function fetchProduct() {
-      try {
-        const res = await getProductInfo(idProduct);
-        setProduct(res?.data);
-        setType(res?.data?.type);
-        setIsLoading(false);
-        const resCate = await getCategoryInfo(res?.data?.category);
-        setCategory(resCate);
-        const resProfile = await getProfileUser();
-        setUserInfo(resProfile?.user_data);
-        if (
-          resProfile?.user_data?.wish.some(
-            (wish) => wish.product_id === idProduct
-          )
-        ) {
-          setIsWish(true);
-        }
-      } catch (err) {
-        console.log(err);
+  const fetchProduct = async () => {
+    try {
+      const res = await getProductInfo(idProduct);
+      setProduct(res?.data);
+      setType(res?.data?.type);
+      setIsLoading(false);
+      const resCate = await getCategoryInfo(res?.data?.category);
+      setCategory(resCate);
+      setComments(res?.data?.comments);
+      const resProfile = await getProfileUser();
+      setUserInfo(resProfile?.user_data);
+      if (
+        resProfile?.user_data?.wish.some(
+          (wish) => wish.product_id === idProduct
+        )
+      ) {
+        setIsWish(true);
       }
+    } catch (err) {
+      console.log(err);
     }
+  };
+  useEffect(() => {
     fetchProduct();
   }, [idProduct, isWish]);
 
@@ -379,6 +385,39 @@ const ProductDetails = () => {
                   </div>
                 </div>
               </div>
+              <Tabs defaultActiveKey="1">
+                <TabPane tab="Bình luận" key="1">
+                  {/* {comments ? (
+                    comments.map((item, index) => (
+                      <div className="my-3" key={index}>
+                        <CommentQA
+                          children={item}
+                          isChild={true}
+                          productId={idProduct}
+                          fetch={fetchProduct}
+                        ></CommentQA>
+                      </div>
+                    ))
+                  ) : (
+                    <></>
+                  )} */}
+                  <Readmore children={comments} ProductID={idProduct} Fetch={fetchProduct}></Readmore>
+                  <EditComment
+                    productID={idProduct}
+                    fetch={fetchProduct}
+                    userData={userInfo}
+                  ></EditComment>
+
+                  {/* <div className="p-3 grid justify-items-end">
+                  <Pagination
+                    defaultCurrent={1}
+                    total={itemCount}
+                    onChange={handleNextPage}
+                    pageSize={page_size}
+                  />
+                </div> */}
+                </TabPane>
+              </Tabs>
               <hr className="border-yellow-light border-dashed"></hr>
               <div className="m-6">
                 <div className="flex p-5 justify-center items-center">

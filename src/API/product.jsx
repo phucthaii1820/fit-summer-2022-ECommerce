@@ -17,3 +17,9 @@ export const searchProducts = (keyword, page) =>
 
 export const getAllProducts = () =>
     callAPI({ url: `/products/get-all-products`, method: "GET" });
+
+export const postComment = (data) =>
+    callAPI({ url: `/products/create-comment`, method: "POST", data });
+
+export const replyComment = (data) =>
+    callAPI({ url: `/products/reply-comment`, method: "POST", data });
