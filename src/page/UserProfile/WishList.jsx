@@ -1,12 +1,27 @@
 import { getWishList, removeWishProduct } from "@/API/user";
-import { DeleteOutlined } from "@ant-design/icons";
-import { Button, message, Table } from "antd";
+import { DeleteOutlined, LoadingOutlined } from "@ant-design/icons";
+import { Button, message, Spin, Table } from "antd";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+
+import Logo from "src/image/Logo.svg";
+
+import userStore from "@/stores/user";
+
+const antIcon = (
+  <LoadingOutlined
+    style={{
+      fontSize: 64,
+    }}
+    spin
+  />
+);
 
 const WishList = () => {
   const [changeWishList, setChangeWishList] = useState(true);
   const [data, setData] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const { setLoveList } = userStore((state) => state);
 
   const productStatus = (item) => {
     for (let i = 0; i < item?.type.length; i++) {
@@ -47,13 +62,16 @@ const WishList = () => {
       } catch (err) {
         console.log(err);
       }
+      setIsLoading(false);
     }
+    setIsLoading(true);
     fetchWishList();
   }, [changeWishList]);
 
   const removeProduct = async (key) => {
     try {
       const res = await removeWishProduct({ product_id: key });
+      setLoveList(res?.wish);
     } catch (err) {
       message.error("Hệ thống đang xử lý!");
     }
@@ -131,7 +149,14 @@ const WishList = () => {
 
   return (
     <div>
-      <Table columns={columns} dataSource={data} />
+      {isLoading ? (
+        <div className="flex justify-center items-center flex-col">
+          <img className="h-14 w-auto mb-4" src={Logo} alt="Workflow" />
+          <Spin indicator={antIcon} />
+        </div>
+      ) : (
+        <Table columns={columns} dataSource={data} />
+      )}
     </div>
   );
 };
