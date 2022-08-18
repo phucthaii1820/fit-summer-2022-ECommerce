@@ -9,7 +9,8 @@ import useQuery from "@/utils/query";
 
 import { postRegister } from "@/API/auth";
 import { checkExistUser } from "@/API/user";
-import { register } from "@/utils/auth";
+
+import userStore from "@/stores/user";
 
 import firebase from "firebase/compat/app";
 import "firebase/compat/auth";
@@ -34,6 +35,7 @@ export default function Register() {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [result, setResult] = useState("");
   const [otp, setOtp] = useState("");
+  const { setDataUser } = userStore((state) => state);
 
   const handlePhoneChange = (event) => {
     setEnterPhone(event.target.value);
@@ -76,9 +78,9 @@ export default function Register() {
       message.error("Số điện thoại đăng ký phải lớn hơn 9 kí tự!");
     } else if (user?.user_data) {
       message.error("Số điện thọai này đã tồn tại!");
-    } else if(!validatePass(password)){
+    } else if (!validatePass(password)) {
       message.error("Mật khẩu chứa ít nhất 1 chữ số và 1 kí tự đặc biệt!");
-    } else if(password.length < 6 || password.length > 16){
+    } else if (password.length < 6 || password.length > 16) {
       message.error("Độ dài mật khẩu không hợp lệ!");
     } else {
       let verify = new firebase.auth.RecaptchaVerifier("recaptcha-container", {
@@ -109,7 +111,7 @@ export default function Register() {
             password: password,
             passwordConfirm: passwordConfirm,
           });
-          register(res);
+          setDataUser(res);
           setTimeout(() => {
             window.location.href = queryURL.get("redirect") ?? "/";
           }, 1000);

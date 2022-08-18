@@ -69,13 +69,24 @@ const WishList = () => {
       title: "Hình ảnh",
       dataIndex: "image",
       key: "image",
-      render: ( image ) => image ? <img src={image} alt="productImg" className="w-16 h-16 bg-cover"></img> : <p>No image</p>,
+      render: (image) =>
+        image ? (
+          <img
+            src={image}
+            alt="productImg"
+            className="w-16 h-16 bg-cover"
+          ></img>
+        ) : (
+          <p>No image</p>
+        ),
     },
     {
       title: "Sản phẩm",
       dataIndex: "name",
       key: "name",
-      render: (text, {key}) => <Link to={"/product-detail/" + key}>{text}</Link>,
+      render: (text, { key }) => (
+        <Link to={"/product-detail/" + key}>{text}</Link>
+      ),
     },
     {
       title: "Trạng thái",
@@ -106,7 +117,7 @@ const WishList = () => {
               Thêm giỏ hàng
             </Button>
           </div>
-          <button onClick={event => onClickRemove(event, key)}>
+          <button onClick={(event) => onClickRemove(event, key)}>
             <DeleteOutlined
               style={{
                 color: "red",
@@ -117,7 +128,7 @@ const WishList = () => {
       ),
     },
   ];
-  
+
   return (
     <div>
       <Table columns={columns} dataSource={data} />
