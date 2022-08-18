@@ -299,7 +299,7 @@ export default function ProductManagement() {
 
         fetchData();
     }, []);
-
+    
     const clearFilters = () => {
         setFilteredInfo({});
     };
