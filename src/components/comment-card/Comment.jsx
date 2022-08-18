@@ -24,7 +24,7 @@ export default function EditComment({productID, fetch, userData}) {
     const [value, setValue] = useState('');
     
     const handleSubmit = async () => {
-      if (Object.entries(userData).length !== 0){
+      if (userData){
         if (!value) {
         return;
         }

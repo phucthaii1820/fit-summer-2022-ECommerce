@@ -1,20 +1,24 @@
 import React, { useState } from "react";
-import { Button } from "antd";
 import CommentQA from "../comment-card/ReplyComment";
 import { DownOutlined, UpOutlined } from "@ant-design/icons";
 
 const Readmore = ({ children, ProductId, Fetch }) => {
   const [showMore, setShowMore] = useState(true);
   const [commentsToShow, setCommentsToShow] = useState(3);
-
+  
   const toggleShowMore = () => {
-    setShowMore(!showMore);
     if (showMore) {
-      setCommentsToShow(
-        commentsToShow < children.length ? commentsToShow + 3 : children.length
-      );
+      let flag = commentsToShow < children.length ? commentsToShow + 3 : children.length;
+      setCommentsToShow(flag);
+      if(flag >= children.length){
+        setShowMore(!showMore);
+      }
     } else {
-      setCommentsToShow(commentsToShow > 3 ? commentsToShow - 3 : 3);
+      let flag2 = commentsToShow - 3 > 3 ? commentsToShow - 3 : 3 ;
+      setCommentsToShow(flag2);
+      if(flag2 <= 3){
+        setShowMore(!showMore);
+      }
     }
   };
 
@@ -40,15 +44,15 @@ const Readmore = ({ children, ProductId, Fetch }) => {
             <button
               type="text"
               onClick={toggleShowMore}
-              className="my-1 text-lg"
+              className="ml-6 my-1 text-lg"
             >
               {showMore ? "Hiển thị thêm" : "Ẩn bình luận"}
             </button>
             <div className="pb-1">
               {showMore ? (
-                <DownOutlined className="mr-6" />
+                <DownOutlined className="ml-2 mr-6" />
               ) : (
-                <UpOutlined className="mr-6" />
+                <UpOutlined className="ml-2 mr-6" />
               )}
             </div>
           </div>

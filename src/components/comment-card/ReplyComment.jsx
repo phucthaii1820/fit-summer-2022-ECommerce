@@ -30,7 +30,6 @@ export default function CommentQA({
   children,
   isChild,
   fetch,
-  page,
   productId,
 }) {
   const [reply, setReply] = useState("");
