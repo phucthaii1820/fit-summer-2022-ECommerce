@@ -18,6 +18,19 @@ export const searchProducts = (keyword, page) =>
 export const getAllProducts = () =>
     callAPI({ url: `/products/get-all-products`, method: "GET" });
 
+    export const addProduct = (data) =>
+    callAPI({ url: `/products/add-product`, method: "POST", data });
+
+export const updateProduct = (data) =>
+    callAPI({ url: `/products/update-product`, method: "POST", data });
+
+export const deleteProduct = (id) =>
+    callAPI({
+        url: `/products/remove-product`,
+        method: "POST",
+        data: { id: id },
+    });
+    
 export const postComment = (data) =>
     callAPI({ url: `/products/create-comment`, method: "POST", data });
 

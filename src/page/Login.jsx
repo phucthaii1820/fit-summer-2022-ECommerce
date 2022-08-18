@@ -1,5 +1,4 @@
 import { postLogin } from "@/API/auth";
-import { login } from "@/utils/auth";
 
 import useQuery from "@/utils/query";
 import React, { useState } from "react";
@@ -7,11 +6,9 @@ import { Link } from "react-router-dom";
 
 import AuthLayout from "@/components/Layouts/AuthLayout";
 
-import {
-  EyeInvisibleOutlined,
-  EyeTwoTone,
-  LoadingOutlined,
-} from "@ant-design/icons";
+import userStore from "@/stores/user";
+
+import { LoadingOutlined } from "@ant-design/icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGreaterThan } from "@fortawesome/free-solid-svg-icons";
 import { message, Spin } from "antd";
@@ -21,6 +18,7 @@ export default function Login() {
   const [phone, setEnterPhone] = useState("");
   const [password, setEnterPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const { setDataUser, user } = userStore((state) => state);
 
   const antIcon = (
     <LoadingOutlined
@@ -43,8 +41,9 @@ export default function Login() {
     try {
       setIsLoading(true);
       const res = await postLogin({ phone: phone, password: password });
-      login(res);
       console.log(res);
+      setDataUser(res);
+      console.log(user);
       setTimeout(() => {
         window.location.href = queryURL.get("redirect") ?? "/";
       }, 1000);
@@ -60,7 +59,7 @@ export default function Login() {
       {isLoading ? (
         <div className="flex justify-center h-screen items-center flex-col">
           <img className="h-14 w-auto mb-8" src={Logo} alt="Workflow" />
-          <Spin indicator={antIcon} />;
+          <Spin indicator={antIcon} />
         </div>
       ) : (
         <AuthLayout title={"ĐĂNG NHẬP"}>
@@ -97,8 +96,10 @@ export default function Login() {
           <div className="grid grid-cols-2">
             <div className="col-span py-2">
               <Link to="/forget-password">
-                <div className="text-black text-left text-sm font-bold">Quên mật khẩu?</div>
-              </Link>  
+                <div className="text-black text-left text-sm font-bold">
+                  Quên mật khẩu?
+                </div>
+              </Link>
             </div>
 
             <div className="col-span">

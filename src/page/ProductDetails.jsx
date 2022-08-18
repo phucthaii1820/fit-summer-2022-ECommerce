@@ -23,11 +23,8 @@ import {
   getProfileUser,
   removeWishProduct,
 } from "@/API/user";
-import EditComment from "@/components/comment-card/Comment";
-import CommentQA from "@/components/comment-card/ReplyComment";
-import Readmore from "@/components/UI/Readmore";
 
-const { TabPane } = Tabs;
+import userStore from "@/stores/user";
 
 const ProductDetails = () => {
   const { idProduct } = useParams();
@@ -40,8 +37,7 @@ const ProductDetails = () => {
   const [nav2, setNav2] = React.useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isWish, setIsWish] = useState(false);
-  const [userInfo, setUserInfo] = useState([]);
-  const [comments, setComments] = useState([]);
+  const { user, setLoveList, setCart } = userStore((state) => state);
   let slider1 = [];
   let slider2 = [];
 
@@ -93,40 +89,43 @@ const ProductDetails = () => {
   const onChangeRadio = (e) => {
     setSelectedType(e.target.value);
   };
-  const fetchProduct = async () => {
-    try {
-      const res = await getProductInfo(idProduct);
-      setProduct(res?.data);
-      setType(res?.data?.type);
-      setIsLoading(false);
-      const resCate = await getCategoryInfo(res?.data?.category);
-      setCategory(resCate);
-      setComments(res?.data?.comments);
-      const resProfile = await getProfileUser();
-      setUserInfo(resProfile?.user_data);
-      if (
-        resProfile?.user_data?.wish.some(
-          (wish) => wish.product_id === idProduct
-        )
-      ) {
+
+  useEffect(() => {
+    if (user) {
+      if (user?.wish.some((wish) => wish.product_id === idProduct)) {
         setIsWish(true);
       }
-    } catch (err) {
-      console.log(err);
     }
-  };
+  }, []);
+
   useEffect(() => {
+    async function fetchProduct() {
+      try {
+        const res = await getProductInfo(idProduct);
+        setProduct(res?.data);
+        setType(res?.data?.type);
+        setIsLoading(false);
+        const resCate = await getCategoryInfo(res?.data?.category);
+        setCategory(resCate);
+      } catch (err) {
+        console.log(err);
+      }
+    }
     fetchProduct();
   }, [idProduct, isWish]);
 
   const wishProduct = async () => {
     try {
-      if (Object.entries(userInfo).length !== 0) {
+      if (user) {
         if (isWish) {
-          const res = await removeWishProduct({ product_id: idProduct });
+          const res = await removeWishProduct({
+            product_id: idProduct,
+          });
+          setLoveList(res?.wish);
           setIsWish(false);
         } else {
           const res = await addWishProduct({ product_id: idProduct });
+          setLoveList(res?.wish);
           setIsWish(true);
         }
       } else {
@@ -143,12 +142,13 @@ const ProductDetails = () => {
 
   const AddShoppingCart = async () => {
     try {
-      if (Object.entries(userInfo).length !== 0) {
+      if (user) {
         const res = await addShoppingCart({
           product_id: idProduct,
           type_id: type[selectedType]?._id,
           quantity: quantity,
         });
+        setCart(res?.cart);
         message.success("Thêm vào giỏ hàng thành công");
       } else {
         message.error("Vui lòng đăng nhập để thực hiện chức năng!");
@@ -167,7 +167,7 @@ const ProductDetails = () => {
       {isLoading ? (
         <div className="flex justify-center h-screen items-center flex-col">
           <img className="h-14 w-auto mb-8" src={Logo} alt="Workflow" />
-          <Spin indicator={antIcon} />;
+          <Spin indicator={antIcon} />
         </div>
       ) : (
         <div className="py-6">
@@ -266,7 +266,9 @@ const ProductDetails = () => {
                             <div className="flex mt-2 justify-center items-center">
                               <div
                                 className="mr-2 h-4 w-4"
-                                style={{ backgroundColor: item?.color }}
+                                style={{
+                                  backgroundColor: item?.color,
+                                }}
                               ></div>
                               <div className="font-bold">
                                 {new Intl.NumberFormat("vi-VN", {
@@ -363,7 +365,10 @@ const ProductDetails = () => {
                     <div className="flex mt-6">
                       <div
                         className="w-64 mr-8 flex p-2 border-2 rounded-xl justify-center items-center drop-shadow-lg"
-                        style={{ backgroundColor: "#FFEBB7", color: "#E7A800" }}
+                        style={{
+                          backgroundColor: "#FFEBB7",
+                          color: "#E7A800",
+                        }}
                       >
                         <ShoppingCartOutlined style={{ fontSize: "25px" }} />
                         <button
@@ -375,7 +380,9 @@ const ProductDetails = () => {
                       </div>
                       <div
                         className="p-4 border-2 rounded-xl"
-                        style={{ backgroundColor: "#F5B301" }}
+                        style={{
+                          backgroundColor: "#F5B301",
+                        }}
                       >
                         <button className="text-xl text-white font-bold drop-shadow-lg">
                           Mua ngay
@@ -424,6 +431,14 @@ const ProductDetails = () => {
                   <div className="mr-2">
                     <hr className="bg-yellow-light h-1 w-14"></hr>
                   </div>
+
+                  {/* <div>
+                    <CommentProduct
+                      productId={product?._id}
+                      commentList={product?.comments}
+                    />
+                  </div> */}
+
                   <div>
                     <h1 className="uppercase mb-0 text-center text-3xl font-bold">
                       Sản phẩm tương tự

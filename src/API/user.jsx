@@ -28,10 +28,13 @@ export const addWishProduct = (data) =>
     callAPI({ url: `/user/add-wish-product`, method: "POST", data });
 
 export const removeWishProduct = (data) =>
-  callAPI({ url: `/user/remove-wish-product`, method: "POST", data });
+    callAPI({ url: `/user/remove-wish-product`, method: "POST", data });
 
 export const addShoppingCart = (data) =>
-  callAPI({ url: `/user/add-cart`, method: "POST", data });
+    callAPI({ url: `/user/add-cart`, method: "POST", data });
 
 export const removeShoppingCart = (data) =>
-  callAPI({ url: `/user/remove-cart`, method: "POST", data });
+    callAPI({ url: `/user/remove-cart`, method: "POST", data });
+
+export const deleteUser = (id) =>
+    callAPI({ url: `/user/delete-user?id=${id}`, method: "GET" });

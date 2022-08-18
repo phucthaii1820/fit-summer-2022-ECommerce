@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
     Button,
     Modal,
@@ -11,6 +11,10 @@ import {
     Row,
     Col,
     Upload,
+    Switch,
+    InputNumber,
+    Popconfirm,
+    Typography,
 } from "antd";
 
 import ImgCrop from "antd-img-crop";
@@ -23,41 +27,136 @@ import {
     FolderOpenOutlined,
     CloseCircleOutlined,
     CheckCircleOutlined,
+    PlusCircleOutlined,
 } from "@ant-design/icons";
-
-export default function UserDetailModal(props) {
-    const product = props.product;
+  
+export default function ProductDetailModal(props) {
+    const initProduct = props.product;
     const categories = props.categories;
 
+    const [product, setProduct] = useState({ ...initProduct, label: "" });
     const [loading, setLoading] = useState(false);
+    const [okLoading, setOkLoading] = useState(false);
     const [visible, setVisible] = useState(false);
     const [notEditable, setNotEditable] = useState(true);
-    const [fileList, setFileList] = useState(product.image);
+
+    const [productTypeForm] = Form.useForm();
+    const [productType, setProductType] = useState(initProduct.type);
+    const [editingKey, setEditingKey] = useState("");
+
+    const isEditing = (record) => record.key === editingKey;    
+
+    const [oldProduct, setOldProduct] = useState({...product});
+
+    const [previewImage, setPreviewImage] = useState({show: false, image: null, title: ""});
+
+    const [fileList, setFileList] = useState(product.image.map((image, index) => {
+        return {
+            uid: index,
+            name: "image"+index,
+            status: "done",
+            url: image,
+        };
+    }));
+
+    // For Edit Type Product --------------------------------------------------------------------------------------------
+    const EditableCell = ({
+        editing,
+        dataIndex,
+        title,
+        inputType,
+        record,
+        index,
+        children,
+        ...restProps
+    }) => {
+        const inputNode = inputType === "number" ? <InputNumber /> : <Input />;
+        return (
+            <td {...restProps}>
+                {editing ? (
+                    <Form.Item
+                        name={dataIndex}
+                        style={{
+                            margin: 0,
+                        }}
+                        rules={[
+                            {
+                                required: true,
+                                message: `Vui lòng nhập ${title}!`,
+                            },
+                        ]}
+                    >
+                        {inputNode}
+                    </Form.Item>
+                ) : (
+                    children
+                )}
+            </td>
+        );
+    };
+
+    const editProductType = (record) => {
+        productTypeForm.setFieldsValue({
+            color: record.color,
+            store_id: record.store_id,
+            price: record.price,
+            quantity: record.quantity,
+            ...record,
+        });
+        setEditingKey(record.key);
+    };
+
+    const cancelProductType = () => {
+        setEditingKey("");
+    };
+
+    const saveProductType = async (key) => {
+        try {
+            const row = await productTypeForm.validateFields();
+            const newData = [...productTypeForm];
+            const index = newData.findIndex((item) => key === item.key);
+
+            if (index > -1) {
+                const item = newData[index];
+                newData.splice(index, 1, { ...item, ...row });
+                setProductType(newData);
+                setEditingKey("");
+            } else {
+                newData.push(row);
+                setProductType(newData);
+                setEditingKey("");
+            }
+        } catch (errInfo) {
+        }
+    };
 
     const showModal = () => {
-        console.log(product.type);
         setVisible(true);
     };
 
     const handleOk = () => {
-        setLoading(true);
+        setOkLoading(true);
         setTimeout(() => {
-            setLoading(false);
+            setOkLoading(false);
             setVisible(false);
         }, 3000);
     };
 
+    // --------------------------------------------------------------------------------------------
+
     const handleCancel = () => {
+        setProduct(oldProduct || {});
         setVisible(false);
         setNotEditable(true);
     };
 
-    const handleDeleteUser = () => {
+    const handleDeleteProduct = () => {
         setLoading(true);
     };
 
     const handleEditProduct = () => {
         setNotEditable(false);
+        setOldProduct({...product});
     };
 
     const columns = [
@@ -66,53 +165,142 @@ export default function UserDetailModal(props) {
             dataIndex: "color",
             key: "color",
             ellipsis: true,
-            render: (color) => (
-                <div
-                    className="h-4 w-4"
-                    style={{ backgroundColor: color }}
-                ></div>
+            render: (color, index) => (
+                <input type="color" id="head" name="head" defaultValue={color} onBlur={(e) => handleFormChange([e, index], 10)}/>
             ),
         },
-        {
-            title: "Chi nhánh",
-            dataIndex: "store_id",
-            key: "store_id",
-            ellipsis: true,
-        },
+        // {
+        //     title: "Chi nhánh",
+        //     dataIndex: "store_id",
+        //     key: "store_id",
+        //     ellipsis: true,
+        // },
         {
             title: "Đơn giá",
             dataIndex: "price",
             key: "price",
             ellipsis: true,
+            render: (price, index) => <Input disabled={notEditable} defaultValue={price} onBlur={(e)=> handleFormChange([e, index], 6)}/>
         },
         {
             title: "Số lượng tồn",
             dataIndex: "quantity",
             key: "quantity",
             ellipsis: true,
+            render: (quantity, index) => <Input disabled={notEditable} defaultValue={quantity} onBlur={(e)=> handleFormChange([e, index], 7)}/>
+        },
+        {
+            title: "Xóa",
+            key: "delete",
+            dataIndex: "_id",
+            render: (index) =>
+                <Button icon={<DeleteOutlined/>} onClick={()=> handleFormChange(index, 8)}/>
         },
     ];
 
-    const onChange = ({ fileList: newFileList }) => {
-        setFileList(newFileList);
+    const onImagePreview = async (file) => {
+        file && setPreviewImage({
+            show: true,
+            image: file.url || file.thumbUrl,
+            title: file.name,
+        });
     };
 
-    const onPreview = async (file) => {
-        let src = file.url;
-
-        if (!src) {
-            src = await new Promise((resolve) => {
-                const reader = new FileReader();
-                reader.readAsDataURL(file.originFileObj);
-
-                reader.onload = () => resolve(reader.result);
-            });
+    const handleImageChange = ({fileList: newFileList }) => {
+        setFileList(newFileList);
+        if(newFileList.length > 0) {
+            setProduct({...product, image: newFileList.map((file) => {
+                if(file.url != null) return file.url;
+                else {
+                    return file.thumbUrl;
+                }
+            })});
         }
+    }
 
-        const image = new Image();
-        image.src = src;
-        const imgWindow = window.open(src);
-        imgWindow?.document.write(image.outerHTML);
+    const handleFormChange = (event, key) => {
+        switch (key) {
+            case 1:
+                setProduct({
+                    ...product,
+                    title: event.target.value,
+                });
+                break;
+            case 2:
+                setProduct({
+                    ...product,
+                    description: event.target.value,
+                });
+                break;
+            case 3:
+                setProduct({
+                    ...product,
+                    statusPost: !product.statusPost,
+                });
+                break;
+
+            case 4:
+                setProduct({
+                    ...product,
+                    nameBrand: event.target.value,
+                });
+                break;
+
+            case 5:
+                setProduct({
+                    ...product,
+                    category: event,
+                });
+                break;
+            case 6:
+                var type = product.type;
+                type.find((item) => item._id === event[1]._id).price = parseInt(event[0].target.value)||0;
+                setProduct({
+                    ...product,
+                    type: type,
+                });
+                break;
+            case 7:
+                var type = product.type;
+                type.find((item) => item._id === event[1]._id).quantity = parseInt(event[0].target.value)||0;
+                setProduct({
+                    ...product,
+                    type: type,
+                });
+                break;
+            case 8:
+                var type = product.type.filter((item) => item._id !== event);
+                setProduct({
+                    ...product,
+                    type: type,
+                });
+                break;
+            case 9:
+                setProduct({
+                    ...product,
+                    type: [
+                        ...product.type,
+                        {
+                            _id: product.type.length + 1,
+                            color: '#ffffff',
+                            price: 0,
+                            quantity: 0,
+                            store_id: '',
+                        }
+                    ]
+                });
+                break;
+            case 10:
+                var type = product.type;
+                type.find((item) => item._id === event[1]._id).color = event[0].target.value||'#ffffff';
+                setProduct({
+                    ...product,
+                    type: type,
+                });
+                break;
+            default:
+                break;
+        }
     };
 
     return (
@@ -128,7 +316,7 @@ export default function UserDetailModal(props) {
             <Modal
                 visible={visible}
                 title="Thông tin chi tiết"
-                onOk={handleOk}
+                // onOk={handleOk}
                 onCancel={handleCancel}
                 footer={[
                     <>
@@ -145,7 +333,9 @@ export default function UserDetailModal(props) {
                                 <Button
                                     key="submit"
                                     icon={<CheckCircleOutlined />}
-                                    onClick={handleEditProduct}
+                                    onClick={handleOk}
+                                    loading={okLoading}
+                                    type="primary"
                                 >
                                     Cập nhật
                                 </Button>
@@ -164,7 +354,7 @@ export default function UserDetailModal(props) {
                         type="danger"
                         loading={loading}
                         icon={<DeleteOutlined />}
-                        onClick={handleDeleteUser}
+                        onClick={handleDeleteProduct}
                     >
                         Xóa sản phẩm
                     </Button>,
@@ -175,60 +365,56 @@ export default function UserDetailModal(props) {
                     <Row>
                         <Col>
                             <Form.Item label="Tên sản phẩm">
-                                <Input value={product.title} />
+                                <Input
+                                    value={product.title}
+                                    onChange={(e) => handleFormChange(e, 1)}
+                                />
                             </Form.Item>
                             <Form.Item label="Mô tả">
                                 <Input.TextArea
                                     value={product.description}
                                     rows={5}
+                                    onChange={(e) => handleFormChange(e, 2)}
                                 ></Input.TextArea>
                             </Form.Item>
                         </Col>
 
                         <Col>
                             <Form.Item label="Trạng thái">
-                                {product.statusPost === "0" ? (
-                                    <>
-                                        <span> Đang hiện </span>
-                                        <Button
-                                            type="link"
-                                            icon={<EyeInvisibleOutlined />}
-                                            shape="round"
-                                        >
-                                            Ẩn sản phẩm
-                                        </Button>
-                                    </>
-                                ) : (
-                                    <>
-                                        <span> Đang ẩn </span>
-                                        <Button
-                                            type="link"
-                                            icon={<EyeOutlined />}
-                                            shape="round"
-                                        >
-                                            Hiện sản phẩm
-                                        </Button>
-                                    </>
-                                )}
+                                <Switch
+                                    checked={product.statusPost}
+                                    checkedChildren="Hiện sản phẩm"
+                                    unCheckedChildren="Ẩn sản phẩm"
+                                    onChange={(e) => handleFormChange(e, 3)}
+                                />
                             </Form.Item>
                             <Form.Item label="Tên hãng">
-                                <Input value={product.nameBrand} />
+                                <Input
+                                    value={product.nameBrand}
+                                    onChange={(e) => handleFormChange(e, 4)}
+                                />
                             </Form.Item>
                             <Form.Item label="Số lượt thích">
                                 <span> {product.totalWish} </span>
                             </Form.Item>
                             <Form.Item label="Danh mục">
                                 <Select
-                                    value={
-                                        categories.find(
-                                            (category) =>
-                                                category.id ===
-                                                product.categoryId
-                                        ).name
-                                    }
+                                    value={{
+                                        value: product.category,
+                                        label: product.category
+                                            ? categories.find(
+                                                  (category) =>
+                                                      category._id ===
+                                                      product.category
+                                              ).name
+                                            : "",
+                                    }}
+                                    onChange={(value) => {
+                                        handleFormChange(value, 5);
+                                    }}
                                 >
                                     {categories.map((category) => (
-                                        <Select.Option key={category.id}>
+                                        <Select.Option value={category._id}>
                                             {category.name}
                                         </Select.Option>
                                     ))}
@@ -238,40 +424,44 @@ export default function UserDetailModal(props) {
                     </Row>
 
                     <Form.Item label="Ảnh">
-                        {notEditable === true ? (
-                            <>
-                                {product.image.map((image) => (
-                                    <Image
-                                        width={100}
-                                        height={100}
-                                        src={image[0]}
-                                        fallback="data:image/png;base64,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"
-                                    />
-                                ))}
-                                ;
-                            </>
-                        ) : (
-                            <ImgCrop rotate>
-                                <Upload
-                                    action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-                                    listType="picture-card"
-                                    fileList={fileList}
-                                    onChange={onChange}
-                                    onPreview={onPreview}
-                                >
-                                    {fileList.length < 5 && "+ Upload"}
-                                </Upload>
-                            </ImgCrop>
-                        )}
+                        <Upload
+                            action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+                            listType="picture-card"
+                            fileList={fileList}
+                            onChange={handleImageChange}
+                            onPreview={onImagePreview}
+                        >
+                            {!notEditable && "Upload"}
+                        </Upload>
                     </Form.Item>
-                    <Form.Item label="Loại">
+                    <Form label="Loại" form={productTypeForm} component={false}>
                         <Table
                             dataSource={product.type}
                             columns={columns}
+                            // columns={mergedColumns}
                             pagination={false}
-                        ></Table>
-                    </Form.Item>
+                            components={{
+                                body: {
+                                    cell: EditableCell,
+                                },
+                            }}
+                        />
+                        <div>
+                            {
+                                !notEditable && <Button icon={<PlusCircleOutlined/>} onClick={() => handleFormChange(9, 9)} style={{align: 'right'}}>Thêm sản phẩm</Button>
+                            }
+                        </div>
+                    </Form>
                 </Form>
+            </Modal>
+            <Modal visible={previewImage.show} title={previewImage.title} footer={null} onCancel={()=>setPreviewImage({...previewImage, show: false})}>
+                <img
+                alt="example"
+                style={{
+                    width: '100%',
+                }}
+                src={previewImage.image}
+                />
             </Modal>
         </>
     );

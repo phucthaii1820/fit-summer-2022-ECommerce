@@ -9,7 +9,6 @@ import useQuery from "@/utils/query";
 
 import { postRegister } from "@/API/auth";
 import { checkExistUser, forgotPassword } from "@/API/user";
-import { login, register } from "@/utils/auth";
 
 import firebase from "firebase/compat/app";
 import "firebase/compat/auth";
@@ -76,12 +75,11 @@ export default function ForgetPassword() {
       message.error("Số điện thoại phải lớn hơn 9 kí tự!");
     } else if (!user?.user_data) {
       message.error("Số điện thọai này chưa tồn tại!");
-    } else if(!validatePass(password)){
+    } else if (!validatePass(password)) {
       message.error("Mật khẩu chứa ít nhất 1 chữ số và 1 kí tự đặc biệt!");
-    } else if(password.length < 6 || password.length > 16){
+    } else if (password.length < 6 || password.length > 16) {
       message.error("Độ dài mật khẩu không hợp lệ!");
-    }
-    else {
+    } else {
       let verify = new firebase.auth.RecaptchaVerifier("recaptcha-container", {
         size: "invisible",
       });
@@ -105,7 +103,10 @@ export default function ForgetPassword() {
       .confirm(otp)
       .then(async (result) => {
         try {
-          const res = await forgotPassword({ phone: phone, newPassword: password });
+          const res = await forgotPassword({
+            phone: phone,
+            newPassword: password,
+          });
           setTimeout(() => {
             window.location.href = "/login";
           }, 1000);
@@ -156,7 +157,7 @@ export default function ForgetPassword() {
           className="py-2 px-4 bg-yellow-light text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md rounded-lg"
           onClick={handleModal}
         >
-            XÁC NHẬN
+          XÁC NHẬN
         </button>
       </div>
 
