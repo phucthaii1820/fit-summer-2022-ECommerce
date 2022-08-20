@@ -19,10 +19,28 @@ export const getAllProducts = () =>
     callAPI({ url: `/products/get-all-products`, method: "GET" });
 
 export const addProduct = (data) =>
-    callAPI({ url: `/products/add-product`, method: "POST", data });
+    callAPI({
+        url: `/products/add-product`,
+        method: "POST",
+        data: data,
+        option: {
+            headers: {
+                "Content-Type": "application/json",
+            },
+        },
+    });
 
 export const updateProduct = (data) =>
-    callAPI({ url: `/products/update-product`, method: "POST", data });
+    callAPI({
+        url: `/products/update-product`,
+        method: "POST",
+        data: data,
+        option: {
+            headers: {
+                "Content-Type": "application/json",
+            },
+        },
+    });
 
 export const deleteProduct = (id) =>
     callAPI({

@@ -270,7 +270,7 @@
 import { Button, Space, Table, Image } from "antd";
 import React, { useState, useEffect } from "react";
 import { getAllCategories } from "@/API/category";
-import { getAllProducts } from "@/API/product";
+import { deleteProduct, getAllProducts } from "@/API/product";
 import ProductDetailModal from "./product-detail-modal/ProductDetailModal";
 import AddProductModal from "./add-product-modal/AddProductModal";
 import { PlusCircleOutlined } from "@ant-design/icons";
@@ -281,6 +281,8 @@ export default function ProductManagement() {
     const [categories, setCategories] = useState([]);
     const [loading, setLoading] = useState(false);
     const [productList, setProductList] = useState([]);
+
+    const [deleteProduct, setDeleteProduct] = useState(null);
 
     useEffect(() => {
         setLoading(true);
@@ -298,7 +300,7 @@ export default function ProductManagement() {
         }
 
         fetchData();
-    }, []);
+    }, [deleteProduct]);
 
     const clearFilters = () => {
         setFilteredInfo({});
@@ -379,6 +381,9 @@ export default function ProductManagement() {
                 <ProductDetailModal
                     product={record}
                     categories={categories}
+                    deleteProduct={() => {
+                        setDeleteProduct(!deleteProduct);
+                    }}
                 ></ProductDetailModal>
             ),
         },

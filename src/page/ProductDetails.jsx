@@ -23,7 +23,6 @@ import {
     getProfileUser,
     removeWishProduct,
 } from "@/API/user";
-import CommentProduct from "@/components/comment-product/CommentProduct";
 
 const ProductDetails = () => {
     const { idProduct } = useParams();
@@ -452,13 +451,6 @@ const ProductDetails = () => {
                                 <div className="flex p-5 justify-center items-center">
                                     <div className="mr-2">
                                         <hr className="bg-yellow-light h-1 w-14"></hr>
-                                    </div>
-
-                                    <div>
-                                        <CommentProduct
-                                            productId={product?._id}
-                                            commentList={product?.comments}
-                                        />
                                     </div>
 
                                     <div>
