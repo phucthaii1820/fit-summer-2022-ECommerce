@@ -2,10 +2,14 @@ import React from "react";
 
 import TrendingProducts from "@/page/HomePage/TrendingProducts";
 import CustomerFeedback from "@/page/HomePage/CustomerFeedback";
-import Banner from "@/page/HomePage/Banner";
 import Services from "@/page/HomePage/Services";
+import userStore from "@/stores/user";
 
 export default function LayoutHomePage() {
+  const { loadProfile } = userStore((state) => state);
+  React.useEffect(() => {
+    loadProfile();
+  }, []);
   return (
     <div>
       <div className="container">
