@@ -18,7 +18,7 @@ export const searchProducts = (keyword, page) =>
 export const getAllProducts = () =>
     callAPI({ url: `/products/get-all-products`, method: "GET" });
 
-export const addProduct = (data) =>
+    export const addProduct = (data) =>
     callAPI({ url: `/products/add-product`, method: "POST", data });
 
 export const updateProduct = (data) =>
@@ -30,3 +30,9 @@ export const deleteProduct = (id) =>
         method: "POST",
         data: { id: id },
     });
+    
+export const postComment = (data) =>
+    callAPI({ url: `/products/create-comment`, method: "POST", data });
+
+export const replyComment = (data) =>
+    callAPI({ url: `/products/reply-comment`, method: "POST", data });
