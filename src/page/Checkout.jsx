@@ -18,7 +18,7 @@ import { getProductInfo } from "@/API/product";
 import { title } from "process";
 import { LoadingOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
-import { creatOrder } from "@/API/order";
+import { creatOrder, pay } from "@/API/order";
 
 const { Step } = Steps;
 
@@ -54,6 +54,9 @@ const Checkout = () => {
   const [service_id, setServiceId] = useState(0);
   const [fee, setFee] = useState(0);
   const [selectPay, setSelectPay] = useState(0);
+  const [step, setStep] = useState(1);
+  const [idOrder, setIdOrder] = useState(0);
+  const [linkPay, setLinkPay] = useState("");
 
   useEffect(() => {
     const fetchProductInfo = async () => {
@@ -201,6 +204,21 @@ const Checkout = () => {
     }
   }, [service_id, totalPriceProduct]);
 
+  useEffect(() => {
+    const fetchAPI = async () => {
+      try {
+        const res = await pay({ id: idOrder });
+        setLinkPay(res.link);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    if (idOrder !== 0) {
+      fetchAPI();
+    }
+  }, [idOrder]);
+
   const handleClick = async () => {
     let data = {
       ship: fee,
@@ -227,9 +245,15 @@ const Checkout = () => {
     try {
       const res = await creatOrder(data);
       message.success("Tạo đơn hàng thành công");
-      setTimeout(() => {
-        window.location.href = "/";
-      }, 1000);
+      if (selectPay === 0) {
+        const decodedString = btoa(res._id);
+        setTimeout(() => {
+          window.location.href = `/complete-order?message=Giao+dịch+thành+công.&extraData=${decodedString}`;
+        }, 1000);
+      } else {
+        setIdOrder(res._id);
+        setStep(2);
+      }
     } catch (error) {
       message.error("Tạo đơn hàng thất bại");
     }
@@ -237,159 +261,233 @@ const Checkout = () => {
 
   return (
     <div>
-      <Steps current={1} progressDot={customDot}>
+      <Steps current={step} progressDot={customDot}>
         <Step title="Giỏ hàng" />
         <Step title="Đặt hàng" />
-        <Step title="Xác nhận" />
+        <Step title="Thanh toán" />
+        <Step title="Hoàn tất đặt hàng" />
       </Steps>
-      <div className="mt-4 text-2xl font-bold uppercase">Đặt hàng</div>
-      <div className="mt-4 grid grid-cols-3 gap-4">
-        <div class="col-span-2">
-          <div className=" bg-white rounded-md p-6 border">
-            <div className="text-lg font-semibold mb-2">Giao Tới</div>
-            <div className="grid grid-cols-3 gap-4 mb-1">
-              <div className="col-span-1">Tên người nhận:</div>
-              <div className="col-span-2">{user.fullname}</div>
-            </div>
-            <div className="grid grid-cols-3 gap-4  mb-1">
-              <div className="col-span-1">Số điện thoại:</div>
-              <div className="col-span-2">{user.phone}</div>
-            </div>
-            <div className="grid grid-cols-3 gap-4  mb-1">
-              <div className="col-span-1">Địa chỉ nhận hàng:</div>
-              {user.address == "" ||
-              user.ward == -1 ||
-              user.district == -1 ||
-              user.province == -1 ? (
-                <Link to="/profile/change-info" className="col-span-2">
-                  Bạn chưa xác nhận địa chỉ (bấm vào đây để xác nhận)
-                </Link>
-              ) : (
-                <div className="col-span-2">
-                  {user.address} -{" "}
-                  {ward?.map((item) => {
-                    if (item?.WardCode == user.ward) return item.WardName;
-                  })}{" "}
-                  -{" "}
-                  {district?.map((item) => {
-                    if (item?.DistrictID == user.district)
-                      return item.DistrictName;
-                  })}{" "}
-                  -{" "}
-                  {province?.map((item) => {
-                    if (item?.ProvinceID == user.province)
-                      return item.ProvinceName;
-                  })}
+      {step === 1 ? (
+        <>
+          <div className="mt-4 text-2xl font-bold uppercase">Đặt hàng</div>
+          <div className="mt-4 grid grid-cols-3 gap-4">
+            <div class="col-span-2">
+              <div className=" bg-white rounded-md p-6 border">
+                <div className="text-lg font-semibold mb-2">Giao Tới</div>
+                <div className="grid grid-cols-3 gap-4 mb-1">
+                  <div className="col-span-1">Tên người nhận:</div>
+                  <div className="col-span-2">{user.fullname}</div>
                 </div>
-              )}
-            </div>
-            {/* <div className="">
+                <div className="grid grid-cols-3 gap-4  mb-1">
+                  <div className="col-span-1">Số điện thoại:</div>
+                  <div className="col-span-2">{user.phone}</div>
+                </div>
+                <div className="grid grid-cols-3 gap-4  mb-1">
+                  <div className="col-span-1">Địa chỉ nhận hàng:</div>
+                  {user.address == "" ||
+                  user.ward == -1 ||
+                  user.district == -1 ||
+                  user.province == -1 ? (
+                    <Link to="/profile/change-info" className="col-span-2">
+                      Bạn chưa xác nhận địa chỉ (bấm vào đây để xác nhận)
+                    </Link>
+                  ) : (
+                    <div className="col-span-2">
+                      {user.address} -{" "}
+                      {ward?.map((item) => {
+                        if (item?.WardCode == user.ward) return item.WardName;
+                      })}{" "}
+                      -{" "}
+                      {district?.map((item) => {
+                        if (item?.DistrictID == user.district)
+                          return item.DistrictName;
+                      })}{" "}
+                      -{" "}
+                      {province?.map((item) => {
+                        if (item?.ProvinceID == user.province)
+                          return item.ProvinceName;
+                      })}
+                    </div>
+                  )}
+                </div>
+                {/* <div className="">
               <div className="col-span-2">Ghi chú</div>
               <Input.TextArea rows={2} />
             </div> */}
-          </div>
-          <div className="bg-white rounded-md p-6 border mt-2">
-            <div className="text-lg font-semibold mb-2">
-              Hình thức thanh toán
-            </div>
-            <div>
-              <Radio.Group
-                style={{ width: "100%" }}
-                value={selectPay}
-                onChange={(e) => {
-                  setSelectPay(e.target.value);
-                }}
-              >
-                <Space direction="vertical" style={{ width: "100%" }}>
-                  <div className="border-gray-300 p-3 border w-full rounded-lg">
-                    <Radio
-                      value={0}
-                      style={{
-                        alignItems: "center",
-                      }}
-                    >
-                      <div className="flex items-center">
-                        <img className="h-8 w-auto mx-4" src={COD} alt="cod" />
-                        <div>
-                          <div>COD</div>
-                          <div>Thanh toán khi nhận hàng</div>
-                        </div>
-                      </div>
-                    </Radio>
-                  </div>
-                  <div className="border-gray-300 p-3 border w-full rounded-lg">
-                    <Radio
-                      value={2}
-                      style={{
-                        alignItems: "center",
-                      }}
-                    >
-                      <div className="flex items-center">
-                        <img className="h-8 w-auto mx-4" src={Momo} alt="cod" />
-                        <div>
-                          <div>Momo</div>
-                          <div>Thanh toán bằng ví Momo</div>
-                        </div>
-                      </div>
-                    </Radio>
-                  </div>
-                  <div className="border-gray-300 p-3 border w-full rounded-lg">
-                    <Radio
-                      value={1}
-                      style={{
-                        alignItems: "center",
-                      }}
-                    >
-                      <div className="flex items-center">
-                        <img
-                          className="h-8 w-auto mx-4"
-                          src={Paypal}
-                          alt="cod"
-                        />
-                        <div>
-                          <div>Paypal</div>
-                          <div>Thanh toán bằng ví Paypal</div>
-                        </div>
-                      </div>
-                    </Radio>
-                  </div>
-                </Space>
-              </Radio.Group>
-            </div>
-          </div>
-        </div>
-        <div class="col-span-1">
-          <div className=" bg-white rounded-md p-6 border">
-            <div className="text-lg font-semibold mb-2">Thông tin đơn hàng</div>
-            <div>
-              {isLoading ? (
-                <div className="flex justify-center">
-                  <Spin indicator={antIcon} />
+              </div>
+              <div className="bg-white rounded-md p-6 border mt-2">
+                <div className="text-lg font-semibold mb-2">
+                  Hình thức thanh toán
                 </div>
-              ) : (
-                <>
-                  {productInfo.map((item, index) => (
-                    <CheckoutCard
-                      id={item._id}
-                      key={index}
-                      img={item?.image[0]}
-                      title={item.title}
-                      quantity={item.quantitySelect}
-                      color={
-                        item?.type?.find((type) => type._id == item.typeSelect)
-                          ?.color
-                      }
-                      price={
-                        item?.type?.find((type) => type._id == item.typeSelect)
-                          ?.price
-                      }
-                    />
-                  ))}
-                </>
-              )}
+                <div>
+                  <Radio.Group
+                    style={{ width: "100%" }}
+                    value={selectPay}
+                    onChange={(e) => {
+                      setSelectPay(e.target.value);
+                    }}
+                  >
+                    <Space direction="vertical" style={{ width: "100%" }}>
+                      <div className="border-gray-300 p-3 border w-full rounded-lg">
+                        <Radio
+                          value={0}
+                          style={{
+                            alignItems: "center",
+                          }}
+                        >
+                          <div className="flex items-center">
+                            <img
+                              className="h-8 w-auto mx-4"
+                              src={COD}
+                              alt="cod"
+                            />
+                            <div>
+                              <div>COD</div>
+                              <div>Thanh toán khi nhận hàng</div>
+                            </div>
+                          </div>
+                        </Radio>
+                      </div>
+                      <div className="border-gray-300 p-3 border w-full rounded-lg">
+                        <Radio
+                          value={2}
+                          style={{
+                            alignItems: "center",
+                          }}
+                        >
+                          <div className="flex items-center">
+                            <img
+                              className="h-8 w-auto mx-4"
+                              src={Momo}
+                              alt="cod"
+                            />
+                            <div>
+                              <div>Momo</div>
+                              <div>Thanh toán bằng ví Momo</div>
+                            </div>
+                          </div>
+                        </Radio>
+                      </div>
+                      <div className="border-gray-300 p-3 border w-full rounded-lg">
+                        <Radio
+                          value={1}
+                          style={{
+                            alignItems: "center",
+                          }}
+                        >
+                          <div className="flex items-center">
+                            <img
+                              className="h-8 w-auto mx-4"
+                              src={Paypal}
+                              alt="cod"
+                            />
+                            <div>
+                              <div>Paypal</div>
+                              <div>Thanh toán bằng ví Paypal</div>
+                            </div>
+                          </div>
+                        </Radio>
+                      </div>
+                    </Space>
+                  </Radio.Group>
+                </div>
+              </div>
+            </div>
+            <div class="col-span-1">
+              <div className=" bg-white rounded-md p-6 border">
+                <div className="text-lg font-semibold mb-2">
+                  Thông tin đơn hàng
+                </div>
+                <div>
+                  {isLoading ? (
+                    <div className="flex justify-center">
+                      <Spin indicator={antIcon} />
+                    </div>
+                  ) : (
+                    <>
+                      {productInfo.map((item, index) => (
+                        <CheckoutCard
+                          id={item._id}
+                          key={index}
+                          img={item?.image[0]}
+                          title={item.title}
+                          quantity={item.quantitySelect}
+                          color={
+                            item?.type?.find(
+                              (type) => type._id == item.typeSelect
+                            )?.color
+                          }
+                          price={
+                            item?.type?.find(
+                              (type) => type._id == item.typeSelect
+                            )?.price
+                          }
+                        />
+                      ))}
+                    </>
+                  )}
+                </div>
+              </div>
+              <div className=" bg-white rounded-md p-6 border">
+                <div className="flex justify-between">
+                  <div className="font-semibold mb-1">Tổng tiền hàng:</div>
+                  <div>
+                    {new Intl.NumberFormat("vi-VN", {
+                      style: "currency",
+                      currency: "VND",
+                    }).format(totalPriceProduct)}
+                  </div>
+                </div>
+                <div className="flex justify-between">
+                  <div className="font-semibold">Tiền ship:</div>
+                  <div>
+                    {new Intl.NumberFormat("vi-VN", {
+                      style: "currency",
+                      currency: "VND",
+                    }).format(fee)}
+                  </div>
+                </div>
+              </div>
+              <div className=" bg-white rounded-md p-6 border">
+                <div className="flex justify-between">
+                  <div className="text-lg font-semibold mb-1">
+                    Tổng chi phí:
+                  </div>
+                  <div>
+                    {new Intl.NumberFormat("vi-VN", {
+                      style: "currency",
+                      currency: "VND",
+                    }).format(fee + totalPriceProduct)}
+                  </div>
+                </div>
+              </div>
+              <Button
+                onClick={handleClick}
+                style={{
+                  width: "100%",
+                  background: "#F5B301",
+                  color: "white",
+                  borderRadius: "0.375rem",
+                  marginTop: "1rem",
+                }}
+                disabled={
+                  user.address == "" ||
+                  user.ward == -1 ||
+                  user.district == -1 ||
+                  user.province == -1
+                }
+              >
+                Thanh toán
+              </Button>
             </div>
           </div>
-          <div className=" bg-white rounded-md p-6 border">
+        </>
+      ) : null}
+
+      {step === 2 ? (
+        <>
+          <div className="mt-4 text-2xl font-bold uppercase">Thanh toán</div>
+          <div className="mt-4 bg-white rounded-md p-6 border">
             <div className="flex justify-between">
               <div className="font-semibold mb-1">Tổng tiền hàng:</div>
               <div>
@@ -420,26 +518,39 @@ const Checkout = () => {
               </div>
             </div>
           </div>
-          <Button
-            onClick={handleClick}
-            style={{
-              width: "100%",
-              background: "#F5B301",
-              color: "white",
-              borderRadius: "0.375rem",
-              marginTop: "1rem",
-            }}
-            disabled={
-              user.address == "" ||
-              user.ward == -1 ||
-              user.district == -1 ||
-              user.province == -1
-            }
-          >
-            Thanh toán
-          </Button>
-        </div>
-      </div>
+          <div className=" bg-white rounded-md p-6 border">
+            <div className="flex justify-between">
+              <div className="text-lg font-semibold mb-1">
+                Phương thưc thanh toán:
+              </div>
+              <div>
+                {selectPay === 1
+                  ? "Thanh toán bằng PayPal"
+                  : "Thanh toán bằng Momo"}
+              </div>
+            </div>
+          </div>
+          {linkPay !== "" ? (
+            <a href={linkPay}>
+              <Button
+                style={{
+                  width: "100%",
+                  background: "#F5B301",
+                  color: "white",
+                  borderRadius: "0.375rem",
+                  marginTop: "1rem",
+                }}
+              >
+                Thanh toán
+              </Button>
+            </a>
+          ) : (
+            <div className="flex justify-center">
+              <Spin indicator={antIcon} />
+            </div>
+          )}
+        </>
+      ) : null}
     </div>
   );
 };
