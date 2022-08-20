@@ -225,26 +225,28 @@ export default function Header({ ...props }) {
                 </div>
               </div>
 
-              <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0 space-x-6">
-                <AutoComplete
-                  options={options}
-                  onSelect={(val, option) => onSelect(val, option)}
-                  onSearch={onSearch}
-                  onKeyDown={handleSearch}
-                  placeholder="Search"
-                  notFoundContent="Không tìm thấy kết quả"
-                  style={{
-                    border: "0px",
-                  }}
-                >
-                  <Input
+              <div className="absolute inset-y-0 right-0 flex items-center mt-2.5 pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0 space-x-6">
+                <div className="hidden md:block">
+                  <AutoComplete
+                    options={options}
+                    onSelect={(val, option) => onSelect(val, option)}
+                    onSearch={onSearch}
+                    onKeyDown={handleSearch}
+                    placeholder="Search"
+                    notFoundContent="Không tìm thấy kết quả"
                     style={{
-                      width: "20rem",
-                      borderRadius: "25px",
-                      margin: "0x 16px 0 0",
+                      border: "0px",
                     }}
-                  ></Input>
-                </AutoComplete>
+                  >
+                    <Input
+                      style={{
+                        width: "20rem",
+                        borderRadius: "25px",
+                        margin: "0x 16px 0 0",
+                      }}
+                    ></Input>
+                  </AutoComplete>
+                </div>
 
                 {user ? <ShoppingCartModal></ShoppingCartModal> : null}
 
@@ -284,6 +286,27 @@ export default function Header({ ...props }) {
                 )}
               </div>
             </div>
+          </div>
+          <div className="block md:hidden pb-2 text-center">
+            <AutoComplete
+              options={options}
+              onSelect={(val, option) => onSelect(val, option)}
+              onSearch={onSearch}
+              onKeyDown={handleSearch}
+              placeholder="Search"
+              notFoundContent="Không tìm thấy kết quả"
+              style={{
+                border: "0px",
+              }}
+            >
+              <Input
+                style={{
+                  width: "20rem",
+                  borderRadius: "25px",
+                  margin: "0x 16px 0 0",
+                }}
+              ></Input>
+            </AutoComplete>
           </div>
         </>
       )}

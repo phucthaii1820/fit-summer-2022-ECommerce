@@ -401,20 +401,6 @@ const ProductDetails = () => {
 
               <Tabs defaultActiveKey="1">
                 <TabPane tab="Bình luận" key="1">
-                  {/* {comments ? (
-                    comments.map((item, index) => (
-                      <div className="my-3" key={index}>
-                        <CommentQA
-                          children={item}
-                          isChild={true}
-                          productId={idProduct}
-                          fetch={fetchProduct}
-                        ></CommentQA>
-                      </div>
-                    ))
-                  ) : (
-                    <></>
-                  )} */}
                   <Readmore children={comments} ProductId={idProduct} Fetch={fetchProduct}></Readmore>
                   <EditComment
                     productID={idProduct}
