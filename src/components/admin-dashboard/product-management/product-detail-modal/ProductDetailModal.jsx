@@ -30,6 +30,8 @@ import {
   PlusCircleOutlined,
 } from "@ant-design/icons";
 
+import { updateProduct } from "@/API/product";
+
 export default function ProductDetailModal(props) {
   const initProduct = props.product;
   const categories = props.categories;
@@ -54,16 +56,18 @@ export default function ProductDetailModal(props) {
     title: "",
   });
 
-  const [fileList, setFileList] = useState(
-    product.image.map((image, index) => {
-      return {
-        uid: index,
-        name: "image" + index,
-        status: "done",
-        url: image,
-      };
-    })
-  );
+  // const [fileList, setFileList] = useState(
+  //   product.image.map((image, index) => {
+  //     return {
+  //       uid: index,
+  //       name: "image" + index,
+  //       status: "done",
+  //       url: image,
+  //     };
+  //   })
+  // );
+
+  const [fileList, setFileList] = useState([]);
 
   // For Edit Type Product --------------------------------------------------------------------------------------------
   const EditableCell = ({
@@ -140,11 +144,32 @@ export default function ProductDetailModal(props) {
   };
 
   const handleOk = () => {
-    setOkLoading(true);
-    setTimeout(() => {
-      setOkLoading(false);
-      setVisible(false);
-    }, 3000);
+    // setOkLoading(true);
+    // setTimeout(() => {
+    //   setOkLoading(false);
+    //   setVisible(false);
+    // }, 3000);
+
+    const fetchAPI = async () => {
+      try {
+        let formData = new FormData();
+        formData.append("id", product._id);
+        formData.append("title", product.title);
+        formData.append("description", product.description);
+        formData.append("nameBrand", product.nameBrand);
+        formData.append("type", JSON.stringify(product.type));
+        formData.append("category", product.category);
+        fileList?.map((file) => formData.append("image", file.originFileObj));
+        // console.log(formData);
+
+        const res = await updateProduct(formData);
+        console.log(res);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchAPI();
   };
 
   // --------------------------------------------------------------------------------------------
@@ -336,7 +361,8 @@ export default function ProductDetailModal(props) {
         break;
     }
   };
-  console.log(fileList[0]?.thumbUrl);
+  console.log(fileList);
+
   return (
     <>
       <Button
@@ -368,7 +394,7 @@ export default function ProductDetailModal(props) {
                   key="submit"
                   icon={<CheckCircleOutlined />}
                   onClick={handleOk}
-                  loading={okLoading}
+                  // loading={okLoading}
                   type="primary"
                 >
                   Cập nhật
@@ -462,6 +488,7 @@ export default function ProductDetailModal(props) {
               fileList={fileList}
               onChange={handleImageChange}
               onPreview={onImagePreview}
+              beforeUpload={() => false}
             >
               {!notEditable && "Upload"}
             </Upload>
