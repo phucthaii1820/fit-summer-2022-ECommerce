@@ -1,6 +1,6 @@
 import callAPI from "./callAPI";
 
-export const creatOrder = (data) =>
+export const createOrder = (data) =>
   callAPI({ url: `/order/create`, method: "POST", data });
 
 export const pay = (data) =>
@@ -8,3 +8,6 @@ export const pay = (data) =>
 
 export const changeStatusOrder = (data) =>
   callAPI({ url: `/order/change-status`, method: "POST", data });
+
+export const getOrders = () =>
+  callAPI({ url: `/order/get-all`, method: "GET" });

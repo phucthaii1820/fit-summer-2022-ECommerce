@@ -18,7 +18,7 @@ import { getProductInfo } from "@/API/product";
 import { title } from "process";
 import { LoadingOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
-import { creatOrder, pay } from "@/API/order";
+import { createOrder, pay } from "@/API/order";
 
 const { Step } = Steps;
 
@@ -243,7 +243,7 @@ const Checkout = () => {
     });
 
     try {
-      const res = await creatOrder(data);
+      const res = await createOrder(data);
       message.success("Tạo đơn hàng thành công");
       if (selectPay === 0) {
         const decodedString = btoa(res._id);

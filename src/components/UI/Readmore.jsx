@@ -38,7 +38,7 @@ const Readmore = ({ children, ProductId, Fetch }) => {
       ) : (
         <></>
       )}
-      {children ? (
+      {children.length > 3 ? (
         <div className="flex justify-center">
           <div className="flex items-center bg-yellow-light text-white border rounded-lg drop-shadow-lg">
             <button

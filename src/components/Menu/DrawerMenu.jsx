@@ -4,11 +4,11 @@ import { Link } from "react-router-dom";
 import { Drawer } from "antd";
 import { MenuOutlined } from "@ant-design/icons";
 
+import "./DrawerMenu.css"
+
 import userStore from "@/stores/user";
 
 const DrawerMenu = ({ categories, profileUser }) => {
-  // const location = useLocation();
-  // const HOST = process.env.REACT_APP_BASE_HOST;
   const { token, logout } = userStore((state) => state);
 
   const [visible, setVisible] = useState(false);
@@ -43,6 +43,7 @@ const DrawerMenu = ({ categories, profileUser }) => {
         closable={false}
         onClose={onClose}
         visible={visible}
+        headerStyle={{ fontStyle: "bold"}}
       >
         {token ? (
           <div>
@@ -89,7 +90,7 @@ const DrawerMenu = ({ categories, profileUser }) => {
         <hr></hr>
         <div className="p-2 pl-1 font-bold">
           <a onClick={showChildrenDrawer} className="text-black">
-            Category
+            Danh mục
           </a>
         </div>
         <Drawer
@@ -102,7 +103,7 @@ const DrawerMenu = ({ categories, profileUser }) => {
           bodyStyle={{
             padding: 0,
           }}
-          style={{ color: "black" }}
+          // style={{ color: "#F5B301", fontStyle: "bold" }}
         >
           {categories.map((item, index) => (
             <div key={index}>
@@ -116,15 +117,15 @@ const DrawerMenu = ({ categories, profileUser }) => {
           ))}
         </Drawer>
         <hr></hr>
-        {/* {user && profileUser?.role != 0 ? (<Link to="/tutor">
-            <div className="p-2 pl-1 font-bold" >Tutor Manager</div>
-          </Link>) : (<></>)} */}
+        {profileUser?.role === 1000 ? (<Link to="/admin">
+            <div className="p-2 pl-1 font-bold text-black" >Admin</div>
+          </Link>) : (<></>)}
         {token ? (
           <>
             <hr></hr>
             <Link to="/login">
-              <div className="p-2 pl-1 font-bold text-black">
-                <a onClick={logout}>Đăng xuất</a>
+              <div className="p-2 pl-1 font-bold">
+                <a onClick={logout} className="text-black">Đăng xuất</a>
               </div>
             </Link>
           </>
