@@ -15,9 +15,11 @@ import {
   HeartFilled,
 } from "@ant-design/icons";
 
+import userStore from "@/stores/user";
+
 export default function ProductCard({ item, fetchProductsCard }) {
   const [isWish, setIsWish] = useState(false);
-  const [userData, setUserData] = useState({});
+  const { user, setLoveList, setCart } = userStore((state) => state);
 
   const index = (item) => {
     for (let i = 0; i < item?.type.length; i++) {
@@ -29,37 +31,27 @@ export default function ProductCard({ item, fetchProductsCard }) {
   };
 
   useEffect(() => {
-    async function fetchProduct() {
-      try {
-        const resProfile = await getProfileUser();
-        setUserData(resProfile?.user_data);
-        if (
-          resProfile?.user_data?.wish.some(
-            (wish) => wish.product_id === item?._id
-          )
-        ) {
-          setIsWish(true);
-        }
-      } catch (err) {
-        console.log(err);
+    if (user) {
+      if (user?.wish.some((wish) => wish.product_id === item?._id)) {
+        setIsWish(true);
       }
     }
-    fetchProduct();
   }, []);
 
   const wishProduct = async () => {
     try {
-      if (Object.entries(userData).length !== 0) {
+      if (user) {
         if (isWish) {
           const res = await removeWishProduct({ product_id: item?._id });
+          setLoveList(res?.wish);
           setIsWish(false);
         } else {
           const res = await addWishProduct({ product_id: item?._id });
+          setLoveList(res?.wish);
           setIsWish(true);
         }
         fetchProductsCard();
-      }
-      else{
+      } else {
         message.error("Vui lòng đăng nhập để thực hiện chức năng!");
       }
     } catch (err) {
@@ -73,10 +65,15 @@ export default function ProductCard({ item, fetchProductsCard }) {
 
   const addCart = async () => {
     try {
-      if (Object.entries(userData).length !== 0) {
-        const res = await addShoppingCart({product_id: item?._id, type_id: item?.type[index(item)]?._id, quantity: 1})
-      }
-      else{
+      if (user) {
+        const res = await addShoppingCart({
+          product_id: item?._id,
+          type_id: item?.type[index(item)]?._id,
+          quantity: 1,
+        });
+        setCart(res?.cart);
+        message.success("Thêm vào giỏ hàng thành công!");
+      } else {
         message.error("Vui lòng đăng nhập để thực hiện chức năng!");
       }
     } catch (err) {
@@ -119,26 +116,30 @@ export default function ProductCard({ item, fetchProductsCard }) {
 
                 {/* Heart count  */}
                 {!isWish ? (
-                  <div className="absolute bottom-0 right-6 inline-flex items-center leading-sm uppercase px-2 py-1 rounded-lg bg-white bg-opacity-50 border-none border-gray-extra_dark">
+                  <div
+                    className="absolute bottom-0 right-6 inline-flex items-center leading-sm uppercase px-2 py-1 rounded-lg bg-white bg-opacity-50 border-none border-gray-extra_dark"
+                    onClick={onClickWish}
+                  >
                     <HeartOutlined
                       style={{
                         verticalAlign: "middle",
                         color: "#797979",
                       }}
-                      onClick={onClickWish}
                     ></HeartOutlined>
                     <div className="text-sm text-gray-extra_dark pl-1">
                       {item?.totalWish}
                     </div>
                   </div>
                 ) : (
-                  <div className="absolute bottom-0 right-6 inline-flex items-center leading-sm uppercase px-2 py-1 rounded-lg bg-white bg-opacity-50 border-none border-gray-extra_dark">
+                  <div
+                    className="absolute bottom-0 right-6 inline-flex items-center leading-sm uppercase px-2 py-1 rounded-lg bg-white bg-opacity-50 border-none border-gray-extra_dark"
+                    onClick={onClickWish}
+                  >
                     <HeartFilled
                       style={{
                         verticalAlign: "middle",
                         color: "#F5B301",
                       }}
-                      onClick={onClickWish}
                     ></HeartFilled>
                     <div className="text-sm text-gray-extra_dark pl-1">
                       {item?.totalWish}
@@ -151,7 +152,7 @@ export default function ProductCard({ item, fetchProductsCard }) {
         >
           <div>
             <Link to={"/product-detail/" + item?._id}>
-              <p className="uppercase mt-2 mb-4 text-base font-bold truncate">
+              <p className="text-left uppercase mt-2 mb-4 text-base font-bold truncate">
                 {item?.title}
               </p>
             </Link>

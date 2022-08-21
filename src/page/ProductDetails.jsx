@@ -1,4 +1,4 @@
-import { Breadcrumb, InputNumber, message, Radio, Spin } from "antd";
+import { Breadcrumb, InputNumber, message, Radio, Spin, Tabs } from "antd";
 import {
     HeartFilled,
     LoadingOutlined,
@@ -24,6 +24,12 @@ import {
     removeWishProduct,
 } from "@/API/user";
 
+import userStore from "@/stores/user";
+import Readmore from "@/components/UI/Readmore";
+import EditComment from "@/components/comment-card/Comment";
+
+const { TabPane } = Tabs;
+
 const ProductDetails = () => {
     const { idProduct } = useParams();
     const [category, setCategory] = useState([]);
@@ -35,7 +41,8 @@ const ProductDetails = () => {
     const [nav2, setNav2] = React.useState(null);
     const [isLoading, setIsLoading] = useState(true);
     const [isWish, setIsWish] = useState(false);
-    const [userInfo, setUserInfo] = useState([]);
+    const [comments, setComments] = useState([]);
+    const { user, setLoveList, setCart } = userStore((state) => state);
     let slider1 = [];
     let slider2 = [];
 
@@ -89,40 +96,42 @@ const ProductDetails = () => {
     };
 
     useEffect(() => {
-        async function fetchProduct() {
-            try {
-                const res = await getProductInfo(idProduct);
-                setProduct(res?.data);
-                setType(res?.data?.type);
-                setIsLoading(false);
-                const resCate = await getCategoryInfo(res?.data?.category);
-                setCategory(resCate);
-                const resProfile = await getProfileUser();
-                setUserInfo(resProfile?.user_data);
-                if (
-                    resProfile?.user_data?.wish.some(
-                        (wish) => wish.product_id === idProduct
-                    )
-                ) {
-                    setIsWish(true);
-                }
-            } catch (err) {
-                console.log(err);
+        if (user) {
+            if (user?.wish.some((wish) => wish.product_id === idProduct)) {
+                setIsWish(true);
             }
         }
+    }, []);
+
+    const fetchProduct = async () => {
+        try {
+            const res = await getProductInfo(idProduct);
+            setProduct(res?.data);
+            setType(res?.data?.type);
+            setIsLoading(false);
+            setComments(res?.data?.comments);
+            const resCate = await getCategoryInfo(res?.data?.category);
+            setCategory(resCate);
+        } catch (err) {
+            console.log(err);
+        }
+    };
+    useEffect(() => {
         fetchProduct();
     }, [idProduct, isWish]);
 
     const wishProduct = async () => {
         try {
-            if (Object.entries(userInfo).length !== 0) {
+            if (user) {
                 if (isWish) {
                     const res = await removeWishProduct({
                         product_id: idProduct,
                     });
+                    setLoveList(res?.wish);
                     setIsWish(false);
                 } else {
                     const res = await addWishProduct({ product_id: idProduct });
+                    setLoveList(res?.wish);
                     setIsWish(true);
                 }
             } else {
@@ -139,12 +148,13 @@ const ProductDetails = () => {
 
     const AddShoppingCart = async () => {
         try {
-            if (Object.entries(userInfo).length !== 0) {
+            if (user) {
                 const res = await addShoppingCart({
                     product_id: idProduct,
                     type_id: type[selectedType]?._id,
                     quantity: quantity,
                 });
+                setCart(res?.cart);
                 message.success("Thêm vào giỏ hàng thành công");
             } else {
                 message.error("Vui lòng đăng nhập để thực hiện chức năng!");
@@ -167,7 +177,7 @@ const ProductDetails = () => {
                         src={Logo}
                         alt="Workflow"
                     />
-                    <Spin indicator={antIcon} />;
+                    <Spin indicator={antIcon} />
                 </div>
             ) : (
                 <div className="py-6">
@@ -446,12 +456,48 @@ const ProductDetails = () => {
                                     </div>
                                 </div>
                             </div>
+
+                            <Tabs defaultActiveKey="1">
+                                <TabPane tab="Bình luận" key="1">
+                                    {/* {comments ? (
+                    comments.map((item, index) => (
+                      <div className="my-3" key={index}>
+                        <CommentQA
+                          children={item}
+                          isChild={true}
+                          productId={idProduct}
+                          fetch={fetchProduct}
+                        ></CommentQA>
+                      </div>
+                    ))
+                  ) : (
+                    <></>
+                  )} */}
+                                    <Readmore
+                                        children={comments}
+                                        ProductId={idProduct}
+                                        Fetch={fetchProduct}
+                                    ></Readmore>
+                                    <EditComment
+                                        productID={idProduct}
+                                        fetch={fetchProduct}
+                                        userData={user}
+                                    ></EditComment>
+                                </TabPane>
+                            </Tabs>
                             <hr className="border-yellow-light border-dashed"></hr>
                             <div className="m-6">
                                 <div className="flex p-5 justify-center items-center">
                                     <div className="mr-2">
                                         <hr className="bg-yellow-light h-1 w-14"></hr>
                                     </div>
+
+                                    {/* <div>
+                    <CommentProduct
+                      productId={product?._id}
+                      commentList={product?.comments}
+                    />
+                  </div> */}
 
                                     <div>
                                         <h1 className="uppercase mb-0 text-center text-3xl font-bold">

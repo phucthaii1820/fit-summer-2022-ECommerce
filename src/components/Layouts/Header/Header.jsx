@@ -15,23 +15,21 @@ import {
 } from "react-icons/fa";
 
 import Logo from "src/image/Logo.svg";
-import { getProfileUser } from "@/API/user";
 import { getAllCategories } from "@/API/category";
-import { logout } from "@/utils/auth";
 import DrawerMenu from "@/components/Menu/DrawerMenu";
 import DropDownMenu from "@/components/Menu/DropDownMenu";
 import ShoppingCartModal from "@/components/shopping-cart/ShoppingCartModal";
 import { searchProducts } from "@/API/product";
 
-import "./Header.css"
+import userStore from "@/stores/user";
 
-export default function Header({ user, ...props }) {
-  const location = useLocation();
+import "./Header.css";
+
+export default function Header({ ...props }) {
+  const { user, logout } = userStore((state) => state);
   const [categories, setCategories] = useState([]);
-  const [profile, setProfile] = useState([]);
   const [search, setSearch] = useState([]);
   const [isHovering, setIsHovering] = useState(false);
-  const [showCart, setShowCart] = useState(false);
   const [keyword, setKeyword] = useState("");
   const [options, setOptions] = useState([]);
 
@@ -48,11 +46,6 @@ export default function Header({ user, ...props }) {
       try {
         const resCategories = await getAllCategories();
         setCategories(resCategories);
-
-        if (user) {
-          const resProfile = await getProfileUser();
-          setProfile(resProfile?.user_data);
-        }
       } catch (err) {
         console.log(err);
       }
@@ -112,8 +105,14 @@ export default function Header({ user, ...props }) {
       <Menu.Item icon={<FaRegHeart />} key="wishList">
         <Link to="/profile/wish-list">Danh sách yêu thích</Link>
       </Menu.Item>
-      <Menu.Item icon={<FaSignOutAlt />} key="logOut">
-        <a onClick={logout}>Đăng xuất</a>
+      <Menu.Item
+        icon={<FaSignOutAlt />}
+        key="logOut"
+        onClick={() => {
+          logout();
+        }}
+      >
+        <div>Đăng xuất</div>
       </Menu.Item>
     </Menu>
   );
@@ -162,8 +161,7 @@ export default function Header({ user, ...props }) {
             <div className="relative flex items-center justify-between h-20">
               <DrawerMenu
                 categories={categories}
-                user={user}
-                profileUser={profile}
+                profileUser={user}
               ></DrawerMenu>
               <div className="absolute inset-y-0 left-0 flex items-center sm:hidden"></div>
               <div className="flex-1 flex items-center justify-center md:items-stretch md:justify-start">
@@ -194,7 +192,9 @@ export default function Header({ user, ...props }) {
                             border: "0px",
                             paddingInline: "10px",
                             color: isHovering ? "black" : "black",
-                            transition: isHovering ? "width .2s ease-in-out": "",
+                            transition: isHovering
+                              ? "width .2s ease-in-out"
+                              : "",
                           }}
                           onMouseEnter={handleMouseEnter}
                           onMouseLeave={handleMouseLeave}
@@ -213,7 +213,7 @@ export default function Header({ user, ...props }) {
                           border: "0px",
                           paddingInline: "10px",
                           color: isHovering ? "black" : "black",
-                          transition: isHovering ? "width .2s ease-in-out": "",
+                          transition: isHovering ? "width .2s ease-in-out" : "",
                         }}
                         onMouseEnter={handleMouseEnter}
                         onMouseLeave={handleMouseLeave}

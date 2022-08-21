@@ -48,3 +48,9 @@ export const deleteProduct = (id) =>
         method: "POST",
         data: { id: id },
     });
+
+export const postComment = (data) =>
+    callAPI({ url: `/products/create-comment`, method: "POST", data });
+
+export const replyComment = (data) =>
+    callAPI({ url: `/products/reply-comment`, method: "POST", data });
