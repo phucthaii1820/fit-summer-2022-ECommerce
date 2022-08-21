@@ -19,7 +19,6 @@ const Category = () => {
   const [totalItems, setTotalItems] = useState(10);
   const [curPage, setCurPage] = useState("1");
   const [isLoading, setIsLoading] = useState(true);
-
   const { idCate } = useParams();
   const pageSize = 20;
 
@@ -49,6 +48,7 @@ const Category = () => {
       try {
         setIsLoading(true);
         const res = await getListProducts(idCate, curPage);
+        console.log(res)
         setData(res?.data[0]?.producs);
         setTotalItems(res?.data[2]?.totalPages * pageSize);
         setLowerBound(0);
@@ -65,9 +65,11 @@ const Category = () => {
     if (value <= 1) {
       setLowerBound(0);
       setUpperBound(pageSize);
+      setCurPage(1);
     } else {
       setLowerBound((value - 1) * pageSize);
       setUpperBound(value * pageSize);
+      setCurPage(value);
     }
   };
 

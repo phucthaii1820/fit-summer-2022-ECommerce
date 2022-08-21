@@ -1,12 +1,10 @@
 import { replyComment } from "@/API/product";
 import { getProfileUser } from "@/API/user";
 import { EditFilled, WechatOutlined } from "@ant-design/icons";
-import { Comment, Form, Button, Collapse, Tooltip, Input } from "antd";
+import { Comment, Form, Button, Tooltip, Input } from "antd";
 import moment from "moment";
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 
-const { Panel } = Collapse;
 const { TextArea } = Input;
 const Editor = ({ onChange, onSubmit, submitting, value }) => (
   <>
@@ -70,25 +68,25 @@ export default function CommentQA({
   }, []);
 
   const handleReply = () => {
-    setReplyClick(true);
+    setReplyClick(!replyClick);
   };
 
   const handleEdit = () => {
-    setEditClick(true);
+    setEditClick(!editClick);
   };
 
   const action = [
     <span key="comment-basic-reply-to" onClick={handleReply} className="flex">
       <WechatOutlined className="mr-2 text-base" />
       <div className="text-sm">Phản hồi</div>
-    </span>,
+    </span>
   ];
 
   const action2 = [
     <span key="comment-basic-edit-to" onClick={handleEdit} className="flex">
       <EditFilled className="mr-2 text-base" />
       <div className="text-sm">Chỉnh sửa</div>
-    </span>,
+    </span>
   ];
 
   return (
@@ -96,12 +94,12 @@ export default function CommentQA({
       <Comment
         className="bg-white rounded-lg p-3 shadow-lg"
         author={
-          <div className="font-bold text-base">{children?.fullname}</div>
+          <div className="font-bold text-base">{children?.userId?.fullname}</div>
         }
         content={<div className="border-solid mt-2">{children?.content}</div>}
         datetime={
-          <Tooltip title={moment(children?.createdAt).fromNow()}>
-            <div className="mt-1">{moment(children?.createdAt).fromNow()}</div>
+          <Tooltip title={moment(children?.createdAt).format("DD/MM/YYYY HH:mm:ss")}>
+            <div className="mt-1">{moment(children?.createdAt).format("DD/MM/YYYY HH:mm:ss")}</div>
           </Tooltip>
         }
         actions={action}
@@ -119,16 +117,6 @@ export default function CommentQA({
             <></>
           )
         ) : (
-          // <Collapse ghost bordered="true">
-          //   <Panel header="Show more">
-          //     {children.reply.map((item) => (
-          //       <div className="mb-3 ml-5">
-          //         <CommentQA children={item} isChild={false}></CommentQA>
-          //       </div>
-          //     ))}
-          //   </Panel>
-          // </Collapse>
-
           <></>
         )
       ) : (

@@ -165,10 +165,10 @@ export default function Header({ ...props }) {
               ></DrawerMenu>
               <div className="absolute inset-y-0 left-0 flex items-center sm:hidden"></div>
               <div className="flex-1 flex items-center justify-center md:items-stretch md:justify-start">
-                <div className="flex-shrink-0 flex items-center">
+                <div className="flex items-center">
                   <Link to="/">
                     <img
-                      className="block lg:hidden h-14 w-auto"
+                      className="block lg:hidden h-8 w-auto"
                       src={Logo}
                       alt="Workflow"
                     />
