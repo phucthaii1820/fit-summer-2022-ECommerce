@@ -2,6 +2,7 @@ import LayoutHomePage from "@/components/Layouts/LayoutHomePage";
 import LayoutMain from "@/components/Layouts/LayoutMain";
 import Category from "@/page/Category";
 import Checkout from "@/page/Checkout";
+import CompleteOrder from "@/page/CompleteOrder";
 import NotFound from "@/page/NotFound";
 import ProductDetails from "@/page/ProductDetails";
 import Search from "@/page/Search";
@@ -21,6 +22,7 @@ export default function RegularRoute() {
           element={<ProductDetails />}
         />
         <Route exact path="/checkout" element={<Checkout />} />
+        <Route exact path="/complete-order" element={<CompleteOrder />} />
         <Route exact path="*" element={<NotFound />} />
       </Routes>
     </LayoutMain>
