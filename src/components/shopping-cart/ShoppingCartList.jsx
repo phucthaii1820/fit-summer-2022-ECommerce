@@ -26,6 +26,7 @@ export default function ShoppingCartList({}) {
   const { user, setCart } = userStore((state) => state);
   const [productInfo, setProductInfo] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [totalPriceProduct, setTotalPriceProduct] = useState(0);
 
   useEffect(() => {
     const fetchProductInfo = async () => {
@@ -49,6 +50,22 @@ export default function ShoppingCartList({}) {
     setProductInfo([]);
     fetchProductInfo();
   }, [user]);
+
+  useEffect(() => {
+    if (productInfo.length > 0) {
+      let totalPrice = 0;
+      productInfo?.map((itemProduct) => {
+        itemProduct?.type?.map((itemType) => {
+          if (itemType._id === itemProduct.typeSelect) {
+            totalPrice += itemType.price * itemProduct.quantitySelect;
+          }
+        });
+      });
+      setTotalPriceProduct(totalPrice);
+    } else {
+      setTotalPriceProduct(0);
+    }
+  }, [productInfo]);
 
   const handleChangeColor = async (product_id, type_id, quantity, cart_id) => {
     try {
@@ -195,12 +212,21 @@ export default function ShoppingCartList({}) {
           <Spin indicator={antIcon} />
         </div>
       ) : (
-        <Table
-          columns={columns}
-          dataSource={productInfo}
-          pagination={false}
-          scroll={{ y: 200 }}
-        />
+        <>
+          <Table
+            columns={columns}
+            dataSource={productInfo}
+            pagination={false}
+            scroll={{ y: 200 }}
+          />
+          <div className="mt-4 flex justify-end">
+            Tổng tiền:{" "}
+            {new Intl.NumberFormat("vi-VN", {
+              style: "currency",
+              currency: "VND",
+            }).format(totalPriceProduct)}
+          </div>
+        </>
       )}
     </div>
   );
