@@ -69,7 +69,7 @@ export default function ProductDetailModal(props) {
     //       //         url: image,
     //       //     };
     //       // })
-    [];
+
     // );
 
     const [fileList, setFileList] = useState([]);
