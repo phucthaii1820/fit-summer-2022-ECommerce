@@ -12,6 +12,7 @@ import {
   FaSignOutAlt,
   FaRegHeart,
   FaKey,
+  FaChalkboardTeacher,
 } from "react-icons/fa";
 
 import Logo from "src/image/Logo.svg";
@@ -25,7 +26,7 @@ import userStore from "@/stores/user";
 
 import "./Header.css";
 
-export default function Header({ ...props }) {
+export default function Header() {
   const { user, logout } = userStore((state) => state);
   const [categories, setCategories] = useState([]);
   const [search, setSearch] = useState([]);
@@ -96,6 +97,13 @@ export default function Header({ ...props }) {
       <Menu.Item icon={<FaUserCircle />} key="info">
         <Link to="/profile">Thông tin tài khoản</Link>
       </Menu.Item>
+      {user?.role === 1000 ? (
+        <Menu.Item icon={<FaChalkboardTeacher />}>
+          <Link to="/admin">Admin</Link>
+        </Menu.Item>
+      ) : (
+        null
+      )}
       <Menu.Item icon={<FaKey />} key="changePassword">
         <Link to="/profile/change-password">Thay đổi mật khẩu</Link>
       </Menu.Item>

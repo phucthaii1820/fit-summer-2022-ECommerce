@@ -21,7 +21,6 @@ const MyOrder = () => {
   const { TabPane } = Tabs;
   const [isLoading, setIsLoading] = useState(false);
   const [orders, setOrders] = useState([]);
-  const [totalOrders, setTotalOrders] = useState(3);
   const [lowerBound, setLowerBound] = useState(0);
   const [upperBound, setUpperBound] = useState(1);
   const pageSize = 3;
@@ -77,7 +76,7 @@ const MyOrder = () => {
               }
               key="1"
             >
-              {orders.slice(lowerBound, upperBound).map((order, index) => (
+              {orders.map((order, index) => (
                 <CardOder orderInfo={order} key={index}></CardOder>
               ))}
             </TabPane>
