@@ -60,17 +60,19 @@ export default function ProductDetailModal(props) {
         title: "",
     });
 
-    const [fileList, setFileList] = useState(
-        // product.image.map((image, index) => {
-        //     return {
-        //         uid: index,
-        //         name: "image" + index,
-        //         status: "done",
-        //         url: image,
-        //     };
-        // })
-        []
-    );
+    // const [fileList, setFileList] = useState(
+    //       // product.image.map((image, index) => {
+    //       //     return {
+    //       //         uid: index,
+    //       //         name: "image" + index,
+    //       //         status: "done",
+    //       //         url: image,
+    //       //     };
+    //       // })
+    [];
+    // );
+
+    const [fileList, setFileList] = useState([]);
 
     // For Edit Type Product --------------------------------------------------------------------------------------------
     const EditableCell = ({
@@ -146,51 +148,37 @@ export default function ProductDetailModal(props) {
         setVisible(true);
     };
 
-    const handleOk = async () => {
-        setOkLoading(true);
+    const handleOk = () => {
+        // setOkLoading(true);
+        // setTimeout(() => {
+        //   setOkLoading(false);
+        //   setVisible(false);
+        // }, 3000);
 
-        // create FormData {/* title description statusPost nameBrand totalWish category image type : color quantity price */}
-        const formData = new FormData();
-        formData.append("_id", product._id);
-        formData.append("title", product.title);
-        formData.append("description", product.description);
-        formData.append("nameBrand", product.nameBrand);
-        formData.append("category", product.category);
-        formData.append("type", product.type);
-        // For each image in the fileList, add to the formData
+        const fetchAPI = async () => {
+            try {
+                let formData = new FormData();
+                formData.append("id", product._id);
+                formData.append("title", product.title);
+                formData.append("description", product.description);
+                formData.append("nameBrand", product.nameBrand);
+                formData.append("type", JSON.stringify(product.type));
+                formData.append("category", product.category);
+                fileList?.map((file) =>
+                    formData.append("image", file.originFileObj)
+                );
+                // console.log(formData);
 
-        // console.log("product.image", product.image);
-        console.log("fileList", fileList);
-        if (fileList.fileList.length > 0) {
-            fileList.fileList.forEach((file, index) => {
-                console.log(file);
-                formData.append("image", file.originFileObj);
-            });
-        }
+                const res = await updateProduct(formData);
+                console.log(res);
+            } catch (error) {
+                console.log(error);
+            }
+        };
 
-        for (const value of formData.values()) {
-            console.log("value", value);
-        }
-
-        // Call Api to Update Product
-        const res = await updateProduct(formData);
-        if (res.success) {
-            setOkLoading(false);
-            setVisible(false);
-            setNotEditable(true);
-        } else {
-            Modal.error({
-                visible: true,
-                title: "Có lỗi xảy ra",
-                content: res.message,
-            });
-
-            setOkLoading(false);
-            setVisible(false);
-            setNotEditable(true);
-        }
-        console.log("res", res);
+        fetchAPI();
     };
+
     // --------------------------------------------------------------------------------------------
 
     const handleCancel = () => {

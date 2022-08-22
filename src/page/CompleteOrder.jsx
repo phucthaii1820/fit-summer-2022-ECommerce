@@ -92,7 +92,7 @@ const CompleteOrder = () => {
               color: "#EB5757",
             }}
           >
-            Thanh toán thất bại
+            Đặt hàng thất bại
           </div>
           <Button
             style={{
@@ -134,7 +134,7 @@ const CompleteOrder = () => {
               color: "#00B156",
             }}
           >
-            Thanh toán thành công
+            Đặt hàng thành công
           </div>
           <Button
             style={{
