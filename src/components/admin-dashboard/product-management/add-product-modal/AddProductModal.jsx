@@ -11,23 +11,152 @@ import {
     Row,
     Col,
     Upload,
+    Switch,
+    InputNumber,
 } from "antd";
 
 import ImgCrop from "antd-img-crop";
 
 import {
-    EyeOutlined,
-    EditOutlined,
+    PlusCircleOutlined,
     DeleteOutlined,
-    EyeInvisibleOutlined,
-    FolderOpenOutlined,
     CloseCircleOutlined,
     CheckCircleOutlined,
-    PlusCircleOutlined,
 } from "@ant-design/icons";
 
+import { addProduct } from "@/API/product";
+
 export default function AddProductModal(props) {
+    const initProduct = {
+        title: "",
+        description: "",
+        statusPost: true,
+        nameBrand: "",
+        totalWish: 0,
+        category: "",
+        type: [],
+        image: [],
+    };
     const categories = props.categories;
+
+    const [product, setProduct] = useState({ ...initProduct });
+    const [loading, setLoading] = useState(false);
+    const [okLoading, setOkLoading] = useState(false);
+    const [visible, setVisible] = useState(false);
+
+    const [productTypeForm] = Form.useForm();
+
+    const [previewImage, setPreviewImage] = useState({
+        show: false,
+        image: null,
+        title: "",
+    });
+
+    const [fileList, setFileList] = useState([]);
+
+    // For Edit Type Product --------------------------------------------------------------------------------------------
+    const EditableCell = ({
+        editing,
+        dataIndex,
+        title,
+        inputType,
+        record,
+        index,
+        children,
+        ...restProps
+    }) => {
+        const inputNode = inputType === "number" ? <InputNumber /> : <Input />;
+        return (
+            <td {...restProps}>
+                {editing ? (
+                    <Form.Item
+                        name={dataIndex}
+                        style={{
+                            margin: 0,
+                        }}
+                        rules={[
+                            {
+                                required: true,
+                                message: `Vui lòng nhập ${title}!`,
+                            },
+                        ]}
+                    >
+                        {inputNode}
+                    </Form.Item>
+                ) : (
+                    children
+                )}
+            </td>
+        );
+    };
+
+    // ----------------------------------
+
+    const showModal = () => {
+        setVisible(true);
+    };
+
+    const handleOk = () => {
+        // Format product.type: delete _id
+
+        setProduct({
+            ...product,
+            type: product.type.map((item) => {
+                return {
+                    color: item.color,
+                    quantity: item.quantity,
+                    price: item.price,
+                };
+            }),
+        });
+
+        var tempProduct = {
+            ...product,
+            type: product.type.map((item) => {
+                return {
+                    color: item.color,
+                    quantity: item.quantity,
+                    price: item.price,
+                };
+            }),
+        };
+
+        // console.log("Product deleted", tempProduct);
+
+        const fetchAPI = async (product) => {
+            setOkLoading(true);
+
+            try {
+                let formData = new FormData();
+                formData.append("title", product.title);
+                formData.append("description", product.description);
+                formData.append("nameBrand", product.nameBrand);
+                formData.append("type", JSON.stringify(product.type));
+                formData.append("category", product.category);
+                fileList?.map((file) =>
+                    formData.append("image", file.originFileObj)
+                );
+                // console.log(formData);
+
+                const res = await addProduct(formData);
+
+                if (res.success) {
+                    setOkLoading(true);
+                    setVisible(false);
+                    props.addProduct();
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        };
+
+        fetchAPI(tempProduct);
+    };
+
+    const handleCancel = () => {
+        setVisible(false);
+        setOkLoading(false);
+    };
 
     const columns = [
         {
@@ -35,52 +164,174 @@ export default function AddProductModal(props) {
             dataIndex: "color",
             key: "color",
             ellipsis: true,
-            render: (color) => (
-                <div
-                    className="h-4 w-4"
-                    style={{ backgroundColor: color }}
-                ></div>
+            render: (color, index) => (
+                <input
+                    type="color"
+                    id="head"
+                    name="head"
+                    defaultValue={color}
+                    onBlur={(e) => handleFormChange([e, index], 10)}
+                />
             ),
         },
-        {
-            title: "Chi nhánh",
-            dataIndex: "store_id",
-            key: "store_id",
-            ellipsis: true,
-        },
+        // {
+        //     title: "Chi nhánh",
+        //     dataIndex: "store_id",
+        //     key: "store_id",
+        //     ellipsis: true,
+        // },
         {
             title: "Đơn giá",
             dataIndex: "price",
             key: "price",
             ellipsis: true,
+            render: (price, index) => (
+                <Input
+                    defaultValue={price}
+                    onBlur={(e) => handleFormChange([e, index], 6)}
+                />
+            ),
         },
         {
             title: "Số lượng tồn",
             dataIndex: "quantity",
             key: "quantity",
             ellipsis: true,
+            render: (quantity, index) => (
+                <Input
+                    defaultValue={quantity}
+                    onBlur={(e) => handleFormChange([e, index], 7)}
+                />
+            ),
+        },
+        {
+            title: "Xóa",
+            key: "delete",
+            dataIndex: "_id",
+            render: (index) => (
+                <Button
+                    icon={<DeleteOutlined />}
+                    onClick={() => handleFormChange(index, 8)}
+                />
+            ),
         },
     ];
 
-    const [visible, setVisible] = useState(false);
-    const [product, setProduct] = useState({
-        title: "",
-        description: "",
-        statusPost: true,
-        nameBrand: "",
-        totalWish: 0,
-        category: "",
-        image: [],
-        type: [],
-    });
-
-    const showModal = () => {
-        setVisible(true);
+    const onImagePreview = async (file) => {
+        file &&
+            setPreviewImage({
+                show: true,
+                image: file.url || file.thumbUrl,
+                title: file.name,
+            });
     };
 
-    const handleOk = () => {};
+    const handleImageChange = ({ fileList: newFileList }) => {
+        setFileList(newFileList);
+        // if (newFileList.length > 0) {
+        //     setProduct({
+        //         ...product,
+        //         image: newFileList.map((file) => {
+        //             if (file.url != null) return file.url;
+        //             else {
+        //                 return file.thumbUrl;
+        //             }
+        //         }),
+        //     });
+        // }
+    };
 
-    const handleCancel = () => {};
+    const handleFormChange = (event, key) => {
+        console.log("product before change", product);
+
+        switch (key) {
+            case 1:
+                setProduct({
+                    ...product,
+                    title: event.target.value,
+                });
+                break;
+            case 2:
+                setProduct({
+                    ...product,
+                    description: event.target.value,
+                });
+                break;
+            case 3:
+                setProduct({
+                    ...product,
+                    statusPost: !product.statusPost,
+                });
+                break;
+
+            case 4:
+                setProduct({
+                    ...product,
+                    nameBrand: event.target.value,
+                });
+                break;
+
+            case 5:
+                setProduct({
+                    ...product,
+                    category: event,
+                });
+                break;
+            case 6:
+                var type = product.type;
+                type.find((item) => item._id === event[1]._id).price =
+                    parseInt(event[0].target.value) || 0;
+                setProduct({
+                    ...product,
+                    type: type,
+                });
+                break;
+            case 7:
+                var type = product.type;
+                type.find((item) => item._id === event[1]._id).quantity =
+                    parseInt(event[0].target.value) || 0;
+                setProduct({
+                    ...product,
+                    type: type,
+                });
+                break;
+            case 8:
+                var type = product.type.filter((item) => item._id !== event);
+                setProduct({
+                    ...product,
+                    type: type,
+                });
+                break;
+            case 9:
+                setProduct({
+                    ...product,
+                    type: [
+                        ...product.type,
+                        {
+                            _id: product.type.length + 1,
+                            color: "#ffffff",
+                            price: 0,
+                            quantity: 0,
+                            store_id: "",
+                        },
+                    ],
+                });
+                break;
+            case 10:
+                var type = product.type;
+                type.find((item) => item._id === event[1]._id).color =
+                    event[0].target.value || "#ffffff";
+                setProduct({
+                    ...product,
+                    type: type,
+                });
+                break;
+            default:
+                break;
+        }
+        console.log("product after change", product);
+    };
+    // console.log(fileList);
 
     return (
         <>
@@ -93,58 +344,81 @@ export default function AddProductModal(props) {
                 visible={visible}
                 onOk={handleOk}
                 onCancel={handleCancel}
+                footer={[
+                    <>
+                        <Button
+                            key="submit"
+                            icon={<CheckCircleOutlined />}
+                            onClick={handleOk}
+                            loading={okLoading}
+                            type="primary"
+                        >
+                            Cập nhật
+                        </Button>
+
+                        <Button
+                            key="back"
+                            icon={<CloseCircleOutlined />}
+                            onClick={handleCancel}
+                        >
+                            Hủy thay đổi
+                        </Button>
+                    </>,
+                ]}
             >
                 {/* title description statusPost nameBrand totalWish category image type : color quantity price */}
                 <Form>
                     <Row>
                         <Col>
                             <Form.Item label="Tên sản phẩm">
-                                <Input value={product.title} />
+                                <Input
+                                    value={product.title}
+                                    onChange={(e) => handleFormChange(e, 1)}
+                                />
                             </Form.Item>
                             <Form.Item label="Mô tả">
                                 <Input.TextArea
                                     value={product.description}
                                     rows={5}
+                                    onChange={(e) => handleFormChange(e, 2)}
                                 ></Input.TextArea>
                             </Form.Item>
                         </Col>
 
                         <Col>
                             <Form.Item label="Trạng thái">
-                                {product.statusPost === "0" ? (
-                                    <>
-                                        <span> Đang hiện </span>
-                                        <Button
-                                            type="link"
-                                            icon={<EyeInvisibleOutlined />}
-                                            shape="round"
-                                        >
-                                            Ẩn sản phẩm
-                                        </Button>
-                                    </>
-                                ) : (
-                                    <>
-                                        <span> Đang ẩn </span>
-                                        <Button
-                                            type="link"
-                                            icon={<EyeOutlined />}
-                                            shape="round"
-                                        >
-                                            Hiện sản phẩm
-                                        </Button>
-                                    </>
-                                )}
+                                <Switch
+                                    checked={product.statusPost}
+                                    checkedChildren="Hiện sản phẩm"
+                                    unCheckedChildren="Ẩn sản phẩm"
+                                    onChange={(e) => handleFormChange(e, 3)}
+                                />
                             </Form.Item>
                             <Form.Item label="Tên hãng">
-                                <Input value={product.nameBrand} />
+                                <Input
+                                    value={product.nameBrand}
+                                    onChange={(e) => handleFormChange(e, 4)}
+                                />
                             </Form.Item>
-                            <Form.Item label="Số lượt thích">
-                                <span> {product.totalWish} </span>
-                            </Form.Item>
+
                             <Form.Item label="Danh mục">
-                                <Select value={product.category === ""}>
+                                <Select
+                                    value={{
+                                        value: product.category,
+                                        label: product.category
+                                            ? categories.find(
+                                                  (category) =>
+                                                      category._id ===
+                                                      product.category
+                                              ).name
+                                            : "",
+                                    }}
+                                    onChange={(value) => {
+                                        handleFormChange(value, 5);
+                                    }}
+                                >
                                     {categories.map((category) => (
-                                        <Select.Option key={category.id}>
+                                        <Select.Option value={category._id}>
                                             {category.name}
                                         </Select.Option>
                                     ))}
@@ -154,25 +428,39 @@ export default function AddProductModal(props) {
                     </Row>
 
                     <Form.Item label="Ảnh">
-                        {/* <ImgCrop rotate>
-                            <Upload
-                                action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-                                listType="picture-card"
-                                fileList={fileList}
-                                onChange={onChange}
-                                onPreview={onPreview}
-                            >
-                                {fileList.length < 5 && "+ Upload"}
-                            </Upload>
-                        </ImgCrop> */}
+                        <Upload
+                            action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+                            listType="picture-card"
+                            fileList={fileList}
+                            onChange={handleImageChange}
+                            onPreview={onImagePreview}
+                            beforeUpload={() => false}
+                        >
+                            Chọn ảnh
+                        </Upload>
                     </Form.Item>
-                    <Form.Item label="Loại">
+                    <Form label="Loại" form={productTypeForm} component={false}>
                         <Table
                             dataSource={product.type}
                             columns={columns}
+                            // columns={mergedColumns}
                             pagination={false}
-                        ></Table>
-                    </Form.Item>
+                            components={{
+                                body: {
+                                    cell: EditableCell,
+                                },
+                            }}
+                        />
+                        <div>
+                            <Button
+                                icon={<PlusCircleOutlined />}
+                                onClick={(e) => handleFormChange(9, 9)}
+                                style={{ align: "right" }}
+                            >
+                                Thêm loại sản phẩm
+                            </Button>
+                        </div>
+                    </Form>
                 </Form>
             </Modal>
         </>
