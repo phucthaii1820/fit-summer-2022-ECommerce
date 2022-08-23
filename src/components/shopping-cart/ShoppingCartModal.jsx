@@ -27,7 +27,7 @@ export default function ShoppingCartModal() {
   };
 
   return (
-    <>
+    <div>
       <Badge count={totalCart}>
         <ShoppingCartOutlined
           style={{ fontSize: "2em" }}
@@ -48,6 +48,6 @@ export default function ShoppingCartModal() {
           <ShoppingCartList></ShoppingCartList>
         </div>
       </Modal>
-    </>
+    </div>
   );
 }

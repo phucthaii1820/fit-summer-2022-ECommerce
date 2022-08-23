@@ -2,3 +2,7 @@
     font-weight: bold !important;
     font-size: 25px !important;
 }
+
+.ant-drawer-content-wrapper{
+    width: 250px !important;
+}
