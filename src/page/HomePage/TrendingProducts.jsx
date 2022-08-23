@@ -18,6 +18,8 @@ export default function TrendingProducts() {
             </div>
 
             <CarouselProducts idCategory="62ab68801094bceaaaa5c981" nameCategory="Phuộc"></CarouselProducts>
+            <CarouselProducts idCategory="62d7565c63324e2fc798bc82" nameCategory="Tay thắng"></CarouselProducts>
+            <CarouselProducts idCategory="62d7573cda84fd20763e1022" nameCategory="Niềng"></CarouselProducts>
         </div>
     );
 }
