@@ -12,5 +12,5 @@ export const changeStatusOrder = (data) =>
 export const getOrders = () =>
     callAPI({ url: `/order/get-all`, method: "GET" });
 
-export const getOrdersAdmin = () =>
-    callAPI({ url: `/order/get-all-admin`, method: "GET" });
+export const getOrderID = (id) =>
+    callAPI({ url: `/order/get-by-id?id=${id}`, method: "GET" });
