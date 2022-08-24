@@ -7,12 +7,14 @@ import {
     AppstoreAddOutlined,
     ShoppingOutlined,
     BarChartOutlined,
+    CommentOutlined,
 } from "@ant-design/icons";
 
 import UserManagement from "@/components/admin-dashboard/user-management/UserManagement";
 import CategoryManagement from "@/components/admin-dashboard/category-management/CategoryManagement";
 import ProductManagement from "@/components/admin-dashboard/product-management/ProductManagement";
 import OrderManagement from "@/components/admin-dashboard/order-management/OrderManagement";
+import CommentManagement from "@/components/admin-dashboard/comment-management/CommentManagement";
 
 import "./LayoutAdmin.css";
 import { Breadcrumb, Layout, Menu, Avatar, Divider } from "antd";
@@ -54,6 +56,13 @@ const items = [
             null,
             <OrderManagement />
         ),
+        getItem(
+            "Bình luận",
+            "2-5",
+            <CommentOutlined />,
+            null,
+            <CommentManagement />
+        ),
     ]),
     null,
 ];
@@ -61,7 +70,7 @@ const items = [
 export default function LayoutAdmin() {
     const [collapsed, setCollapsed] = useState(false);
 
-    const [selectedKeys, setSelectedKeys] = useState("2-4");
+    const [selectedKeys, setSelectedKeys] = useState("2-5");
 
     return (
         <Layout
@@ -138,6 +147,8 @@ export default function LayoutAdmin() {
                                 ? "Quản lý Sản phẩm"
                                 : selectedKeys === "2-4"
                                 ? "Quản lý Đơn hàng"
+                                : selectedKeys === "2-5"
+                                ? "Phản hồi bình luận"
                                 : ""}
                         </Breadcrumb.Item>
                     </Breadcrumb>
@@ -160,8 +171,10 @@ export default function LayoutAdmin() {
                             <ProductManagement />
                         ) : selectedKeys === "2-4" ? (
                             <OrderManagement />
+                        ) : selectedKeys === "2-5" ? (
+                            <CommentManagement />
                         ) : (
-                            ""
+                            <></>
                         )}
                     </div>
                 </Content>

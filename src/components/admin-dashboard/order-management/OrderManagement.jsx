@@ -41,12 +41,12 @@ export default function OrderManagement() {
                 const res = await getOrdersAdmin();
                 console.log(res);
                 setOrders(res);
+                setLoading(false);
             } catch (error) {
                 console.log(error);
             }
         }
         fetchData();
-        setLoading(false);
     }, [isChange]);
 
     const handleChangeStatus = async (orderId, statusCode) => {

@@ -341,7 +341,7 @@ export default function ProductDetailModal(props) {
                     type: [
                         ...product.type,
                         {
-                            // _id: (product.type.at(-1)._id || product._id) + 1,
+                            _id: product.type.length + 1 || 1,
                             color: "#ffffff",
                             price: 0,
                             quantity: 0,
