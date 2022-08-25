@@ -2,11 +2,13 @@ import { postPassword } from "@/API/user";
 import { Button, Input, message } from "antd";
 
 import React, { useState } from "react";
+import userStore from "@/stores/user";
 
 const ChangePassword = () => {
   const [password, setPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const { SetPassword } = userStore((state) => state);
 
   const validatePass = function validatePassword(pass) {
     var newPassword = pass;
@@ -40,7 +42,6 @@ const ChangePassword = () => {
   }
 
   const handleUpdate = async (event) => {
-    console.log(password, newPassword)
     if(password === "" || newPassword === "" || confirmPassword === ""){
       message.error("Vui lòng điền đầy đủ thông tin!");
     }
@@ -56,6 +57,7 @@ const ChangePassword = () => {
     } else {
       try {
         const res = await postPassword({ password: password, newPassword: newPassword });
+        SetPassword(newPassword);
         message.success("Đổi mật khẩu thành công!");
       }
       catch (err) {
