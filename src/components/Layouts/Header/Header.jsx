@@ -68,9 +68,7 @@ export default function Header() {
         <Menu.Item icon={<FaChalkboardTeacher />}>
           <Link to="/admin">Admin</Link>
         </Menu.Item>
-      ) : (
-        null
-      )}
+      ) : null}
       <Menu.Item icon={<FaKey />} key="changePassword">
         <Link to="/profile/change-password">Thay đổi mật khẩu</Link>
       </Menu.Item>
@@ -98,11 +96,13 @@ export default function Header() {
         const res = await searchProducts(keyword, "1");
         let data = [];
         res?.data[0]?.producs.map((item) => {
-          data.push({
-            value: item.title,
-            id: item._id,
-            category: item.category,
-          });
+          if (item.statusPost === 1) {
+            data.push({
+              value: item.title,
+              id: item._id,
+              category: item.category,
+            });
+          }
         });
         setOptions(data);
       } catch (err) {

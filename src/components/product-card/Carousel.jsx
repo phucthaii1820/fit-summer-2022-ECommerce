@@ -77,14 +77,16 @@ const CarouselProducts = ({ idCategory, nameCategory }) => {
         </div>
       </div>
       <Slider {...settings} style={{ cursor: "pointer" }}>
-        {data.map((item, index) => (
-          <div className="p-2" key={index}>
-            <ProductCard
-              item={item}
-              fetchProductsCard={fetchProducts}
-            ></ProductCard>
-          </div>
-        ))}
+        {data.map((item, index) =>
+          item?.statusPost === 1 ? (
+            <div className="p-2" key={index}>
+              <ProductCard
+                item={item}
+                fetchProductsCard={fetchProducts}
+              ></ProductCard>
+            </div>
+          ) : null
+        )}
         {data.map((item, index) => (
           <div className="p-2" key={index}>
             <ProductCard

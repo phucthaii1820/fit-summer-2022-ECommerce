@@ -10,7 +10,7 @@ import Logo from "src/image/Logo.svg";
 import { LoadingOutlined } from "@ant-design/icons";
 import { searchProducts } from "@/API/product";
 
-import "./Search.css"
+import "./Search.css";
 
 const Search = () => {
   const [data, setData] = useState(null);
@@ -85,13 +85,15 @@ const Search = () => {
               <Breadcrumb.Item>{keyword}</Breadcrumb.Item>
             </Breadcrumb>
             <Row>
-              {data.map((item, index) => (
-                <Col key={index} xl={6} lg={6} md={12} xs={18} sm={18}>
-                  <div className="py-2">
-                    <ProductCard item={item} idCate={item.category} />
-                  </div>
-                </Col>
-              ))}
+              {data.map((item, index) =>
+                item?.statusPost === 1 ? (
+                  <Col key={index} xl={6} lg={6} md={12} xs={18} sm={18}>
+                    <div className="py-2">
+                      <ProductCard item={item} idCate={item.category} />
+                    </div>
+                  </Col>
+                ) : null
+              )}
             </Row>
             {/* <div className="p-3 grid justify-items-end">
               <Pagination
