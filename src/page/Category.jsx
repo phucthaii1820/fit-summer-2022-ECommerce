@@ -8,6 +8,7 @@ import ProductCard from "@/components/product-card/ProductCard";
 import { Pagination, Row, Col, Breadcrumb, Spin } from "antd";
 import { getCategoryInfo } from "@/API/category";
 
+import NoResult from "src/image/NoResults.svg";
 import Logo from "src/image/Logo.svg";
 import { LoadingOutlined } from "@ant-design/icons";
 
@@ -80,7 +81,7 @@ const Category = () => {
           <img className="h-14 w-auto mb-8" src={Logo} alt="Workflow" />
           <Spin indicator={antIcon} />
         </div>
-      ) : (
+      ) : data.length > 0 ? (
         <div className="relative">
           <div className="container mx-auto xl:px-40">
             <Breadcrumb style={{ fontSize: "1rem", marginLeft: "10px" }}>
@@ -106,6 +107,22 @@ const Category = () => {
                 onChange={handleChange}
                 pageSize={pageSize}
               />
+            </div>
+          </div>
+        </div>
+      ) : (
+        <div className="relative">
+          <div className="container mx-auto xl:px-40">
+            <Breadcrumb style={{ fontSize: "1rem", marginLeft: "10px" }}>
+              <Breadcrumb.Item>Trang chủ</Breadcrumb.Item>
+              <Breadcrumb.Item>Danh mục</Breadcrumb.Item>
+              <Breadcrumb.Item>{category.name}</Breadcrumb.Item>
+            </Breadcrumb>
+            <div className="flex justify-center">
+              <img src={NoResult} className="w-56 h-56"></img>
+              <div className="text-3xl place-self-center">
+                Hiện tại chưa có sản phẩm nào!
+              </div>
             </div>
           </div>
         </div>
