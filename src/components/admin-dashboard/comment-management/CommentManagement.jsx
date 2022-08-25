@@ -1,22 +1,24 @@
-import { Button, Space, Table, Image } from "antd";
 import React, { useState, useEffect } from "react";
-import { getAllCategories } from "@/API/category";
-import { addProduct, getAllProducts, updateProduct } from "@/API/product";
-import ProductDetailModal from "./product-detail-modal/ProductDetailModal";
-import AddProductModal from "./add-product-modal/AddProductModal";
-import { PlusCircleOutlined } from "@ant-design/icons";
 
-export default function ProductManagement() {
+import { Table, Image, Button, Modal, Input, Space } from "antd";
+import { PlusCircleOutlined, EditOutlined } from "@ant-design/icons";
+
+import { getAllCategories } from "@/API/category";
+import { getAllProducts, replyComment } from "@/API/product";
+
+export default function CommentManagement() {
     const [filteredInfo, setFilteredInfo] = useState({});
     const [sortedInfo, setSortedInfo] = useState({});
 
     const [loading, setLoading] = useState(false);
+    const [OkLoading, setOkLoading] = useState(false);
+
+    const [infoVisible, setInfoVisible] = useState(false);
     const [categories, setCategories] = useState([]);
+
     const [productList, setProductList] = useState([]);
 
-    const [updateProduct, setUpdateProduct] = useState(false);
-    const [addProduct, setAddProduct] = useState(false);
-    const [deleteProduct, setDeleteProduct] = useState(false);
+    const [isReplied, setIsReplied] = useState(false);
 
     useEffect(() => {
         setLoading(true);
@@ -34,7 +36,7 @@ export default function ProductManagement() {
         }
 
         fetchData();
-    }, [addProduct, updateProduct, deleteProduct]);
+    }, [isReplied]);
 
     const clearFilters = () => {
         setFilteredInfo({});
@@ -73,96 +75,134 @@ export default function ProductManagement() {
                 />
             ),
         },
-
-        {
-            title: "Tên hãng",
-            dataIndex: "nameBrand",
-            key: "nameBrand",
-            ellipsis: true,
-        },
-
-        {
-            title: "Số lượt thích",
-            dataIndex: "totalWish",
-            key: "totalWish",
-            ellipsis: true,
-        },
-
-        {
-            title: "Danh mục",
-            dataIndex: "category",
-            key: "category",
-            ellipsis: true,
-            render: (_, record) => (
-                // Map category id to category name
-                <div>
-                    {
-                        categories.find(
-                            (category) => category._id === record.category
-                        ).name
-                    }
-                </div>
-            ),
-        },
-        {
-            title: "Thao tác",
-            key: "action",
-            render: (_, record) => (
-                <ProductDetailModal
-                    product={record}
-                    categories={categories}
-                    updateProduct={() => {
-                        setUpdateProduct(!updateProduct);
-                    }}
-                    deleteProduct={() => {
-                        setDeleteProduct(!deleteProduct);
-                    }}
-                ></ProductDetailModal>
-            ),
-        },
     ];
 
+    const handleReply = (productId, commentId, content) => {
+        const fetchAPI = async (productId, commentId, content) => {
+            setOkLoading(true);
+
+            console.log(productId);
+            console.log(commentId);
+            console.log(content);
+
+            try {
+                const res = await replyComment({
+                    productId: productId,
+                    commentId: commentId,
+                    content: content,
+                });
+
+                if (res.success) {
+                    setOkLoading(false);
+                    setInfoVisible(false);
+                    setIsReplied(!isReplied);
+                }
+            } catch (err) {
+                console.log(err);
+            }
+        };
+
+        fetchAPI(productId, commentId, content);
+    };
+
+    const onClickShowModalReply = (
+        productId,
+        commentId,
+        replyContent,
+        replyType
+    ) => {
+        let newReplyContent = replyContent;
+        Modal.confirm({
+            visible: infoVisible,
+            title: "Phản hồi",
+            content: (
+                <Input
+                    placeholder={
+                        replyType === "add"
+                            ? "Nhập phản hồi mới"
+                            : "Nhập phản hồi"
+                    }
+                    maxLength={20}
+                    onChange={(e) => {
+                        newReplyContent = e.target.value;
+                    }}
+                />
+            ),
+            okText: replyType === "add" ? "Thêm" : "Sửa",
+            cancelText: "Hủy",
+            onOk: () => {
+                handleReply(productId, commentId, newReplyContent);
+            },
+            onCancel: () => {
+                setInfoVisible(false);
+            },
+        });
+    };
+
     const expandedRowRender = (product) => {
-        // console.log(product);
         const columns = [
             {
-                title: "Màu sắc",
-                dataIndex: "color",
-                key: "color",
+                title: "Bình luận",
+                dataIndex: "content",
+                key: "content",
                 ellipsis: true,
-                render: (color) => (
-                    <div
-                        className="h-4 w-4"
-                        style={{ backgroundColor: color }}
-                    ></div>
+            },
+            {
+                title: "Phản hồi",
+                dataIndex: "reply",
+                key: "reply",
+                ellipsis: true,
+            },
+            {
+                title: "Thao tác",
+                dataIndex: "action",
+                key: "action",
+                ellipsis: true,
+                render: (_, record) => (
+                    <>
+                        <Button
+                            icon={
+                                record.reply ? (
+                                    <EditOutlined />
+                                ) : (
+                                    <PlusCircleOutlined />
+                                )
+                            }
+                            onClick={() => {
+                                console.log("Prodcut: ", product);
+
+                                if (record.reply) {
+                                    onClickShowModalReply(
+                                        product._id,
+                                        record._id,
+                                        record.reply,
+                                        "edit"
+                                    );
+                                } else {
+                                    onClickShowModalReply(
+                                        product._id,
+                                        record._id,
+                                        "",
+                                        "add"
+                                    );
+                                }
+                            }}
+                        >
+                            {record.reply
+                                ? "Chỉnh sửa bình luận"
+                                : "Thêm bình luận"}
+                        </Button>
+                    </>
                 ),
-            },
-            {
-                title: "Chi nhánh",
-                dataIndex: "store_id",
-                key: "store_id",
-                ellipsis: true,
-            },
-            {
-                title: "Đơn giá",
-                dataIndex: "price",
-                key: "price",
-                ellipsis: true,
-            },
-            {
-                title: "Số lượng tồn",
-                dataIndex: "quantity",
-                key: "quantity",
-                ellipsis: true,
             },
         ];
 
-        const product_details = product.type;
+        const product_comments = product.comments;
 
         return (
             <Table
                 columns={columns}
-                dataSource={product_details}
+                dataSource={product_comments}
                 pagination={false}
             />
         );
@@ -174,34 +214,16 @@ export default function ProductManagement() {
                 <div>Loading...</div>
             ) : (
                 <>
-                    <Space
-                        style={{
-                            marginBottom: 16,
-                        }}
-                    >
-                        <Button onClick={clearFilters}>Xóa bộ lọc</Button>
-                        <Button onClick={clearAll}>
-                            Xóa sắp xếp và bộ lọc
-                        </Button>
-                        <AddProductModal
-                            categories={categories}
-                            addProduct={() => {
-                                setAddProduct(!addProduct);
-                            }}
-                        />
-                    </Space>
-
+                    <Space style={{ marginBottom: 16 }} />
                     <Table
                         columns={columns}
                         dataSource={productList}
                         onChange={handleChange}
                         rowKey={(record) => record._id}
                         expandable={{
-                            // expandedRowRender: (record) =>
-                            // expandedRowRender(record),
                             expandedRowRender,
-                            rowExpandable: (record) => record.type.length > 0,
-                            // defaultExpandedRowKeys: ["0"],
+                            rowExpandable: (record) =>
+                                record.comments.length > 0,
                         }}
                     />
                 </>

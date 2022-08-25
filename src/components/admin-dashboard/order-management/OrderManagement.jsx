@@ -41,12 +41,12 @@ export default function OrderManagement() {
                 const res = await getOrdersAdmin();
                 console.log(res);
                 setOrders(res);
+                setLoading(false);
             } catch (error) {
                 console.log(error);
             }
         }
         fetchData();
-        setLoading(false);
     }, [isChange]);
 
     const handleChangeStatus = async (orderId, statusCode) => {
@@ -130,13 +130,13 @@ export default function OrderManagement() {
                 if (payment === 1) {
                     return (
                         <Tag color={"green"} key={payment}>
-                            Rồi
+                            Đã thanh toán
                         </Tag>
                     );
                 } else {
                     return (
                         <Tag color={"red"} key={payment}>
-                            Chưa
+                            Chưa thanh toán
                         </Tag>
                     );
                 }
