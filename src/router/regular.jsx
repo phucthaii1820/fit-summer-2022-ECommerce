@@ -6,7 +6,7 @@ import CompleteOrder from "@/page/CompleteOrder";
 import NotFound from "@/page/NotFound";
 import OrderDetails from "@/page/OrderDetails";
 import ProductDetails from "@/page/ProductDetails";
-import Search from "@/page/Search";
+import Search from "@/page/Search/Search";
 
 import { Route, Routes } from "react-router-dom";
 
@@ -16,7 +16,7 @@ export default function RegularRoute() {
       <Routes>
         <Route exact path="" element={<LayoutHomePage />} />
         <Route exact path="/category/:idCate" element={<Category />} />
-        <Route exact path="/search" element={<Search />} />
+        <Route exact path="/search" element={<Search/>} />
         <Route
           exact
           path="/product-detail/:idProduct"

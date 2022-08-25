@@ -167,7 +167,7 @@ const ProductDetails = () => {
   const onClickShoppingCart = () => {
     AddShoppingCart();
   };
-  
+
   return (
     <>
       {isLoading ? (

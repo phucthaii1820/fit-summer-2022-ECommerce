@@ -29,7 +29,6 @@ import "./Header.css";
 export default function Header() {
   const { user, logout } = userStore((state) => state);
   const [categories, setCategories] = useState([]);
-  const [search, setSearch] = useState([]);
   const [isHovering, setIsHovering] = useState(false);
   const [keyword, setKeyword] = useState("");
   const [options, setOptions] = useState([]);
@@ -54,43 +53,11 @@ export default function Header() {
     fetchHeader();
   }, []);
 
-  const ChangeHandler = (event) => {
-    setSearch(event.target.value);
-  };
-
   const handleSearch = (event) => {
     if (event.key === "Enter") {
       window.location.href = "/search?keyword=" + encodeURIComponent(keyword);
     }
   };
-
-  const menuItems = [
-    {
-      key: "info",
-      icon: <FaUserCircle />,
-      label: "Thông tin tài khoản",
-    },
-    {
-      key: "changePassword",
-      icon: <FaKey />,
-      label: "Thay đổi mật khẩu",
-    },
-    {
-      key: "myOrder",
-      icon: <FaShoppingCart />,
-      label: "Đơn hàng của tôi",
-    },
-    {
-      key: "wishList",
-      icon: <FaRegHeart />,
-      label: "Danh sách yêu thích",
-    },
-    {
-      key: "logOut",
-      icon: <FaSignOutAlt />,
-      label: "Đăng xuất",
-    },
-  ];
 
   const menu = (
     <Menu className="bg-white dark:bg-dark-black dark:text-dark-text z-top w-68 p-3 rounded-xl shadow-md max-w-sm dark:shadow-dark">
@@ -101,9 +68,7 @@ export default function Header() {
         <Menu.Item icon={<FaChalkboardTeacher />}>
           <Link to="/admin">Admin</Link>
         </Menu.Item>
-      ) : (
-        null
-      )}
+      ) : null}
       <Menu.Item icon={<FaKey />} key="changePassword">
         <Link to="/profile/change-password">Thay đổi mật khẩu</Link>
       </Menu.Item>
@@ -131,11 +96,13 @@ export default function Header() {
         const res = await searchProducts(keyword, "1");
         let data = [];
         res?.data[0]?.producs.map((item) => {
-          data.push({
-            value: item.title,
-            id: item._id,
-            category: item.category,
-          });
+          if (item.statusPost === 1) {
+            data.push({
+              value: item.title,
+              id: item._id,
+              category: item.category,
+            });
+          }
         });
         setOptions(data);
       } catch (err) {
@@ -171,17 +138,17 @@ export default function Header() {
                 categories={categories}
                 profileUser={user}
               ></DrawerMenu>
-              <div className="absolute inset-y-0 left-0 flex items-center sm:hidden"></div>
-              <div className="flex-1 flex items-center justify-center md:items-stretch md:justify-start">
+              {/* <div className="absolute inset-y-0 left-0 flex items-center sm:hidden"></div> */}
+              <div className="flex-1 flex mx-6 md:mx-0 items-center md:items-stretch md:justify-start">
                 <div className="flex items-center">
                   <Link to="/">
                     <img
-                      className="block lg:hidden h-8 w-auto"
+                      className="block md:hidden h-10 w-auto"
                       src={Logo}
                       alt="Workflow"
                     />
                     <img
-                      className="hidden lg:block h-14 w-auto"
+                      className="hidden md:block h-14 w-auto"
                       src={Logo}
                       alt="Workflow"
                     />
@@ -233,7 +200,7 @@ export default function Header() {
                 </div>
               </div>
 
-              <div className="absolute inset-y-0 right-0 flex items-center mt-2.5 pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0 space-x-6">
+              <div className="absolute inset-y-0 right-0 flex items-center mt-2.5 sm:static sm:inset-auto sm:ml-6 sm:pr-0 space-x-3">
                 <div className="hidden md:block">
                   <AutoComplete
                     options={options}
@@ -259,7 +226,7 @@ export default function Header() {
                 {user ? <ShoppingCartModal></ShoppingCartModal> : null}
 
                 {user ? (
-                  <div className="hidden md:block ">
+                  <div className="">
                     <Dropdown
                       placement="bottomRight"
                       overlay={menu}
@@ -267,7 +234,7 @@ export default function Header() {
                       className="cursor-pointer"
                     >
                       <div
-                        className="ing ring-gray flex items-center justify-center overflow-hidden rounded-full cursor-pointer border-2 border-gray-300 border-solid"
+                        className="hidden md:block ring-gray flex items-center justify-center overflow-hidden rounded-full cursor-pointer border-2 border-gray-300 border-solid"
                         style={{
                           width: 40,
                           height: 40,
@@ -286,7 +253,7 @@ export default function Header() {
                   <div className="">
                     <Link
                       to="/login"
-                      className="hover:text-yellow-light text-black rounded-md text-sm hidden md:block"
+                      className="hidden md:block hover:text-yellow-light text-black rounded-md text-sm"
                     >
                       <UserOutlined style={{ fontSize: "2em" }} />
                     </Link>

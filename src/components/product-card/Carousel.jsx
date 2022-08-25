@@ -1,7 +1,7 @@
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import "./Slider.css"
+import "./Slider.css";
 
 import React, { useEffect, useState } from "react";
 
@@ -12,7 +12,7 @@ import { Link } from "react-router-dom";
 const CarouselProducts = ({ idCategory, nameCategory }) => {
   var settings = {
     dots: false,
-    arrows: true,
+    arrows: false,
     infinite: true,
     speed: 500,
     slidesToShow: 4,
@@ -65,23 +65,28 @@ const CarouselProducts = ({ idCategory, nameCategory }) => {
     <div>
       <div className="text-xl font-bold pl-2 pb-0">
         <div className="flex">
-          <Link to={"/category/" + idCategory} className="pl-1">
+          <Link to={"/category/" + idCategory} className="flex-1 pl-1">
             {nameCategory}
           </Link>
-          {/* <Link to={"/category/" + idCategory} className="text-base justify-items-end pl-1">
-                        Xem tất cả
-                    </Link> */}
+          <Link
+            to={"/category/" + idCategory}
+            className="flex-1 text-sm text-right"
+          >
+            Xem tất cả
+          </Link>
         </div>
       </div>
       <Slider {...settings} style={{ cursor: "pointer" }}>
-        {data.map((item, index) => (
-          <div className="p-2" key={index}>
-            <ProductCard
-              item={item}
-              fetchProductsCard={fetchProducts}
-            ></ProductCard>
-          </div>
-        ))}
+        {data.map((item, index) =>
+          item?.statusPost === 1 ? (
+            <div className="p-2" key={index}>
+              <ProductCard
+                item={item}
+                fetchProductsCard={fetchProducts}
+              ></ProductCard>
+            </div>
+          ) : null
+        )}
         {data.map((item, index) => (
           <div className="p-2" key={index}>
             <ProductCard

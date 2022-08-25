@@ -59,10 +59,10 @@ export default function Services() {
       </div>
       <Row gutter={[16, 24]}>
         {items.map((item, index) => (
-          <Col span={6} key={index}>
+          <Col span={12} xl={6} lg={6} md={12} xs={12} sm={12} key={index}>
             <div className="flex justify-start">
               <div className="flex flex-col md:flex-row md:max-w-xl rounded-lg">
-                <div className="pt-6">
+                <div className="text-center pt-6">
                   <Icon component={item.icon} style={{ fontSize: "50px" }} />
                 </div>
                 <div className="p-6 flex flex-col">

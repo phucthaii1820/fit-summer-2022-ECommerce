@@ -10,6 +10,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCommentDots, faList } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 
+import COD from "src/image/checkout/COD.svg";
+import Paypal from "src/image/checkout/paypal.png";
+import Momo from "src/image/checkout/momo.png";
 import Logo from "src/image/Logo.svg";
 import { Button, Input } from "antd";
 import { useState } from "react";
@@ -28,7 +31,7 @@ export default function Footer() {
   return (
     <div className="container mx-auto">
       <footer className="bg-white mt-auto">
-        <div className="grid lg:grid-cols-3 lg:gap-10 p-16 max-w-screen-2xl lg:px-4 p-8 text-base">
+        <div className="grid lg:grid-cols-3 lg:gap-10 p-4 md:p-16 text-base">
           <div className="text-left rounded lg:px-5">
             <div className="flex-shrink-0 flex items-center">
               <Link to="/">
@@ -46,13 +49,12 @@ export default function Footer() {
             </div>
 
             <p className="font-bold my-5">
-              CÔNG TY TNHH SẢN XUẤT THƯƠNG MẠI & DỊCH VỤ BIKEGEAR
+              CÔNG TY TNHH SẢN XUẤT THƯƠNG MẠI BIKERGEAR
             </p>
             <div className="my-5">
-              {/* <p>Giấy CNĐKDN: 0316810152 - Ngày cấp: 19/04/2021 - Nơi cấp: Sở Kế Hoạch và Đầu Tư TPHCM</p> */}
               <p>
                 Địa chỉ: 227 Nguyễn Văn Cừ, Phường 04, Quận 05, Thành phố Hồ Chí
-                Minh - Điện thoại: 028.910.1123 - Email: cskh@bikegear.vn
+                Minh - Điện thoại: 028.910.1123 - Email: cskh@bikergear.vn
               </p>
             </div>
             <ul>
@@ -81,19 +83,25 @@ export default function Footer() {
               <div className="font-bold">
                 <p>Phương thức thanh toán</p>
                 <div className="grid grid-cols-3 my-5">
-                  <div className="col-span bg-gray-100 mr-2 border border-solid border-black rounded-lg h-20"></div>
-                  <div className="col-span bg-gray-100 mx-2 border border-solid border-black rounded-lg h-20"></div>
-                  <div className="col-span bg-gray-100 ml-2 border border-solid border-black rounded-lg h-20"></div>
+                  <div className="flex justify-center col-span bg-gray-100 mr-2 border border-solid border-black rounded-lg h-20">
+                    <img src={COD} className="mt-2 h-16 w-auto"></img>
+                  </div>
+                  <div className="flex justify-center col-span bg-gray-100 mx-2 border border-solid border-black rounded-lg h-20">
+                    <img src={Momo} className="mt-2 h-16 w-auto"></img>
+                  </div>
+                  <div className="flex justify-center col-span bg-gray-100 ml-2 border border-solid border-black rounded-lg h-20">
+                    <img src={Paypal} className="mt-2 h-16 w-auto"></img>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
           <div className="col-span-2">
-            <div className="p-5 text-left flex border border-solid border-black rounded-lg bg-gray-100">
+            <div className="p-5 text-left flex-col md:flex border border-solid border-black rounded-lg bg-gray-100">
               <div className="flex-1">
                 <p className="font-bold mb-1">Đăng ký tài khoản</p>
                 <p className="mb-0">
-                  Nhập số điện thoại để tham gia cùng BIKEGEAR
+                  Nhập số điện thoại để tham gia cùng BIKERRGEAR
                 </p>
               </div>
               <div className="flex flex-1">
@@ -132,41 +140,55 @@ export default function Footer() {
             </div>
             <div className="flex my-8">
               <div className="flex-auto w-72">
-                <div className="grid grid-cols-3 gap-10 mb-6 text-left">
-                  <div className="col-span">
+                <div className="flex-col md:grid md:grid-cols-3 gap-10 mb-6 text-left">
+                  <div className="md:col-span">
                     <p className="text-lg font-bold mb-1">Thông tin</p>
                     <p className="mb-1">Giới thiệu</p>
                     <p className="mb-1">Liên hệ công ty</p>
-                    <p>Gia nhập BIKEGEAR</p>
+                    <p>Gia nhập BIKERGEAR</p>
                   </div>
-                  <div className="col-span">
+                  <div className="md:col-span">
                     <p className="text-lg font-bold mb-1">Chính sách</p>
                     <p className="mb-1">Chính sách đổi hàng</p>
                     <p className="mb-1">Chính sách bảo hành</p>
                     <p>Chính sách hoàn tiền</p>
                   </div>
-                  <div className="col-span">
+                  <div className="md:col-span">
                     <p className="text-lg font-bold mb-1">Hỏi đáp</p>
                     <p className="mb-1">Thanh toán và vận chuyển</p>
                     <p>Kiểm tra thông tin đơn hàng</p>
                   </div>
                 </div>
+
+                <div className="block md:hidden font-bold">
+                  <p className="text-lg mb-1">Liên hệ</p>
+                  <p className="text-gray-400 mb-1">Tư vấn mua hàng</p>
+                  <p className="text-yellow-light mb-1">1900.0009</p>
+                  <p className="text-yellow-light mb-1">(T2-T7 8g30 - 21h00)</p>
+                  <p className="text-gray-400 mb-1">Hotline góp ý</p>
+                  <p className="text-yellow-light mb-1">123.456.7890 (24/7)</p>
+                  <p className="text-gray-400 mb-1">
+                    Email chăm sóc khách hàng
+                  </p>
+                  <p className="text-yellow-light">cskh@bikergear.vn</p>
+                </div>
+
                 <div className="flex justify-center">
                   <div className="flex-initial flex flex-row mr-8 h-16 w-96 items-center justify-center bg-gray-100 mr-2 border border-solid border-black rounded-lg">
                     <FontAwesomeIcon icon={faList} className="pl-2 h-6" />
-                    <a href="/" className="pl-8">
-                      <p className="text-base lg:text-lg font-bold pt-4 text-black">
+                    <Link to="/profile/my-order" className="pl-3 md:pl-5">
+                      <p className="text-sm xl:text-base font-bold pt-4 text-black">
                         Kiểm tra đơn hàng
                       </p>
-                    </a>
+                    </Link>
                   </div>
                   <div className="flex-initial flex flex-row mr-8 h-16 w-96 items-center justify-center bg-gray-100 mr-2 border border-solid border-black rounded-lg">
                     <FontAwesomeIcon
                       icon={faCommentDots}
                       className="pl-2 h-6"
                     />
-                    <a href="/" className="pl-8">
-                      <p className="text-base lg:text-lg font-bold pt-4 text-black">
+                    <a href="https://docs.google.com/forms/d/e/1FAIpQLScK4PyHCCAO5zm-xH5xzZmf17itnOg84oWmpUcZVzGEy3XH-g/viewform" className="pl-3 md:pl-5">
+                      <p className="text-sm xl:text-base font-bold pt-4 text-black">
                         Góp ý - Than phiền
                       </p>
                     </a>
@@ -174,7 +196,7 @@ export default function Footer() {
                 </div>
               </div>
 
-              <div className="font-bold text-left ml-10">
+              <div className="hidden md:block font-bold text-left ml-10">
                 <p className="text-lg mb-1">Liên hệ</p>
                 <p className="text-gray-400 mb-1">Tư vấn mua hàng</p>
                 <p className="text-yellow-light mb-1">1900.0009</p>
@@ -182,14 +204,14 @@ export default function Footer() {
                 <p className="text-gray-400 mb-1">Hotline góp ý</p>
                 <p className="text-yellow-light mb-1">123.456.7890 (24/7)</p>
                 <p className="text-gray-400 mb-1">Email chăm sóc khách hàng</p>
-                <p className="text-yellow-light">cskh@bikegear.vn</p>
+                <p className="text-yellow-light">cskh@bikergear.vn</p>
               </div>
             </div>
           </div>
         </div>
         <div className="text-center text-base">
           <div className="mx-24">
-            Copyright © 2021 Motorbike Accessory, EC02-02
+            Copyright © 2021 BIKERGEAR, EC02-02
           </div>
         </div>
       </footer>

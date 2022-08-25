@@ -84,6 +84,7 @@ export default function ProductCard({ item, fetchProductsCard }) {
   const onClickAddCart = () => {
     addCart();
   };
+  
   return (
     <div className="">
       {item ? (
@@ -117,7 +118,7 @@ export default function ProductCard({ item, fetchProductsCard }) {
                 {/* Heart count  */}
                 {!isWish ? (
                   <div
-                    className="absolute bottom-0 right-6 inline-flex items-center leading-sm uppercase px-2 py-1 rounded-lg bg-white bg-opacity-50 border-none border-gray-extra_dark"
+                    className="absolute bottom-0 right-6 inline-flex items-center leading-sm uppercase px-2 py-1 rounded-lg bg-white border-none border-gray-extra_dark"
                     onClick={onClickWish}
                   >
                     <HeartOutlined
@@ -132,7 +133,7 @@ export default function ProductCard({ item, fetchProductsCard }) {
                   </div>
                 ) : (
                   <div
-                    className="absolute bottom-0 right-6 inline-flex items-center leading-sm uppercase px-2 py-1 rounded-lg bg-white bg-opacity-50 border-none border-gray-extra_dark"
+                    className="absolute bottom-0 right-6 inline-flex items-center leading-sm uppercase px-2 py-1 rounded-lg bg-white border-none border-gray-extra_dark"
                     onClick={onClickWish}
                   >
                     <HeartFilled

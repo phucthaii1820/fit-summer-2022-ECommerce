@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { getOrdersAdmin, changeStatusOrder } from "@/API/order";
-import { Select, Table, Tag, Button, Modal, message } from "antd";
+import { Select, Table, Tag, Form, Button, Modal, message } from "antd";
 
 export default function OrderManagement() {
     const statusList = [
@@ -55,11 +55,15 @@ export default function OrderManagement() {
             try {
                 const res = await getOrdersAdmin();
                 console.log(res);
-                setOrders(res);
+                setOrders(
+                    res?.map((order) => ({
+                        ...order,
+                        phone: order.userId.phone,
+                    }))
+                );
                 setLoading(false);
             } catch (error) {
                 console.log(error);
-                message.error(toString(error.message));
             }
         }
         fetchData();
@@ -73,7 +77,12 @@ export default function OrderManagement() {
             statusOrder: parseInt(statusCode),
         });
 
-        if (res) {
+        if (res?.success) {
+            message.success(res?.message);
+            setInfoVisible(false);
+            setIsChange(!isChange);
+        } else {
+            message.error(res?.message);
             setInfoVisible(false);
             setIsChange(!isChange);
         }
@@ -126,6 +135,12 @@ export default function OrderManagement() {
 
     const columns = [
         {
+            title: "Số điện thoại",
+            dataIndex: "phone",
+            key: "phone",
+            ellipsis: true,
+        },
+        {
             title: "Ngày tạo",
             dataIndex: "createAt",
             key: "createAt",
@@ -136,36 +151,35 @@ export default function OrderManagement() {
             dataIndex: "total",
             key: "total",
             ellipsis: true,
+            render: (_, { total }) => {
+                return (
+                    <>
+                        {new Intl.NumberFormat("vi-VN", {
+                            style: "currency",
+                            currency: "VND",
+                        }).format(total)}
+                    </>
+                );
+            },
         },
         {
-            title: "Phương thức thanh toán",
+            title: "Đã thanh toán",
             dataIndex: "payment",
             key: "payment",
             ellipsis: true,
-            render: (_, { payment }) => {
-                if (payment === 0) {
-                    return <Tag color="orange">COD</Tag>;
-                } else if (payment === 1) {
-                    return <Tag color="blue">Paypal</Tag>;
+            render: (_, { payment, statusOrder }) => {
+                if (payment !== 0 && statusOrder > 0) {
+                    return (
+                        <Tag color={"green"} key={payment}>
+                            Đã thanh toán
+                        </Tag>
+                    );
                 } else {
-                    return <Tag color="pink">Momo</Tag>;
-                }
-            },
-        },
-
-        {
-            title: "Đã thanh toán",
-            dataIndex: "",
-            key: "",
-            ellipsis: true,
-            render: (_, record) => {
-                if (
-                    record.payment === 0 ||
-                    (record.payment !== 0 && record.statusOrder < 1)
-                ) {
-                    return <Tag color={"green"}>Đã thanh toán</Tag>;
-                } else {
-                    return <Tag color={"red"}>Chưa thanh toán</Tag>;
+                    return (
+                        <Tag color={"red"} key={payment}>
+                            Chưa thanh toán
+                        </Tag>
+                    );
                 }
             },
         },
@@ -175,19 +189,13 @@ export default function OrderManagement() {
             key: "statusOrder",
             ellipsis: true,
             render: (_, record) => (
-                <Tag
-                    color={
-                        statusList.find(
-                            (status) => status.code === record.statusOrder
-                        ).color
-                    }
-                >
+                <div>
                     {
                         statusList.find(
                             (status) => status.code === record.statusOrder
                         ).content
                     }
-                </Tag>
+                </div>
             ),
         },
         {

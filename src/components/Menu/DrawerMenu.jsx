@@ -34,7 +34,7 @@ const DrawerMenu = ({ categories, profileUser }) => {
         <MenuOutlined
           aria-hidden="true"
           onClick={showDrawer}
-          style={{ height: "24px", width: "24px" }}
+          style={{ height: "20px", width: "30px", fontSize: "20px" }}
         />
       </div>
       <Drawer
@@ -48,13 +48,6 @@ const DrawerMenu = ({ categories, profileUser }) => {
         {token ? (
           <div>
             <Link to="/profile">
-              {/* <ReactImageFallback
-                  className="min-w-full block flex-shrink-0 rounded-full ring ring-gray-500"
-                  src={HOST + "/" + profileUser.avatar}
-                  alt="logo"
-                  fallbackImage="/avata-default.jpg"
-                  style={{ height: 200 }}
-                /> */}
               <div>
                 <p className="font-bold text-xl text-center">
                   {profileUser?.fullname}
@@ -73,11 +66,13 @@ const DrawerMenu = ({ categories, profileUser }) => {
                 Thay đổi mật khẩu
               </div>
             </Link>
+            <hr></hr>
             <Link to="/profile/my-order">
               <div className="p-2 pl-1 font-bold text-black">
                 Đơn hàng của tôi
               </div>
             </Link>
+            <hr></hr>
             <Link to="/profile/wish-list">
               <div className="p-2 pl-1 font-bold text-black">
                 Danh sách yêu thích
@@ -107,7 +102,7 @@ const DrawerMenu = ({ categories, profileUser }) => {
         >
           {categories.map((item, index) => (
             <div key={index}>
-              <div className="p-6 font-medium">
+              <div className="p-6 font-bold">
                 <Link to={"/category/" + item?._id} className="text-black">
                   {item?.name}
                 </Link>

@@ -48,7 +48,7 @@ const Category = () => {
       try {
         setIsLoading(true);
         const res = await getListProducts(idCate, curPage);
-        console.log(res)
+        console.log(res);
         setData(res?.data[0]?.producs);
         setTotalItems(res?.data[2]?.totalPages * pageSize);
         setLowerBound(0);
@@ -83,19 +83,21 @@ const Category = () => {
       ) : (
         <div className="relative">
           <div className="container mx-auto xl:px-40">
-            <Breadcrumb style={{ fontSize: "1rem" }}>
+            <Breadcrumb style={{ fontSize: "1rem", marginLeft: "10px" }}>
               <Breadcrumb.Item>Trang chủ</Breadcrumb.Item>
               <Breadcrumb.Item>Danh mục</Breadcrumb.Item>
               <Breadcrumb.Item>{category.name}</Breadcrumb.Item>
             </Breadcrumb>
             <Row>
-              {data.slice(lowerBound, upperBound).map((item, index) => (
-                <Col xl={6} lg={6} md={8} xs={12} sm={12} key={index}>
-                  <div className="p-2">
-                    <ProductCard item={item} idCate={idCate} />
-                  </div>
-                </Col>
-              ))}
+              {data.slice(lowerBound, upperBound).map((item, index) =>
+                item?.statusPost === 1 ? (
+                  <Col xl={6} lg={6} md={12} xs={18} sm={18} key={index}>
+                    <div className="py-2">
+                      <ProductCard item={item} idCate={idCate} />
+                    </div>
+                  </Col>
+                ) : null
+              )}
             </Row>
             <div className="p-3 grid justify-items-end">
               <Pagination
