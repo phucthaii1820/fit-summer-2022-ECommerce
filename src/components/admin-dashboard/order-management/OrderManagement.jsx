@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { getOrdersAdmin, changeStatusOrder } from "@/API/order";
 import { Select, Table, Tag, Form, Button, Modal, message } from "antd";
+import "src/components/admin-dashboard/AntTable.css"
+
 
 export default function OrderManagement() {
     const statusList = [

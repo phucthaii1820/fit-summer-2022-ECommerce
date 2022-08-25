@@ -4,6 +4,7 @@ import { Space, Button, Table, Modal, Input, message } from "antd";
 import { PlusCircleOutlined } from "@ant-design/icons";
 
 import { deleteCategory, addCategory, updateCategory } from "@/API/category";
+import "src/components/admin-dashboard/AntTable.css"
 
 export default function CategoryManagement() {
     const [categories, setCategories] = useState([]);

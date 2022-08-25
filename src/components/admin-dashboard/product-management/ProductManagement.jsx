@@ -6,6 +6,7 @@ import ProductDetailModal from "./product-detail-modal/ProductDetailModal";
 import AddProductModal from "./add-product-modal/AddProductModal";
 import { PlusCircleOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
+import "src/components/admin-dashboard/AntTable.css"
 
 export default function ProductManagement() {
   const [filteredInfo, setFilteredInfo] = useState({});
