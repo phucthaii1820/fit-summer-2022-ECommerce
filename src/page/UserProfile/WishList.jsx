@@ -44,12 +44,14 @@ const WishList = () => {
     const data = [];
 
     for (let i = 0; i < wishList.length; i++) {
-      var product = new productWish();
-      product.key = wishList[i]?._id;
-      product.name = wishList[i]?.title;
-      product.status = productStatus(wishList[i]);
-      product.image = wishList[i]?.image[0];
-      data.push(product);
+      if(wishList[i].statusPost === 1){
+        var product = new productWish();
+        product.key = wishList[i]?._id;
+        product.name = wishList[i]?.title;
+        product.status = productStatus(wishList[i]);
+        product.image = wishList[i]?.image[0];
+        data.push(product);
+      }
     }
     return data;
   };
