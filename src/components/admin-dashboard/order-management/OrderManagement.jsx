@@ -130,13 +130,13 @@ export default function OrderManagement() {
                 if (payment === 1) {
                     return (
                         <Tag color={"green"} key={payment}>
-                            Rồi
+                            Đã thanh toán
                         </Tag>
                     );
                 } else {
                     return (
                         <Tag color={"red"} key={payment}>
-                            Chưa
+                            Chưa thanh toán
                         </Tag>
                     );
                 }

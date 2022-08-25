@@ -17,7 +17,11 @@ import OrderManagement from "@/components/admin-dashboard/order-management/Order
 import CommentManagement from "@/components/admin-dashboard/comment-management/CommentManagement";
 
 import "./LayoutAdmin.css";
-import { Breadcrumb, Layout, Menu, Avatar, Divider } from "antd";
+import { Breadcrumb, Layout, Menu, Divider } from "antd";
+
+import { Link } from "react-router-dom";
+
+import Logo from "src/image/Logo.svg";
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -83,26 +87,6 @@ export default function LayoutAdmin() {
                 collapsed={collapsed}
                 onCollapse={(value) => setCollapsed(value)}
             >
-                {/* Admin Profile  */}
-                {/* <div className="">
-                    <div className="">
-                        <Avatar
-                            size={50}
-                            icon={
-                                <UserOutlined
-                                    style={{
-                                        verticalAlign: "middle",
-                                    }}
-                                />
-                            }
-                        />
-                    </div>
-                    <div className="">
-                        <div className="text-white">Nguyễn Hoài thương</div>
-                        <div className="text-gray-default">Admin</div>
-                    </div>
-                </div> */}
-
                 <Divider />
 
                 {/* Admin Action  */}
@@ -122,7 +106,15 @@ export default function LayoutAdmin() {
                     style={{
                         padding: 0,
                     }}
-                />
+                >
+                    <Link to="/">
+                        <img
+                            src={Logo}
+                            alt="logoImage"
+                            style={{ height: 50, paddingLeft: 16 }}
+                        />
+                    </Link>
+                </Header>
                 <Content
                     style={{
                         margin: "0 16px",
