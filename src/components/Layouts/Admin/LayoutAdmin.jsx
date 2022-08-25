@@ -107,7 +107,7 @@ export default function LayoutAdmin() {
                         padding: 0,
                     }}
                 >
-                    <Link to="/">
+                    <Link to="/" style={{textAlign: "-webkit-center"}}>
                         <img
                             src={Logo}
                             alt="logoImage"

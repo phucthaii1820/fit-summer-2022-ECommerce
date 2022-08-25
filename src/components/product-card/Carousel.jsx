@@ -87,14 +87,6 @@ const CarouselProducts = ({ idCategory, nameCategory }) => {
             </div>
           ) : null
         )}
-        {data.map((item, index) => (
-          <div className="p-2" key={index}>
-            <ProductCard
-              item={item}
-              fetchProductsCard={fetchProducts}
-            ></ProductCard>
-          </div>
-        ))}
       </Slider>
     </div>
   );
