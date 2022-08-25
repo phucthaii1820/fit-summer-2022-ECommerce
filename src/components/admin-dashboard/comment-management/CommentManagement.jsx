@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-import { Table, Image, Button, Modal, Input, Space } from "antd";
+import { Table, Image, Button, Modal, Input, Space, message } from "antd";
 import { PlusCircleOutlined, EditOutlined } from "@ant-design/icons";
 
 import { getAllCategories } from "@/API/category";
@@ -32,6 +32,7 @@ export default function CommentManagement() {
                 setLoading(false);
             } catch (err) {
                 console.log(err);
+                message.error(toString(err.message));
             }
         }
 
@@ -99,6 +100,7 @@ export default function CommentManagement() {
                 }
             } catch (err) {
                 console.log(err);
+                message.error(toString(err));
             }
         };
 

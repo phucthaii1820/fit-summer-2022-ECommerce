@@ -4,9 +4,11 @@ import { Carousel } from "antd";
 
 export default function Banner() {
     const contentStyle = {
-        height: "576px",
+        // height: "40vw",
+        width: "vw",
         color: "#fff",
-        lineHeight: "576px",
+        lineHeight: "40vw",
+        // lineWidth: "vw",
         textAlign: "center",
         background: "#364d79",
     };
@@ -14,7 +16,7 @@ export default function Banner() {
     return (
         <div>
             {/* Banner  */}
-            <Carousel autoplay>
+            <Carousel autoplay dotPosition="left">
                 <div>
                     <h3 style={contentStyle}>1</h3>
                 </div>

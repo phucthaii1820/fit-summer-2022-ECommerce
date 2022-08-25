@@ -1,29 +1,44 @@
 import React, { useState, useEffect } from "react";
 import { getOrdersAdmin, changeStatusOrder } from "@/API/order";
-import { Select, Table, Tag, Form, Button, Modal } from "antd";
+import { Select, Table, Tag, Button, Modal, message } from "antd";
 
 export default function OrderManagement() {
     const statusList = [
-        { code: -1, content: "Payment Failed" },
+        {
+            code: -1,
+            // content: "Payment Failed"
+            content: "Thanh toán thất bại",
+            color: "red",
+        },
         {
             code: 0,
-            content: "Create Order Successul",
+            // content: "Create Order Successul",
+            content: "Tạo đơn hàng thành công",
+            color: "blue",
         },
         {
             code: 1,
-            content: "Wait for Confirmation",
+            // content: "Wait for Confirmation",
+            content: "Chờ xác nhận",
+            color: "gold",
         },
         {
             code: 2,
-            content: "Confirmed",
+            // content: "Confirmed",
+            content: "Đã xác nhận",
+            color: "cyan",
         },
         {
             code: 3,
-            content: "Delivery",
+            // content: "Delivery",
+            content: "Đang giao hàng",
+            color: "lime",
         },
         {
             code: 4,
-            content: "Completed",
+            // content: "Completed",
+            content: "Đã giao hàng",
+            color: "green",
         },
     ];
 
@@ -44,6 +59,7 @@ export default function OrderManagement() {
                 setLoading(false);
             } catch (error) {
                 console.log(error);
+                message.error(toString(error.message));
             }
         }
         fetchData();
@@ -122,23 +138,34 @@ export default function OrderManagement() {
             ellipsis: true,
         },
         {
-            title: "Đã thanh toán",
+            title: "Phương thức thanh toán",
             dataIndex: "payment",
             key: "payment",
             ellipsis: true,
             render: (_, { payment }) => {
-                if (payment === 1) {
-                    return (
-                        <Tag color={"green"} key={payment}>
-                            Đã thanh toán
-                        </Tag>
-                    );
+                if (payment === 0) {
+                    return <Tag color="orange">COD</Tag>;
+                } else if (payment === 1) {
+                    return <Tag color="blue">Paypal</Tag>;
                 } else {
-                    return (
-                        <Tag color={"red"} key={payment}>
-                            Chưa thanh toán
-                        </Tag>
-                    );
+                    return <Tag color="pink">Momo</Tag>;
+                }
+            },
+        },
+
+        {
+            title: "Đã thanh toán",
+            dataIndex: "",
+            key: "",
+            ellipsis: true,
+            render: (_, record) => {
+                if (
+                    record.payment === 0 ||
+                    (record.payment !== 0 && record.statusOrder < 1)
+                ) {
+                    return <Tag color={"green"}>Đã thanh toán</Tag>;
+                } else {
+                    return <Tag color={"red"}>Chưa thanh toán</Tag>;
                 }
             },
         },
@@ -148,13 +175,19 @@ export default function OrderManagement() {
             key: "statusOrder",
             ellipsis: true,
             render: (_, record) => (
-                <div>
+                <Tag
+                    color={
+                        statusList.find(
+                            (status) => status.code === record.statusOrder
+                        ).color
+                    }
+                >
                     {
                         statusList.find(
                             (status) => status.code === record.statusOrder
                         ).content
                     }
-                </div>
+                </Tag>
             ),
         },
         {

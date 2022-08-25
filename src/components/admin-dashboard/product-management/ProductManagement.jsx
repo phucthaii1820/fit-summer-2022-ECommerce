@@ -1,4 +1,4 @@
-import { Button, Space, Table, Image } from "antd";
+import { Button, Space, Table, Image, message } from "antd";
 import React, { useState, useEffect } from "react";
 import { getAllCategories } from "@/API/category";
 import { addProduct, getAllProducts, updateProduct } from "@/API/product";
@@ -30,6 +30,7 @@ export default function ProductManagement() {
                 setLoading(false);
             } catch (err) {
                 console.log(err);
+                message.error(toString(err.message));
             }
         }
 
