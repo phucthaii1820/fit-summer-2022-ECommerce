@@ -157,7 +157,17 @@ export default function Header() {
                 <div className="hidden md:block md:ml-6">
                   <div className="flex ">
                     <div className="pt-3">
-                      <Link to="/">
+                      <Link
+                        to="/"
+                        style={{
+                          "&::before": {
+                            transition: isHovering
+                              ? "width .2s ease-in-out"
+                              : "",
+                            backgroundColor: "#F5B301",
+                          },
+                        }}
+                      >
                         <Button
                           style={{
                             fontSize: "20px",
@@ -167,9 +177,6 @@ export default function Header() {
                             border: "0px",
                             paddingInline: "10px",
                             color: isHovering ? "black" : "black",
-                            transition: isHovering
-                              ? "width .2s ease-in-out"
-                              : "",
                           }}
                           onMouseEnter={handleMouseEnter}
                           onMouseLeave={handleMouseLeave}
@@ -188,7 +195,7 @@ export default function Header() {
                           border: "0px",
                           paddingInline: "10px",
                           color: isHovering ? "black" : "black",
-                          transition: isHovering ? "width .2s ease-in-out" : "",
+                          // transition: isHovering ? "width .2s ease-in-out" : "",
                         }}
                         onMouseEnter={handleMouseEnter}
                         onMouseLeave={handleMouseLeave}

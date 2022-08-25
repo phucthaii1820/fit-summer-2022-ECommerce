@@ -38,6 +38,12 @@ let store = (set, get) => ({
       user: { ...state.user, cart: data },
     }));
   },
+  SetPassword: async (data) => {
+    set((state) => ({
+      ...state,
+      user: { ...state.user, password: data },
+    }));
+  },
 });
 
 store = devtools(store); // Allow redux devtool debug
