@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { getAllCategories } from "@/API/category";
-import { Space, Button, Table, Modal, Input } from "antd";
+import { Space, Button, Table, Modal, Input, message } from "antd";
 import { PlusCircleOutlined } from "@ant-design/icons";
 
 import { deleteCategory, addCategory, updateCategory } from "@/API/category";
@@ -25,6 +25,7 @@ export default function CategoryManagement() {
                 setLoading(false);
             } catch (err) {
                 console.log(err);
+                message.error(toString(err.message));
             }
         }
         fetchData();

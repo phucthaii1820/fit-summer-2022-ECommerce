@@ -13,6 +13,7 @@ import {
     Upload,
     Switch,
     InputNumber,
+    message,
 } from "antd";
 
 import ImgCrop from "antd-img-crop";
@@ -128,7 +129,13 @@ export default function AddProductModal(props) {
 
             try {
                 if (fileList.length < 3) {
-                    throw new Error("Vui lòng thêm ít nhất 3 ảnh cho sản phẩm");
+                    throw {
+                        message: "Vui lòng thêm ít nhất 3 ảnh cho sản phẩm",
+                    };
+                }
+
+                if (product.type.length < 1) {
+                    throw { message: "Vui lòng thêm nhất 1 loại sản phẩm" };
                 }
 
                 let formData = new FormData();
@@ -152,6 +159,8 @@ export default function AddProductModal(props) {
                 }
             } catch (error) {
                 console.log(error);
+                message.error(toString(error.message));
+                setOkLoading(false);
             }
         };
 
@@ -263,10 +272,25 @@ export default function AddProductModal(props) {
                 });
                 break;
             case 3:
-                setProduct({
-                    ...product,
-                    statusPost: !product.statusPost,
-                });
+                // setProduct({
+                //     ...product,
+                //     statusPost: !product.statusPost,
+                // });
+
+                if (product.statusPost === 0) {
+                    setProduct({
+                        ...product,
+                        // statusPost: !product.statusPost,
+                        statusPost: 1,
+                    });
+                } else {
+                    setProduct({
+                        ...product,
+                        // statusPost: product.statusPost,
+                        statusPost: 0,
+                    });
+                }
+
                 break;
 
             case 4:
@@ -315,8 +339,8 @@ export default function AddProductModal(props) {
                         {
                             _id: product.type.length + 1,
                             color: "#ffffff",
-                            price: 0,
-                            quantity: 0,
+                            price: 1000,
+                            quantity: 1,
                             store_id: "",
                         },
                     ],
