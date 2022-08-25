@@ -1,29 +1,44 @@
 import React, { useState, useEffect } from "react";
 import { getOrdersAdmin, changeStatusOrder } from "@/API/order";
-import { Select, Table, Tag, Form, Button, Modal } from "antd";
+import { Select, Table, Tag, Form, Button, Modal, message } from "antd";
 
 export default function OrderManagement() {
     const statusList = [
-        { code: -1, content: "Payment Failed" },
+        {
+            code: -1,
+            // content: "Payment Failed"
+            content: "Thanh toán thất bại",
+            color: "red",
+        },
         {
             code: 0,
-            content: "Create Order Successul",
+            // content: "Create Order Successul",
+            content: "Tạo đơn hàng thành công",
+            color: "blue",
         },
         {
             code: 1,
-            content: "Wait for Confirmation",
+            // content: "Wait for Confirmation",
+            content: "Chờ xác nhận",
+            color: "gold",
         },
         {
             code: 2,
-            content: "Confirmed",
+            // content: "Confirmed",
+            content: "Đã xác nhận",
+            color: "cyan",
         },
         {
             code: 3,
-            content: "Delivery",
+            // content: "Delivery",
+            content: "Đang giao hàng",
+            color: "lime",
         },
         {
             code: 4,
-            content: "Completed",
+            // content: "Completed",
+            content: "Đã giao hàng",
+            color: "green",
         },
     ];
 
@@ -40,7 +55,12 @@ export default function OrderManagement() {
             try {
                 const res = await getOrdersAdmin();
                 console.log(res);
-                setOrders(res);
+                setOrders(
+                    res?.map((order) => ({
+                        ...order,
+                        phone: order.userId.phone,
+                    }))
+                );
                 setLoading(false);
             } catch (error) {
                 console.log(error);
@@ -57,7 +77,12 @@ export default function OrderManagement() {
             statusOrder: parseInt(statusCode),
         });
 
-        if (res) {
+        if (res?.success) {
+            message.success(res?.message);
+            setInfoVisible(false);
+            setIsChange(!isChange);
+        } else {
+            message.error(res?.message);
             setInfoVisible(false);
             setIsChange(!isChange);
         }
@@ -110,6 +135,12 @@ export default function OrderManagement() {
 
     const columns = [
         {
+            title: "Số điện thoại",
+            dataIndex: "phone",
+            key: "phone",
+            ellipsis: true,
+        },
+        {
             title: "Ngày tạo",
             dataIndex: "createAt",
             key: "createAt",
@@ -120,14 +151,24 @@ export default function OrderManagement() {
             dataIndex: "total",
             key: "total",
             ellipsis: true,
+            render: (_, { total }) => {
+                return (
+                    <>
+                        {new Intl.NumberFormat("vi-VN", {
+                            style: "currency",
+                            currency: "VND",
+                        }).format(total)}
+                    </>
+                );
+            },
         },
         {
             title: "Đã thanh toán",
             dataIndex: "payment",
             key: "payment",
             ellipsis: true,
-            render: (_, { payment }) => {
-                if (payment === 1) {
+            render: (_, { payment, statusOrder }) => {
+                if (payment !== 0 && statusOrder > 0) {
                     return (
                         <Tag color={"green"} key={payment}>
                             Đã thanh toán

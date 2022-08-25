@@ -1,4 +1,4 @@
-import { Button, Space, Table, Tag } from "antd";
+import { Button, message, Space, Table, Tag } from "antd";
 import React, { useEffect, useState } from "react";
 import UserDetailModal from "./user-detail-modal/UserDetailModal";
 import { getAllUsers } from "@/API/user";
@@ -19,6 +19,7 @@ export default function UserManagement() {
                 setLoading(false);
             } catch (err) {
                 console.log(err);
+                message.error(toString(err.message));
             }
         }
         fetchData();
