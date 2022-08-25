@@ -49,12 +49,12 @@ export default function Footer() {
             </div>
 
             <p className="font-bold my-5">
-              CÔNG TY TNHH SẢN XUẤT THƯƠNG MẠI & DỊCH VỤ BIKEGEAR
+              CÔNG TY TNHH SẢN XUẤT THƯƠNG MẠI BIKERGEAR
             </p>
             <div className="my-5">
               <p>
                 Địa chỉ: 227 Nguyễn Văn Cừ, Phường 04, Quận 05, Thành phố Hồ Chí
-                Minh - Điện thoại: 028.910.1123 - Email: cskh@bikegear.vn
+                Minh - Điện thoại: 028.910.1123 - Email: cskh@bikergear.vn
               </p>
             </div>
             <ul>
@@ -101,7 +101,7 @@ export default function Footer() {
               <div className="flex-1">
                 <p className="font-bold mb-1">Đăng ký tài khoản</p>
                 <p className="mb-0">
-                  Nhập số điện thoại để tham gia cùng BIKEGEAR
+                  Nhập số điện thoại để tham gia cùng BIKERRGEAR
                 </p>
               </div>
               <div className="flex flex-1">
@@ -145,7 +145,7 @@ export default function Footer() {
                     <p className="text-lg font-bold mb-1">Thông tin</p>
                     <p className="mb-1">Giới thiệu</p>
                     <p className="mb-1">Liên hệ công ty</p>
-                    <p>Gia nhập BIKEGEAR</p>
+                    <p>Gia nhập BIKERGEAR</p>
                   </div>
                   <div className="md:col-span">
                     <p className="text-lg font-bold mb-1">Chính sách</p>
@@ -170,7 +170,7 @@ export default function Footer() {
                   <p className="text-gray-400 mb-1">
                     Email chăm sóc khách hàng
                   </p>
-                  <p className="text-yellow-light">cskh@bikegear.vn</p>
+                  <p className="text-yellow-light">cskh@bikergear.vn</p>
                 </div>
 
                 <div className="flex justify-center">
@@ -204,14 +204,14 @@ export default function Footer() {
                 <p className="text-gray-400 mb-1">Hotline góp ý</p>
                 <p className="text-yellow-light mb-1">123.456.7890 (24/7)</p>
                 <p className="text-gray-400 mb-1">Email chăm sóc khách hàng</p>
-                <p className="text-yellow-light">cskh@bikegear.vn</p>
+                <p className="text-yellow-light">cskh@bikergear.vn</p>
               </div>
             </div>
           </div>
         </div>
         <div className="text-center text-base">
           <div className="mx-24">
-            Copyright © 2021 Motorbike Accessory, EC02-02
+            Copyright © 2021 BIKERGEAR, EC02-02
           </div>
         </div>
       </footer>

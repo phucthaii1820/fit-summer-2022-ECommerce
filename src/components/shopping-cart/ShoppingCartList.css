@@ -1,0 +1,11 @@
+.ant-table-header{
+    text-align-last: center;
+}
+
+.ant-table-row {
+    text-align: -webkit-center;
+}
+
+.ant-select{
+    vertical-align: bottom;
+}
