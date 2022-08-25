@@ -127,12 +127,17 @@ export default function AddProductModal(props) {
             setOkLoading(true);
 
             try {
+                if (fileList.length < 3) {
+                    throw new Error("Vui lòng thêm ít nhất 3 ảnh cho sản phẩm");
+                }
+
                 let formData = new FormData();
                 formData.append("title", product.title);
                 formData.append("description", product.description);
                 formData.append("nameBrand", product.nameBrand);
                 formData.append("type", JSON.stringify(product.type));
                 formData.append("category", product.category);
+                formData.append("statusPost", parseInt(product.statusPost));
                 fileList?.map((file) =>
                     formData.append("image", file.originFileObj)
                 );
