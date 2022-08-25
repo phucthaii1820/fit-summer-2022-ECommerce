@@ -11,6 +11,8 @@ import { Link } from "react-router-dom";
 import Logo from "src/image/Logo.svg";
 import userStore from "@/stores/user";
 
+import './ShoppingCartList.css';
+
 const { Option } = Select;
 
 const antIcon = (

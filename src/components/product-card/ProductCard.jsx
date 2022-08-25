@@ -84,6 +84,7 @@ export default function ProductCard({ item, fetchProductsCard }) {
   const onClickAddCart = () => {
     addCart();
   };
+  
   return (
     <div className="">
       {item ? (

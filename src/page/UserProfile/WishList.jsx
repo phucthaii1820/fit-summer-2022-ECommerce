@@ -1,4 +1,4 @@
-import { getWishList, removeWishProduct } from "@/API/user";
+import { addShoppingCart, getWishList, removeWishProduct } from "@/API/user";
 import { DeleteOutlined, LoadingOutlined } from "@ant-design/icons";
 import { Button, message, Spin, Table } from "antd";
 import React, { useEffect, useState } from "react";
@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 import Logo from "src/image/Logo.svg";
 
 import userStore from "@/stores/user";
+import { getProductInfo } from "@/API/product";
 
 const antIcon = (
   <LoadingOutlined
@@ -21,7 +22,7 @@ const WishList = () => {
   const [changeWishList, setChangeWishList] = useState(true);
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const { setLoveList } = userStore((state) => state);
+  const { setCart, setLoveList } = userStore((state) => state);
 
   const productStatus = (item) => {
     for (let i = 0; i < item?.type.length; i++) {
@@ -82,6 +83,34 @@ const WishList = () => {
     setChangeWishList(true);
   };
 
+  const index = (item) => {
+    for (let i = 0; i < item?.type.length; i++) {
+      if (item?.type[i]?.quantity > -1) {
+        return i;
+      }
+    }
+    return -1;
+  };
+
+  const addCart = async (key) => {
+    try {
+      const resProduct = await getProductInfo(key);
+      const res = await addShoppingCart({
+        product_id: resProduct?.data?._id,
+        type_id: resProduct?.data?.type[index(resProduct?.data)]?._id,
+        quantity: 1,
+      });
+      setCart(res?.cart);
+      message.success("Thêm vào giỏ hàng thành công!");
+    } catch (err) {
+      message.error("Hệ thống đang xử lý! Vui lòng trở lại sau!");
+    }
+  };
+
+  const onClickAddCart = (event, key) => {
+    addCart(key);
+  };
+  
   const columns = [
     {
       title: "Hình ảnh",
@@ -131,6 +160,7 @@ const WishList = () => {
                 borderRadius: "25px",
               }}
               type="primary"
+              onClick={(event) => onClickAddCart(event, key)}
             >
               Thêm giỏ hàng
             </Button>
