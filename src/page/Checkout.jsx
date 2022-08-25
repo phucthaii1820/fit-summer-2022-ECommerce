@@ -474,7 +474,8 @@ const Checkout = () => {
                   user.address == "" ||
                   user.ward == -1 ||
                   user.district == -1 ||
-                  user.province == -1
+                  user.province == -1 ||
+                  user?.cart?.length == 0
                 }
               >
                 Thanh toán
