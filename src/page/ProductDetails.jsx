@@ -168,6 +168,10 @@ const ProductDetails = () => {
     AddShoppingCart();
   };
 
+  const handleAddOrder = () => {
+    window.location.href = "/checkout";
+  };
+
   return (
     <>
       {isLoading ? (
@@ -368,7 +372,7 @@ const ProductDetails = () => {
                       )}
                     </div>
 
-                    <div className="flex mt-6">
+                    <div className="flex mt-8">
                       <div
                         className="w-64 mr-8 flex p-2 border-2 rounded-xl justify-center items-center drop-shadow-lg"
                         style={{
@@ -384,16 +388,16 @@ const ProductDetails = () => {
                           Thêm vào giỏ hàng
                         </button>
                       </div>
-                      <div
+                      {/* <div
                         className="p-4 border-2 rounded-xl"
                         style={{
                           backgroundColor: "#F5B301",
                         }}
                       >
-                        <button className="text-xl text-white font-bold drop-shadow-lg">
+                        <button className="text-xl text-white font-bold drop-shadow-lg" onClick={handleAddOrder}>
                           Mua ngay
                         </button>
-                      </div>
+                      </div> */}
                     </div>
                   </div>
                 </div>
