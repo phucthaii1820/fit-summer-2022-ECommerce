@@ -114,7 +114,7 @@ export default function UserDetailModal(props) {
                         <Input value={user.cmnd} />
                     </Form.Item>
                     <Form.Item label={"Vai trò"}>
-                        <Input value={user.role} />
+                        <Input value={user.role === 1000 ? "Amin" : "User"} />
                     </Form.Item>
                     <Form.Item label={"Mô tả"}>
                         <Input value={user.bio} />
