@@ -74,7 +74,7 @@ const items = [
 export default function LayoutAdmin() {
     const [collapsed, setCollapsed] = useState(false);
 
-    const [selectedKeys, setSelectedKeys] = useState("2-5");
+    const [selectedKeys, setSelectedKeys] = useState("1");
 
     return (
         <Layout
@@ -107,7 +107,7 @@ export default function LayoutAdmin() {
                         padding: 0,
                     }}
                 >
-                    <Link to="/" style={{textAlign: "-webkit-center"}}>
+                    <Link to="/" style={{ textAlign: "-webkit-center" }}>
                         <img
                             src={Logo}
                             alt="logoImage"
