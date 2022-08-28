@@ -8,10 +8,11 @@ export default function CommentCard(props) {
     const item = props.item;
 
     return (
-        <div>
+        <div className="h-full">
             <Card
                 style={{
                     width: "100%",
+                    height: "100%"
                 }}
             >
                 <Meta

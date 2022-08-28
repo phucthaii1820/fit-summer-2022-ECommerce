@@ -75,7 +75,7 @@ const Search = () => {
       {isLoading ? (
         <div className="flex justify-center h-screen items-center flex-col">
           <img className="h-14 w-auto mb-8" src={Logo} alt="Workflow" />
-          <Spin indicator={antIcon} />;
+          <Spin indicator={antIcon} />
         </div>
       ) : data.length > 0 ? (
         <div className="relative">
