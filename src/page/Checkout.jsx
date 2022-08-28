@@ -15,6 +15,7 @@ import Paypal from "src/image/checkout/paypal.png";
 import Momo from "src/image/checkout/momo.png";
 import CheckoutCard from "@/components/product-card/CheckoutCard";
 import { getProductInfo } from "@/API/product";
+import { getStore } from "@/API/store";
 import { title } from "process";
 import { LoadingOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
@@ -57,6 +58,7 @@ const Checkout = () => {
   const [step, setStep] = useState(1);
   const [idOrder, setIdOrder] = useState(0);
   const [linkPay, setLinkPay] = useState("");
+  const [districShop, setDistrictShop] = useState(-1);
 
   useEffect(() => {
     const fetchProductInfo = async () => {
@@ -76,6 +78,13 @@ const Checkout = () => {
       );
       setIsLoading(false);
     };
+
+    const fetchShop = async () => {
+      const res = await getStore();
+      setDistrictShop(res?.data[0]?.district);
+    };
+
+    fetchShop();
     setIsLoading(true);
     setProductInfo([]);
     fetchProductInfo();
@@ -153,7 +162,7 @@ const Checkout = () => {
   useEffect(() => {
     async function fetchAPI() {
       const response = await fetch(
-        `https://online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/available-services?shop_id=3091698&from_district=1447&to_district=${user?.district}`,
+        `https://online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/available-services?shop_id=3091698&from_district=${districShop}&to_district=${user?.district}`,
         {
           method: "GET",
           headers: {
@@ -164,10 +173,10 @@ const Checkout = () => {
       const data = await response.json();
       setServiceId(data.data[0].service_id);
     }
-    if (user?.district !== -1) {
+    if (user?.district !== -1 && districShop !== -1) {
       fetchAPI();
     }
-  }, []);
+  }, [districShop]);
 
   useEffect(() => {
     if (service_id !== 0 && totalPriceProduct !== 0) {
@@ -189,7 +198,7 @@ const Checkout = () => {
               service_id: service_id,
               insurance_value: 0,
               coupon: null,
-              from_district_id: 1447,
+              from_district_id: districShop,
               to_district_id: user?.district,
               to_ward_code: user?.ward + "",
               weight: 2000 * totalProduct,
