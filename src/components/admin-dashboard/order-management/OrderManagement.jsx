@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { getOrdersAdmin, changeStatusOrder } from "@/API/order";
 import { Select, Table, Tag, Form, Button, Modal, message } from "antd";
-import "src/components/admin-dashboard/AntTable.css"
-
+import "src/components/admin-dashboard/AntTable.css";
+import OrderDetailModal from "./OrderDetailModel";
 
 export default function OrderManagement() {
     const statusList = [
@@ -60,7 +60,7 @@ export default function OrderManagement() {
                 setOrders(
                     res?.map((order) => ({
                         ...order,
-                        phone: order.userId.phone,
+                        phone: order.userId?.phone,
                     }))
                 );
                 setLoading(false);
@@ -206,13 +206,18 @@ export default function OrderManagement() {
             key: "action",
             ellipsis: true,
             render: (_, record) => (
-                <Button
-                    onClick={() => {
-                        onClickShowModalStatus(record._id, record.statusOrder);
-                    }}
-                >
-                    Cập nhật trạng thái
-                </Button>
+                // <Button
+                //     onClick={() => {
+                //         onClickShowModalStatus(record._id, record.statusOrder);
+                //     }}
+                // >
+                //     Cập nhật trạng thái
+                // </Button>
+
+                <OrderDetailModal
+                    order={record}
+                    isChange={() => setIsChange(!isChange)}
+                />
             ),
         },
     ];
