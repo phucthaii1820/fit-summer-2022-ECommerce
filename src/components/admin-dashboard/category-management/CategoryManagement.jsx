@@ -4,7 +4,7 @@ import { Space, Button, Table, Modal, Input, message } from "antd";
 import { PlusCircleOutlined } from "@ant-design/icons";
 
 import { deleteCategory, addCategory, updateCategory } from "@/API/category";
-import "src/components/admin-dashboard/AntTable.css"
+import "src/components/admin-dashboard/AntTable.css";
 
 export default function CategoryManagement() {
     const [categories, setCategories] = useState([]);
@@ -121,13 +121,13 @@ export default function CategoryManagement() {
             title: "Tên danh mục",
             dataIndex: "name",
             key: "name",
-            ellipsis: true,
+            // ellipsis: true,
         },
         {
             title: "Hành động",
             dataIndex: "action",
             key: "action",
-            ellipsis: true,
+            // ellipsis: true,
             render: (_, record) => (
                 <Space size="middle">
                     <Button
