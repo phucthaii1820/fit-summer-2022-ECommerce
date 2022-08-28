@@ -1,24 +1,23 @@
 import React from "react";
 
-import SectionTitle from "./SectionTitle";
 import { Row, Col } from "antd";
 
 import Icon, {
-  SmileOutlined,
   PhoneOutlined,
   RetweetOutlined,
   SafetyCertificateOutlined,
-  FieldTimeOutlined,
 } from "@ant-design/icons";
+
+import { FaShippingFast } from "react-icons/fa";
 
 export default function Services() {
   const items = [
     {
       id: 1,
-      icon: SmileOutlined,
-      title: "Miễn phí giao hàng",
+      icon: FaShippingFast,
+      title: "Giao hàng toàn quốc",
       description:
-        "Miễn phí giao hàng toàn quốc cho đơn hàng trên 1 triệu đồng",
+        "Hỗ trợ giao hàng trên toàn quốc",
     },
     {
       id: 2,
