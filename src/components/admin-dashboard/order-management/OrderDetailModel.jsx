@@ -18,6 +18,8 @@ import {
     CloseCircleOutlined,
 } from "@ant-design/icons";
 
+import moment from "moment";
+
 export default function OrderDetailModal(props) {
     const statusList = [
         {
@@ -59,28 +61,34 @@ export default function OrderDetailModal(props) {
     ];
 
     const columns = [
-        // {
-        //     title: "Tên sản phẩm",
-        //     dataIndex: "title",
-        //     key: "title",
-        //     ellipsis: true,
-        //     render: (_, { _id, title }) => (
-        //         <Link to={`/product-detail/${_id}`}>{title}</Link>
-        //     ),
-        // },
+        {
+            title: "Tên sản phẩm",
+            dataIndex: "idProduct.title",
+            key: "idProduct.title",
+            // ellipsis: true,
+            // render: (_, record) => <div>{record.idProduct.title}</div>,
+            render: (_, record) => (
+                <Link to={`/product-detail/${record.idProduct._id}`}>
+                    {record.idProduct.title}
+                </Link>
+            ),
+        },
 
         {
-            title: "Mã sản phẩm",
-            dataIndex: "idProduct",
-            key: "idProduct",
-            ellipsis: true,
+            title: "Ảnh sản phẩm",
+            dataIndex: "idProduct.image",
+            key: "idProduct.image",
+            // ellipsis: true,
+            render: (_, record) => (
+                <Image src={record.idProduct.image[0]}></Image>
+            ),
         },
 
         {
             title: "Giá lúc mua",
             dataIndex: "priceAtBuy",
             key: "priceAtBuy",
-            ellipsis: true,
+            // ellipsis: true,
             render: (_, record) => (
                 <>
                     {new Intl.NumberFormat("vi-VN", {
@@ -95,14 +103,14 @@ export default function OrderDetailModal(props) {
             title: "Số lượng",
             dataIndex: "quantity",
             key: "quantity",
-            ellipsis: true,
+            // ellipsis: true,
         },
 
         {
             title: "Thành tiền",
             dataIndex: "total",
             key: "total",
-            ellipsis: true,
+            // ellipsis: true,
             render: (_, record) => (
                 <>
                     {new Intl.NumberFormat("vi-VN", {
@@ -116,13 +124,11 @@ export default function OrderDetailModal(props) {
             title: "Loại",
             dataIndex: "typeID",
             key: "typeID",
-            ellipsis: true,
+            // ellipsis: true,
         },
     ];
 
     const order = props.order;
-
-    const userInformation = "ABC \n DEF";
 
     const [status, setStatus] = useState(order.statusOrder);
     const [okLoading, setOkLoading] = useState(false);
@@ -226,7 +232,8 @@ export default function OrderDetailModal(props) {
                         {order?._id}
                     </Descriptions.Item>
                     <Descriptions.Item label="Ngày đặt hàng">
-                        {order?.createdAt}
+                        {/* {order?.createdAt} */}
+                        {moment(order?.createdAt).format("DD/MM/YYYY HH:mm:ss")}
                     </Descriptions.Item>
                     <Descriptions.Item label="Tổng tiền">
                         {new Intl.NumberFormat("vi-VN", {
@@ -327,14 +334,13 @@ export default function OrderDetailModal(props) {
                             </span>
                         </Tooltip>
                     </Descriptions.Item>
-                    <Descriptions.Item label="Danh sách sản phẩm">
-                        <Table
-                            columns={columns}
-                            dataSource={order?.products}
-                            pagination={false}
-                        />
-                    </Descriptions.Item>
+                    <Descriptions.Item label="Danh sách sản phẩm"></Descriptions.Item>
                 </Descriptions>
+                <Table
+                    columns={columns}
+                    dataSource={order?.products}
+                    pagination={false}
+                />
             </Modal>
         </>
     );

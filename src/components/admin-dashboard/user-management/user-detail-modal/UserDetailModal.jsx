@@ -1,8 +1,10 @@
-import React, { useState } from "react";
-import { Button, Modal, Form, Input, Radio, DatePicker } from "antd";
+import React, { useEffect, useState } from "react";
+import { Button, Modal, Tag, Descriptions, message } from "antd";
 import { FolderOpenOutlined, DeleteOutlined } from "@ant-design/icons";
 
 import { deleteUser } from "@/API/user";
+
+import moment from "moment";
 
 export default function UserDetailModal(props) {
     const user = props.user;
@@ -33,6 +35,14 @@ export default function UserDetailModal(props) {
     };
 
     const OnClickDeleteUser = () => {
+        // Check if the current user is the user we want to delete then show an error message
+        const currentUser = JSON.parse(localStorage.getItem("user"));
+
+        if (user._id === currentUser.state.user._id) {
+            message.error("Bạn không thể tự xóa bản thân!");
+            return;
+        }
+
         setConfirmVisible(true);
         Modal.confirm({
             visible: confirmVisible,
@@ -81,48 +91,56 @@ export default function UserDetailModal(props) {
                     </Button>,
                 ]}
             >
-                {/* phone email fullname gender address province district ward cmnd role bio dob createAt */}
-                <Form disabled={true}>
-                    <Form.Item label={"Họ và tên"}>
-                        <Input value={user.fullname} />
-                    </Form.Item>
-                    <Form.Item label={"Ngày sinh"}>
-                        <DatePicker value={user.dob} />
-                    </Form.Item>
-                    <Form.Item label={"Số điện thoại"}>
-                        <Input value={user.phone} />
-                    </Form.Item>
-                    <Form.Item label={"Email"}>
-                        <Input value={user.email} />
-                    </Form.Item>
-                    <Form.Item label={"Giới tính"}>
-                        <Radio.Group value={user.gender} />
-                    </Form.Item>
-                    <Form.Item label={"Số nhà + Tên đường"}>
-                        <Input value={user.address} />
-                    </Form.Item>
-                    <Form.Item label={"Tỉnh/Thành phố"}>
-                        <Input value={user.province} />
-                    </Form.Item>
-                    <Form.Item label={"Quận/Huyện"}>
-                        <Input value={user.district} />
-                    </Form.Item>
-                    <Form.Item label={"Xã/Phường"}>
-                        <Input value={user.ward} />
-                    </Form.Item>
-                    <Form.Item label={"Số CMND"}>
-                        <Input value={user.cmnd} />
-                    </Form.Item>
-                    <Form.Item label={"Vai trò"}>
-                        <Input value={user.role === 1000 ? "Amin" : "User"} />
-                    </Form.Item>
-                    <Form.Item label={"Mô tả"}>
-                        <Input value={user.bio} />
-                    </Form.Item>
-                    <Form.Item label={"Ngày tạo"}>
-                        <Input value={user.createAt} />
-                    </Form.Item>
-                </Form>
+                <Descriptions title="Thông tin chi tiết" column={1}>
+                    <Descriptions.Item label="Họ và tên">
+                        {user.fullname}
+                    </Descriptions.Item>
+                    <Descriptions.Item label="Ngày sinh">
+                        {user.dob}
+                    </Descriptions.Item>
+                    <Descriptions.Item label="Số điện thoại">
+                        {user.phone}
+                    </Descriptions.Item>
+                    <Descriptions.Item label="Email">
+                        {user.email}
+                    </Descriptions.Item>
+                    <Descriptions.Item label="Giới tính">
+                        {user.gender}
+                    </Descriptions.Item>
+                    <Descriptions.Item label="Số nhà + Tên đường">
+                        {user.address}
+                    </Descriptions.Item>
+                    <Descriptions.Item label="Tỉnh/Thành phố">
+                        {user.province}
+                    </Descriptions.Item>
+                    <Descriptions.Item label="Quận/Huyện">
+                        {user.district}
+                    </Descriptions.Item>
+                    <Descriptions.Item label="Xã/Phường">
+                        {user.ward}
+                    </Descriptions.Item>
+                    <Descriptions.Item label="Số CMND">
+                        {user.cmnd}
+                    </Descriptions.Item>
+                    <Descriptions.Item label="Vai trò">
+                        {user.role === 1000 ? (
+                            <Tag color={"gold"} key={user.role}>
+                                Admin
+                            </Tag>
+                        ) : (
+                            <Tag color={"blue"} key={user.role}>
+                                User
+                            </Tag>
+                        )}
+                    </Descriptions.Item>
+                    <Descriptions.Item label="Mô tả">
+                        {user.bio}
+                    </Descriptions.Item>
+                    <Descriptions.Item label="Ngày tạo">
+                        {/* Format createAt into DD/MM/YYYY HH:MM:SS */}
+                        {moment(user.createAt).format("DD/MM/YYYY HH:MM:SS")}
+                    </Descriptions.Item>
+                </Descriptions>
             </Modal>
         </>
     );

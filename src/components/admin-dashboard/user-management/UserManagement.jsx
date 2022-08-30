@@ -2,8 +2,8 @@ import { Button, message, Space, Table, Tag } from "antd";
 import React, { useEffect, useState } from "react";
 import UserDetailModal from "./user-detail-modal/UserDetailModal";
 import { getAllUsers } from "@/API/user";
-import "src/components/admin-dashboard/AntTable.css"
-import "./UserManagement.css"
+import "src/components/admin-dashboard/AntTable.css";
+import "./UserManagement.css";
 
 export default function UserManagement() {
     const [loading, setLoading] = useState(true);
@@ -75,11 +75,11 @@ export default function UserManagement() {
             key: "role",
             filters: [
                 {
-                    text: "admin",
+                    text: "Admin",
                     value: 1000,
                 },
                 {
-                    text: "customer",
+                    text: "Customer",
                     value: 1,
                 },
             ],
