@@ -8,9 +8,9 @@ const CardOder = ({ orderInfo }) => {
     switch (payment) {
       case 0:
         return "Thanh toán khi nhận hàng (COD)";
-      case 1:
-        return "Thanh toán qua MoMo";
       case 2:
+        return "Thanh toán qua MoMo";
+      case 1:
         return "Thanh toán qua Paypal";
     }
   };
