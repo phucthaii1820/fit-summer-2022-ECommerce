@@ -14,7 +14,9 @@ export default function LayoutHomePage() {
     return (
         <div>
             <div className="container">
-                <div>{/* <Banner /> */}</div>
+                <div>
+                    <Banner />
+                </div>
                 <div>
                     <TrendingProducts />
                 </div>
